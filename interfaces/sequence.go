@@ -1,3 +1,7 @@
+// Copyright 2017 Ryan Hagenson. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package interfaces
 
 // Sequence is an abstract type defining the basic functionality of any biological sequence (DNA, RNA, Protein, or some other series of characters in a given alphabet)
