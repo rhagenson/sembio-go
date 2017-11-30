@@ -25,13 +25,13 @@ var (
 // StrictDNA is any representation that uses the StrictDNAAlphabet, which
 // only has four (4) letters that are possible.
 type StrictDNA interface {
-	AlphabetType() StrictDNAAlphabetType
+	Alphabet() StrictDNAAlphabetType
 }
 
 // IupacDNA is any representation that uses the IUPACDNAAlphabet, which
 // has all sixteen (16) letters that are possible.
 type IupacDNA interface {
-	AlphabetType() IupacDNAAlphabetType
+	Alphabet() IupacDNAAlphabetType
 }
 
 // StrictDNASequence is the combination of implementing both

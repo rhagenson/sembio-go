@@ -6,9 +6,6 @@ type Sequence interface {
 	// Length returns how many elements there are in the Sequence
 	Length() int
 
-	// Alphabet returns the valid elements in the Sequence
-	Alphabet() []string
-
 	// Position returns the n-th element
 	Position(n int) string
 
