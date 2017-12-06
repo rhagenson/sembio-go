@@ -11,7 +11,8 @@ const (
 
 // IlluminaQScore takes the single-byte ASCII character used to represent
 // quality score in Illumina fastq files and returns the associated
-// quality score. Otherwise it returns a  quality score and error
+// quality score and nil error.
+// Otherwise it returns the invalid score and error.
 func IlluminaQScore(r rune) (q uint8, e err) {
 	if code := uint8(r); MINI_ASCII_VAL < code {
 		if q = code - MIN_ASCII_VAL; q < MAX_Q_SCORE {
