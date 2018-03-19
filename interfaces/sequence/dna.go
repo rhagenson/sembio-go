@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package interfaces
+package sequence
 
 // The unchanging alphabets of the two standard DNA considerations:
 // 1) The strict DNA alphabet with only the unambiguous DNA letters, and
@@ -13,12 +13,23 @@ package interfaces
 // A result of these representations is that, strictly speaking, DNA is
 // unambiguous and gapless so the IUPAC representation is needed
 // whenever ambiguity or gaps are possible.
+
+// StrictDNAAlphabetType is the form all standard representations of DNA
+// should follow. That is the alphabet contains only four letters (ATGC).
 type StrictDNAAlphabetType [4]string
+
+// IupacDNAAlphabetType is the form all non-standard or ambiguous
+// representations of DNA should follow.
+// That is the alphabet that contains all 16 semi-ambiguous letters
+// (ATGCRYSWKMBDHVN-).
 type IupacDNAAlphabetType [16]string
 
 var (
+	// StrictDNAAlphabet is a pre-defined, correct StrictDNAAlphabetType
 	StrictDNAAlphabet = StrictDNAAlphabetType([4]string{"A", "T", "G", "C"})
-	IupacDNAAlphabet  = IupacDNAAlphabetType([16]string{
+
+	// IupacDNAAlphabet is a pre-define, correct IupacDNAAlphabetType
+	IupacDNAAlphabet = IupacDNAAlphabetType([16]string{
 		"A", "T", "G", "C", // Any of one nucelotide codes (i.e., 4 choose 1)
 		"R", "Y", "S", "W", "K", "M", // Any of two nucelotide codes (i.e., 4 choose 2)
 		"B", "D", "H", "V", "N", // Any of three nucleotide codes (i.e., 4 choose 3)

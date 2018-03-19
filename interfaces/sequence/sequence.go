@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package interfaces
+package sequence
 
 // Sequence is an abstract type defining the basic functionality of any biological sequence (DNA, RNA, Protein, or some other series of characters in a given alphabet)
-// string type is returned to implictly allow non-utf8, multi-character elements which would allow defining a k-mer Sequence.
+// string type is returned to implictly allow multi-character elements which would allow defining a k-mer Sequence.
 type Sequence interface {
 	// Length returns how many elements there are in the Sequence
 	Length() int
