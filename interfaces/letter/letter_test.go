@@ -1,4 +1,4 @@
-package alphabet
+package letter
 
 import (
 	"fmt"
