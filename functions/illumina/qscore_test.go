@@ -33,7 +33,7 @@ func TestQScore(t *testing.T) {
 	}
 
 	for _, tt := range table {
-		s, _ := QScore(tt.in)
+		s, _ := PhredQScore(tt.in)
 		if s != tt.out {
 			t.Errorf("Calculating Q-Score with %v yielded %v, while %v was expected", tt.in, s, tt.out)
 		}
