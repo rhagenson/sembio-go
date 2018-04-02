@@ -7,7 +7,7 @@ var _ Alphabet = &RNAIupac{}
 type RNAIupac struct{}
 
 // Letters returns the complete IUPAC ambiguity character set.
-func (d *RNAIupac) Letters() []Letter {
+func (r *RNAIupac) Letters() []Letter {
 	return []Letter{
 		"A", "U", "G", "C", // Any of one nucelotide codes (i.e., 4 choose 1)
 		"R", "Y", "S", "W", "K", "M", // Any of two nucelotide codes (i.e., 4 choose 2)
@@ -16,24 +16,27 @@ func (d *RNAIupac) Letters() []Letter {
 	}
 }
 
-// Valid checks that a given Letter is in the Alphabet
-func (d *RNAIupac) Valid(l Letter) (valid bool) {
-	valid = false
-	for _, c := range d.Letters() {
-		if l == c {
-			valid = true
+// Contains checks that given Letter elements are in the Alphabet
+func (r *RNAIupac) Contains(letter ...Letter) (valid []bool) {
+	for idx, letter := range letter {
+		for _, inalpha := range r.Letters() {
+			if letter == inalpha {
+				valid[idx] = true
+				continue
+			}
 		}
 	}
+
 	return
 }
 
 // Gapped is whether RNAIupac allows for gaps or not (it does)
-func (d *RNAIupac) Gapped() bool {
+func (r *RNAIupac) Gapped() bool {
 	return true
 }
 
 // Ambiguous is whether RNAIupac allows for ambiguous characters or not
 // (it does)
-func (d *RNAIupac) Ambiguous() bool {
+func (r *RNAIupac) Ambiguous() bool {
 	return true
 }

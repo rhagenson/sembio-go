@@ -7,27 +7,30 @@ var _ Alphabet = &RNAStrict{}
 type RNAStrict struct{}
 
 // Letters returns the unambiguous DNA character set (ATGC)
-func (d *RNAStrict) Letters() []Letter {
+func (r *RNAStrict) Letters() []Letter {
 	return []Letter{"A", "U", "G", "C"}
 }
 
-// Valid checks that a given Letter is in the Alphabet
-func (d *RNAStrict) Valid(l Letter) (valid bool) {
-	valid = false
-	for _, c := range d.Letters() {
-		if l == c {
-			valid = true
+// Contains checks that given Letter elements are in the Alphabet
+func (r *RNAStrict) Contains(letter ...Letter) (valid []bool) {
+	for idx, letter := range letter {
+		for _, inalpha := range r.Letters() {
+			if letter == inalpha {
+				valid[idx] = true
+				continue
+			}
 		}
 	}
+
 	return
 }
 
 // Gapped is whether RNAStrict allows for gaps or not (it does not)
-func (d *RNAStrict) Gapped() bool {
+func (r *RNAStrict) Gapped() bool {
 	return false
 }
 
 // Ambiguous is whether RNAStrict allows for ambiguity or not (it does not)
-func (d *RNAStrict) Ambiguous() bool {
+func (r *RNAStrict) Ambiguous() bool {
 	return false
 }

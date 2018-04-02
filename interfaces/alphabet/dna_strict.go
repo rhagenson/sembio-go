@@ -11,14 +11,17 @@ func (d *DNAStrict) Letters() []Letter {
 	return []Letter{"A", "T", "G", "C"}
 }
 
-// Valid checks that a given Letter is in the Alphabet
-func (d *DNAStrict) Valid(l Letter) (valid bool) {
-	valid = false
-	for _, c := range d.Letters() {
-		if l == c {
-			valid = true
+// Contains checks that given Letter elements are in the Alphabet
+func (d *DNAStrict) Contains(letter ...Letter) (valid []bool) {
+	for idx, letter := range letter {
+		for _, inalpha := range d.Letters() {
+			if letter == inalpha {
+				valid[idx] = true
+				continue
+			}
 		}
 	}
+
 	return
 }
 
