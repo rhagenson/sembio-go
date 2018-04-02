@@ -1,7 +1,5 @@
 package alphabet
 
-import "bitbucket.org/rhagenson/bigr/interfaces/letter"
-
 var _ Alphabet = &ProteinGapped{}
 
 // ProteinGapped is a simple struct that satisfies the Alphabet interface
@@ -9,8 +7,8 @@ var _ Alphabet = &ProteinGapped{}
 type ProteinGapped struct{}
 
 // Letters returns the unambiguous DNA character set (ATGC)
-func (p *ProteinGapped) Letters() []letter.Letter {
-	return []letter.Letter{
+func (p *ProteinGapped) Letters() []Letter {
+	return []Letter{
 		"A", "C", "D", "E", "F",
 		"G", "H", "I", "K", "L",
 		"M", "N", "P", "Q", "R",
@@ -20,7 +18,7 @@ func (p *ProteinGapped) Letters() []letter.Letter {
 }
 
 // Contains checks that given Letter elements are in the Alphabet
-func (p *ProteinGapped) Contains(letter ...letter.Letter) (valid []bool) {
+func (p *ProteinGapped) Contains(letter ...Letter) (valid []bool) {
 	for idx, letter := range letter {
 		for _, inalpha := range p.Letters() {
 			if letter == inalpha {

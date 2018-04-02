@@ -1,4 +1,4 @@
-package letter
+package alphabet
 
 // Letter is an arbitrary entry in an Alphabet (string allows multirune entries in the Alphabet)
 type Letter string

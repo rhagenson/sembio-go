@@ -1,7 +1,5 @@
 package alphabet
 
-import "bitbucket.org/rhagenson/bigr/interfaces/letter"
-
 var _ Alphabet = &DNAStrict{}
 
 // DNAStrict is a simple struct that satisfies the Alphabet interface
@@ -9,12 +7,12 @@ var _ Alphabet = &DNAStrict{}
 type DNAStrict struct{}
 
 // Letters returns the unambiguous DNA character set (ATGC)
-func (d *DNAStrict) Letters() []letter.Letter {
-	return []letter.Letter{"A", "T", "G", "C"}
+func (d *DNAStrict) Letters() []Letter {
+	return []Letter{"A", "T", "G", "C"}
 }
 
 // Contains checks that given Letter elements are in the Alphabet
-func (d *DNAStrict) Contains(letter ...letter.Letter) (valid []bool) {
+func (d *DNAStrict) Contains(letter ...Letter) (valid []bool) {
 	for idx, letter := range letter {
 		for _, inalpha := range d.Letters() {
 			if letter == inalpha {

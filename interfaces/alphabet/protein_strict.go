@@ -1,7 +1,5 @@
 package alphabet
 
-import "bitbucket.org/rhagenson/bigr/interfaces/letter"
-
 var _ Alphabet = &ProteinStrict{}
 
 // ProteinStrict is a simple struct that satisfies the Alphabet interface
@@ -9,8 +7,8 @@ var _ Alphabet = &ProteinStrict{}
 type ProteinStrict struct{}
 
 // Letters returns the unambiguous DNA character set (ATGC)
-func (p *ProteinStrict) Letters() []letter.Letter {
-	return []letter.Letter{
+func (p *ProteinStrict) Letters() []Letter {
+	return []Letter{
 		"A", "C", "D", "E", "F",
 		"G", "H", "I", "K", "L",
 		"M", "N", "P", "Q", "R",
@@ -19,7 +17,7 @@ func (p *ProteinStrict) Letters() []letter.Letter {
 }
 
 // Contains checks that given Letter elements are in the Alphabet
-func (p *ProteinStrict) Contains(letter ...letter.Letter) (valid []bool) {
+func (p *ProteinStrict) Contains(letter ...Letter) (valid []bool) {
 	for idx, letter := range letter {
 		for _, inalpha := range p.Letters() {
 			if letter == inalpha {

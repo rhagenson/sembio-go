@@ -1,7 +1,5 @@
 package alphabet
 
-import "bitbucket.org/rhagenson/bigr/interfaces/letter"
-
 var _ Alphabet = &DNAIupac{}
 
 // DNAIupac is a simple struct that satisfies the Alphabet interface
@@ -9,8 +7,8 @@ var _ Alphabet = &DNAIupac{}
 type DNAIupac struct{}
 
 // Letters returns the complete IUPAC ambiguity character set.
-func (d *DNAIupac) Letters() []letter.Letter {
-	return []letter.Letter{
+func (d *DNAIupac) Letters() []Letter {
+	return []Letter{
 		"A", "T", "G", "C", // Any of one nucelotide codes (i.e., 4 choose 1)
 		"R", "Y", "S", "W", "K", "M", // Any of two nucelotide codes (i.e., 4 choose 2)
 		"B", "D", "H", "V", "N", // Any of three nucleotide codes (i.e., 4 choose 3)
@@ -19,7 +17,7 @@ func (d *DNAIupac) Letters() []letter.Letter {
 }
 
 // Contains checks that given Letter elements are in the Alphabet
-func (d *DNAIupac) Contains(letter ...letter.Letter) (valid []bool) {
+func (d *DNAIupac) Contains(letter ...Letter) (valid []bool) {
 	for idx, letter := range letter {
 		for _, inalpha := range d.Letters() {
 			if letter == inalpha {
