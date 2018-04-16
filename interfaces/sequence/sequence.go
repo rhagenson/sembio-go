@@ -14,11 +14,23 @@ import (
 // it is possible to look at a specific Range() of elements
 type Sequence interface {
 	// Length returns how many elements there are in the Sequence
-	Length() int
+	Length() uint
 
 	// Position returns the n-th element
-	Position(n int) alphabet.Letter
+	Position(n uint) alphabet.Letter
 
 	// Range returns elements from start (inclusive) to stop (exclusive)
-	Range(start, stop int) []alphabet.Letter
+	Range(start, stop uint) []alphabet.Letter
+}
+
+// Persistence describes methods that can be applied with a fully persistent model to create
+// a new Sequence with the given new data
+// This contract is should be satisfied not by returning the receiver with overwritten
+// fields, but rather pointers to the old fields with a point to the change field
+type Persistence interface {
+	// WithPositionAs mutates a single position to the given letter, returning a new object
+	WithPositionAs(n uint, letter alphabet.Letter) *Persistence
+
+	// WithRangeAs mutates a given range of positions to the given letter array, returning a new object
+	WithRangeAs(start, stop uint, letters []alphabet.Letter) *Persistence
 }
