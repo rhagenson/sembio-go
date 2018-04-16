@@ -1,12 +1,14 @@
 package illumina
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestQScore(t *testing.T) {
 	// Check the first 10 and last 10 valid ASCII characters for Phred+33
 	// Encoding
 	table := []struct {
-		in  rune
+		in  byte
 		out uint8
 	}{
 		{'!', 0},
@@ -33,7 +35,7 @@ func TestQScore(t *testing.T) {
 	}
 
 	for _, tt := range table {
-		s, _ := PhredQScore(tt.in)
+		s, _ := Phred33QScore(tt.in)
 		if s != tt.out {
 			t.Errorf("Calculating Q-Score with %v yielded %v, while %v was expected", tt.in, s, tt.out)
 		}
