@@ -3,9 +3,9 @@ package alphabet
 import "testing"
 
 func TestDNAStrictLength(t *testing.T) {
-	var dna = &DNAStrict{}
+	var alpha = new(DNAStrict)
 
-	if !TestAlphabetProperLength(dna, 4) {
+	if !TestAlphabetProperLength(alpha, 4) {
 		t.Error("DNAStrict should have four characters.")
 	}
 }

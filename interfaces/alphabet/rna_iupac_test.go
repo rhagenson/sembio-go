@@ -3,9 +3,9 @@ package alphabet
 import "testing"
 
 func TestRNAIupacLength(t *testing.T) {
-	var rna = &RNAIupac{}
+	var alpha = new(RNAIupac)
 
-	if !TestAlphabetProperLength(rna, 16) {
+	if !TestAlphabetProperLength(alpha, 16) {
 		t.Error("DNAIupac should have sixteen characters.")
 	}
 }
