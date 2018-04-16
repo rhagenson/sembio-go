@@ -33,4 +33,7 @@ type Persistence interface {
 
 	// WithRangeAs mutates a given range of positions to the given letter array, returning a new object
 	WithRangeAs(start, stop uint, letters []alphabet.Letter) *Persistence
+
+	// Errors returns any accumulated errors that result from chaining Persistence operations
+	Errors() []error
 }
