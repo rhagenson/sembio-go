@@ -21,5 +21,5 @@ func PhredQScore(r rune) (uint8, error) {
 	if code := uint8(r); MinPhredASCII <= code && code <= MaxPhredASCII {
 		return code - MinPhredASCII, nil
 	}
-	return 0, fmt.Errorf("%v is not a valid Illumina Phred quality score symbol", r)
+	return 0, fmt.Errorf("%c is not a valid Illumina Phred quality score symbol", r)
 }
