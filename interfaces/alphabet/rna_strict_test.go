@@ -6,6 +6,6 @@ func TestRNAStrictLength(t *testing.T) {
 	var dna = &RNAStrict{}
 
 	if !TestAlphabetProperLength(dna, 4) {
-		t.Error("RNAStrict should only have four characters")
+		t.Error("RNAStrict should have four characters.")
 	}
 }
