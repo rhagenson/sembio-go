@@ -12,10 +12,10 @@ import (
 )
 
 func TestInitializedSimpleDNA(t *testing.T) {
-	dna := new(SimpleDna)
+	dna := new(DnaPersistent)
 
-	if dna.Alphabet() != new(alphabet.DNAStrict) {
-		t.Errorf("Want: %t, Got: %t", new(alphabet.DNAStrict), dna.Alphabet())
+	if dna.Alphabet() != new(alphabet.DnaStrict) {
+		t.Errorf("Want: %t, Got: %t", new(alphabet.DnaStrict), dna.Alphabet())
 	}
 	if dna.Length() != 0 {
 		t.Errorf("Want: %d, Got: %d", 0, dna.Length())
@@ -79,7 +79,7 @@ func TestSimpleDnaPersistence(t *testing.T) {
 					[]rune(alphabet.DnaStrictLetters),
 				)
 				original := NewSimpleDna(s)
-				clone := new(SimpleDna)
+				clone := new(DnaPersistent)
 				*clone = *original
 				mut := original.WithPosition(n*(1/2), t)
 				return reflect.DeepEqual(original, clone) &&
@@ -102,7 +102,7 @@ func TestSimpleDnaPersistence(t *testing.T) {
 					[]rune(alphabet.DnaStrictLetters),
 				)
 				original := NewSimpleDna(s)
-				clone := new(SimpleDna)
+				clone := new(DnaPersistent)
 				*clone = *original
 				mut := original.WithRange(n*(1/4), n*(3/4), t)
 				return reflect.DeepEqual(original, clone) &&
@@ -120,7 +120,7 @@ func TestSimpleDnaPersistence(t *testing.T) {
 					[]rune(alphabet.DnaStrictLetters),
 				)
 				original := NewSimpleDna(s)
-				clone := new(SimpleDna)
+				clone := new(DnaPersistent)
 				*clone = *original
 				mut := original.Reverse()
 				return reflect.DeepEqual(original, clone) &&
@@ -138,7 +138,7 @@ func TestSimpleDnaPersistence(t *testing.T) {
 					[]rune(alphabet.DnaStrictLetters),
 				)
 				original := NewSimpleDna(s)
-				clone := new(SimpleDna)
+				clone := new(DnaPersistent)
 				*clone = *original
 				mut := original.Complement()
 				return reflect.DeepEqual(original, clone) &&
@@ -156,7 +156,7 @@ func TestSimpleDnaPersistence(t *testing.T) {
 					[]rune(alphabet.DnaStrictLetters),
 				)
 				original := NewSimpleDna(s)
-				clone := new(SimpleDna)
+				clone := new(DnaPersistent)
 				*clone = *original
 				mut := original.RevComp()
 				return reflect.DeepEqual(original, clone) &&

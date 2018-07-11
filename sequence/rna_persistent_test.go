@@ -12,10 +12,10 @@ import (
 )
 
 func TestInitializedSimpleRna(t *testing.T) {
-	rna := new(SimpleRna)
+	rna := new(RnaPersistent)
 
-	if rna.Alphabet() != new(alphabet.RNAStrict) {
-		t.Errorf("Want: %t, Got: %t", new(alphabet.RNAStrict), rna.Alphabet())
+	if rna.Alphabet() != new(alphabet.RnaStrict) {
+		t.Errorf("Want: %t, Got: %t", new(alphabet.RnaStrict), rna.Alphabet())
 	}
 	if rna.Length() != 0 {
 		t.Errorf("Want: %d, Got: %d", 0, rna.Length())
@@ -79,7 +79,7 @@ func TestSimpleRnaPersistence(t *testing.T) {
 					[]rune(alphabet.RnaStrictLetters),
 				)
 				original := NewSimpleRna(s)
-				clone := new(SimpleRna)
+				clone := new(RnaPersistent)
 				*clone = *original
 				mut := original.WithPosition(n*(1/2), t)
 				return reflect.DeepEqual(original, clone) &&
@@ -102,7 +102,7 @@ func TestSimpleRnaPersistence(t *testing.T) {
 					[]rune(alphabet.RnaStrictLetters),
 				)
 				original := NewSimpleRna(s)
-				clone := new(SimpleRna)
+				clone := new(RnaPersistent)
 				*clone = *original
 				mut := original.WithRange(n*(1/4), n*(3/4), t)
 				return reflect.DeepEqual(original, clone) &&

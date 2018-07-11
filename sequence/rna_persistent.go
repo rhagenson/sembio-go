@@ -7,29 +7,30 @@ import (
 	"bitbucket.org/rhagenson/bigr/alphabet"
 )
 
-// SimpleRna is the simplest, string-backed representation of DNA
-type SimpleRna struct {
+// RnaPersistent is the simplest, string-backed representation of RNA with
+// full persistent
+type RnaPersistent struct {
 	seq  string
 	errs []error
 }
 
 // Alphabet is the backing valid StrictRNA alphabet
-func (s *SimpleRna) Alphabet() *alphabet.RNAStrict {
-	return new(alphabet.RNAStrict)
+func (s *RnaPersistent) Alphabet() *alphabet.RnaStrict {
+	return new(alphabet.RnaStrict)
 }
 
 // Length is the number of nucleotides in the sequence
-func (s *SimpleRna) Length() uint {
+func (s *RnaPersistent) Length() uint {
 	return uint(len(s.seq))
 }
 
 // Position is the nucleotide found at position n
-func (s *SimpleRna) Position(n uint) string {
+func (s *RnaPersistent) Position(n uint) string {
 	return string(s.seq[n])
 }
 
 // Range is the nucleotides found in the half-open range
-func (s *SimpleRna) Range(start, stop uint) string {
+func (s *RnaPersistent) Range(start, stop uint) string {
 	if stop == s.Length() {
 		return s.seq[start:]
 	}
@@ -37,22 +38,22 @@ func (s *SimpleRna) Range(start, stop uint) string {
 }
 
 // WithPosition mutates a sequence position
-func (s *SimpleRna) WithPosition(n uint, pos string) *SimpleRna {
+func (s *RnaPersistent) WithPosition(n uint, pos string) *RnaPersistent {
 	seq := NewSimpleRna(s.seq[:n] + pos + s.seq[n+1:])
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
 
 // WithRange mutates a range of sequence positions
-func (s *SimpleRna) WithRange(start, stop uint, pos string) *SimpleRna {
+func (s *RnaPersistent) WithRange(start, stop uint, pos string) *RnaPersistent {
 	seq := NewSimpleRna(s.seq[:start] + pos + s.seq[stop:])
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
 
 // NewSimpleRna creates a new SimpleRna instance
-func NewSimpleRna(s string) *SimpleRna {
-	seq := new(SimpleRna)
+func NewSimpleRna(s string) *RnaPersistent {
+	seq := new(RnaPersistent)
 	seq.seq = s
 	seq.errs = make([]error, 1)
 
@@ -71,6 +72,6 @@ func NewSimpleRna(s string) *SimpleRna {
 }
 
 // Errors returns any accumulated errors
-func (s *SimpleRna) Errors() []error {
+func (s *RnaPersistent) Errors() []error {
 	return s.Errors()
 }

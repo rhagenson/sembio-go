@@ -8,29 +8,30 @@ import (
 	"bitbucket.org/rhagenson/bigr/helpers"
 )
 
-// SimpleDna is the simplest, string-backed representation of DNA
-type SimpleDna struct {
+// DnaPersistent is the simplest, string-backed representation of DNA with
+// full persistent
+type DnaPersistent struct {
 	seq  string
 	errs []error
 }
 
 // Alphabet is the backing valid StrictDNA alphabet
-func (s *SimpleDna) Alphabet() *alphabet.DNAStrict {
-	return new(alphabet.DNAStrict)
+func (s *DnaPersistent) Alphabet() *alphabet.DnaStrict {
+	return new(alphabet.DnaStrict)
 }
 
 // Length is the number of nucleotides in the sequence
-func (s *SimpleDna) Length() uint {
+func (s *DnaPersistent) Length() uint {
 	return uint(len(s.seq))
 }
 
 // Position is the nucleotide found at position n
-func (s *SimpleDna) Position(n uint) string {
+func (s *DnaPersistent) Position(n uint) string {
 	return string(s.seq[n])
 }
 
 // Range is the nucleotides found in the half-open range
-func (s *SimpleDna) Range(start, stop uint) string {
+func (s *DnaPersistent) Range(start, stop uint) string {
 	if stop == s.Length() {
 		return s.seq[start:]
 	}
@@ -38,22 +39,22 @@ func (s *SimpleDna) Range(start, stop uint) string {
 }
 
 // WithPosition mutates a sequence position
-func (s *SimpleDna) WithPosition(n uint, pos string) *SimpleDna {
+func (s *DnaPersistent) WithPosition(n uint, pos string) *DnaPersistent {
 	seq := NewSimpleDna(s.seq[:n] + pos + s.seq[n+1:])
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
 
 // WithRange mutates a range of sequence positions
-func (s *SimpleDna) WithRange(start, stop uint, pos string) *SimpleDna {
+func (s *DnaPersistent) WithRange(start, stop uint, pos string) *DnaPersistent {
 	seq := NewSimpleDna(s.seq[:start] + pos + s.seq[stop:])
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
 
 // NewSimpleDna creates a new SimpleDna instance if the input is valid DNA
-func NewSimpleDna(s string) *SimpleDna {
-	seq := new(SimpleDna)
+func NewSimpleDna(s string) *DnaPersistent {
+	seq := new(DnaPersistent)
 	seq.seq = s
 	seq.errs = make([]error, 1)
 
@@ -71,12 +72,12 @@ func NewSimpleDna(s string) *SimpleDna {
 }
 
 // Errors returns any accumulated errors
-func (s *SimpleDna) Errors() []error {
+func (s *DnaPersistent) Errors() []error {
 	return s.Errors()
 }
 
 // Complement returns the base pair complement
-func (s *SimpleDna) Complement() *SimpleDna {
+func (s *DnaPersistent) Complement() *DnaPersistent {
 	t := make([]byte, s.Length())
 	for i := 0; i < len(t); i++ {
 		t[i] = helpers.CompATGC(byte(s.seq[i]))
@@ -87,7 +88,7 @@ func (s *SimpleDna) Complement() *SimpleDna {
 }
 
 // Reverse reverses the sequence
-func (s *SimpleDna) Reverse() *SimpleDna {
+func (s *DnaPersistent) Reverse() *DnaPersistent {
 	l := int(s.Length())
 	t := []byte(s.Range(0, s.Length()))
 	for i := 0; i < l/2; i++ {
@@ -100,7 +101,7 @@ func (s *SimpleDna) Reverse() *SimpleDna {
 
 // RevComp reverses and complements the sequence directly
 // rather than chain the Reverse().Comp() operations together
-func (s *SimpleDna) RevComp() *SimpleDna {
+func (s *DnaPersistent) RevComp() *DnaPersistent {
 	l := int(s.Length())
 	t := []byte(s.Range(0, s.Length()))
 	for i := 0; i < l/2; i++ {
