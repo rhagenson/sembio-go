@@ -1,22 +1,25 @@
-package sequence
+package persistent
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 
 	"bitbucket.org/rhagenson/bigr"
 	"bitbucket.org/rhagenson/bigr/alphabet"
+	"bitbucket.org/rhagenson/bigr/helpers"
+	"bitbucket.org/rhagenson/bigr/sequence"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
 var (
-	_ Interface = new(DnaPersistent)
+	_ sequence.Interface = new(Dna)
 )
 
-func TestInitializedDnaPersistent(t *testing.T) {
-	dna := new(DnaPersistent)
+func TestInitializedDna(t *testing.T) {
+	dna := new(Dna)
 
 	if dna.Alphabet() != new(alphabet.DnaStrict) {
 		t.Errorf("Want: %t, Got: %t", new(alphabet.DnaStrict), dna.Alphabet())
@@ -27,8 +30,8 @@ func TestInitializedDnaPersistent(t *testing.T) {
 	// TODO: Write test for runtime panic on dna.Postion() and dna.Range()
 }
 
-func TestDnaPersistentHasMethods(t *testing.T) {
-	s := new(DnaPersistent)
+func TestDnaHasMethods(t *testing.T) {
+	s := new(Dna)
 	t.Run("Has Reverse method", func(t *testing.T) {
 		if !reflect.ValueOf(s).MethodByName("Reverse").IsValid() {
 			t.Error("Missing Reverse method")
@@ -51,29 +54,29 @@ func TestDnaPersistentHasMethods(t *testing.T) {
 	})
 }
 
-func TestDnaPersistentMethodsReturnTypes(t *testing.T) {
-	s := new(DnaPersistent)
-	t.Run("Reverse returns *DnaPersistent", func(t *testing.T) {
+func TestDnaMethodsReturnTypes(t *testing.T) {
+	s := new(Dna)
+	t.Run("Reverse returns *Dna", func(t *testing.T) {
 		r := reflect.ValueOf(s).MethodByName("Reverse").Call(nil)
 		for i := range r {
 			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *DnaPersistent")
+				t.Error("Does not return a new *Dna")
 			}
 		}
 	})
-	t.Run("Reverse returns *RnaPersistent", func(t *testing.T) {
+	t.Run("Reverse returns *Rna", func(t *testing.T) {
 		r := reflect.ValueOf(s).MethodByName("Complement").Call(nil)
 		for i := range r {
 			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *DnaPersistent")
+				t.Error("Does not return a new *Dna")
 			}
 		}
 	})
-	t.Run("Reverse returns *RnaPersistent", func(t *testing.T) {
+	t.Run("Reverse returns *Rna", func(t *testing.T) {
 		r := reflect.ValueOf(s).MethodByName("RevComp").Call(nil)
 		for i := range r {
 			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *DnaPersistent")
+				t.Error("Does not return a new *Dna")
 			}
 		}
 	})
@@ -90,12 +93,12 @@ func TestDnaPersistentMethodsReturnTypes(t *testing.T) {
 	})
 }
 
-func TestDnaPersistentCreation(t *testing.T) {
+func TestDnaCreation(t *testing.T) {
 	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("DnaPersistent is same length as input",
+	properties.Property("Dna is same length as input",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bigr.RandomStringFromRunes(
@@ -103,13 +106,13 @@ func TestDnaPersistentCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				dna := NewDnaPersistent(s)
+				dna := NewDna(s)
 				return dna.Length() == n
 			},
 			gen.UIntRange(1, seqLen),
 		),
 	)
-	properties.Property("DnaPersistent has same positions as input",
+	properties.Property("Dna has same positions as input",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bigr.RandomStringFromRunes(
@@ -117,7 +120,7 @@ func TestDnaPersistentCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				dna := NewDnaPersistent(s)
+				dna := NewDna(s)
 				got := dna.Range(0, n)
 				return got == s
 			},
@@ -127,7 +130,7 @@ func TestDnaPersistentCreation(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestDnaPersistentPersistence(t *testing.T) {
+func TestDnaPersistence(t *testing.T) {
 	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
@@ -145,8 +148,8 @@ func TestDnaPersistentPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				original := NewDnaPersistent(s)
-				clone := new(DnaPersistent)
+				original := NewDna(s)
+				clone := new(Dna)
 				*clone = *original
 				mut := original.WithPosition(n*(1/2), t)
 				return reflect.DeepEqual(original, clone) &&
@@ -168,8 +171,8 @@ func TestDnaPersistentPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				original := NewDnaPersistent(s)
-				clone := new(DnaPersistent)
+				original := NewDna(s)
+				clone := new(Dna)
 				*clone = *original
 				mut := original.WithRange(n*(1/4), n*(3/4), t)
 				return reflect.DeepEqual(original, clone) &&
@@ -186,8 +189,8 @@ func TestDnaPersistentPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				original := NewDnaPersistent(s)
-				clone := new(DnaPersistent)
+				original := NewDna(s)
+				clone := new(Dna)
 				*clone = *original
 				mut := original.Reverse()
 				return reflect.DeepEqual(original, clone) &&
@@ -204,8 +207,8 @@ func TestDnaPersistentPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				original := NewDnaPersistent(s)
-				clone := new(DnaPersistent)
+				original := NewDna(s)
+				clone := new(Dna)
 				*clone = *original
 				mut := original.Complement()
 				return reflect.DeepEqual(original, clone) &&
@@ -222,12 +225,45 @@ func TestDnaPersistentPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				original := NewDnaPersistent(s)
-				clone := new(DnaPersistent)
+				original := NewDna(s)
+				clone := new(Dna)
 				*clone = *original
 				mut := original.RevComp()
 				return reflect.DeepEqual(original, clone) &&
 					!reflect.DeepEqual(original, mut)
+			},
+			gen.UIntRange(1, seqLen), // Length of sequence
+		),
+	)
+	properties.TestingRun(t)
+}
+
+func TestDnaAccumulatesErrors(t *testing.T) {
+	var _ helpers.ErrorAccumulator = new(Dna)
+	var seqLen uint = 1000
+	parameters := gopter.DefaultTestParameters()
+	properties := gopter.NewProperties(parameters)
+
+	properties.Property("Giving invalid input adds an error",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune("XNQZ"),
+				)
+				seq := NewDna(s)
+				for _, err := range seq.errs {
+					if err == nil {
+						t.Errorf("Dna should accumulate an err using non-standard chars")
+						return false
+					}
+					if !strings.Contains(err.Error(), "invalid character(s)") {
+						t.Errorf("Dna creation error should mention invalid character(s)")
+						return false
+					}
+				}
+				return true
 			},
 			gen.UIntRange(1, seqLen), // Length of sequence
 		),
