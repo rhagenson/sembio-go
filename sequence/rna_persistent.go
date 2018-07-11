@@ -39,20 +39,20 @@ func (s *RnaPersistent) Range(start, stop uint) string {
 
 // WithPosition mutates a sequence position
 func (s *RnaPersistent) WithPosition(n uint, pos string) *RnaPersistent {
-	seq := NewSimpleRna(s.seq[:n] + pos + s.seq[n+1:])
+	seq := NewRnaPersistent(s.seq[:n] + pos + s.seq[n+1:])
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
 
 // WithRange mutates a range of sequence positions
 func (s *RnaPersistent) WithRange(start, stop uint, pos string) *RnaPersistent {
-	seq := NewSimpleRna(s.seq[:start] + pos + s.seq[stop:])
+	seq := NewRnaPersistent(s.seq[:start] + pos + s.seq[stop:])
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
 
-// NewSimpleRna creates a new SimpleRna instance
-func NewSimpleRna(s string) *RnaPersistent {
+// NewRnaPersistent creates a new RnaPersistent instance
+func NewRnaPersistent(s string) *RnaPersistent {
 	seq := new(RnaPersistent)
 	seq.seq = s
 	seq.errs = make([]error, 1)

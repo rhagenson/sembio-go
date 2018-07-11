@@ -11,7 +11,11 @@ import (
 	"github.com/leanovate/gopter/prop"
 )
 
-func TestInitializedSimpleDNA(t *testing.T) {
+var (
+	_ Interface = new(DnaPersistent)
+)
+
+func TestInitializedDnaPersistent(t *testing.T) {
 	dna := new(DnaPersistent)
 
 	if dna.Alphabet() != new(alphabet.DnaStrict) {
@@ -23,12 +27,12 @@ func TestInitializedSimpleDNA(t *testing.T) {
 	// TODO: Write test for runtime panic on dna.Postion() and dna.Range()
 }
 
-func TestSimpleDnaCreation(t *testing.T) {
+func TestDnaPersistentCreation(t *testing.T) {
 	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("SimpleDna is same length as input",
+	properties.Property("DnaPersistent is same length as input",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bigr.RandomStringFromRunes(
@@ -36,13 +40,13 @@ func TestSimpleDnaCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				dna := NewSimpleDna(s)
+				dna := NewDnaPersistent(s)
 				return dna.Length() == n
 			},
 			gen.UIntRange(1, seqLen),
 		),
 	)
-	properties.Property("SimpleDna has same positions as input",
+	properties.Property("DnaPersistent has same positions as input",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bigr.RandomStringFromRunes(
@@ -50,7 +54,7 @@ func TestSimpleDnaCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				dna := NewSimpleDna(s)
+				dna := NewDnaPersistent(s)
 				got := dna.Range(0, n)
 				return got == s
 			},
@@ -60,7 +64,7 @@ func TestSimpleDnaCreation(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestSimpleDnaPersistence(t *testing.T) {
+func TestDnaPersistentPersistence(t *testing.T) {
 	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
@@ -78,7 +82,7 @@ func TestSimpleDnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				original := NewSimpleDna(s)
+				original := NewDnaPersistent(s)
 				clone := new(DnaPersistent)
 				*clone = *original
 				mut := original.WithPosition(n*(1/2), t)
@@ -101,7 +105,7 @@ func TestSimpleDnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				original := NewSimpleDna(s)
+				original := NewDnaPersistent(s)
 				clone := new(DnaPersistent)
 				*clone = *original
 				mut := original.WithRange(n*(1/4), n*(3/4), t)
@@ -119,7 +123,7 @@ func TestSimpleDnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				original := NewSimpleDna(s)
+				original := NewDnaPersistent(s)
 				clone := new(DnaPersistent)
 				*clone = *original
 				mut := original.Reverse()
@@ -137,7 +141,7 @@ func TestSimpleDnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				original := NewSimpleDna(s)
+				original := NewDnaPersistent(s)
 				clone := new(DnaPersistent)
 				*clone = *original
 				mut := original.Complement()
@@ -155,7 +159,7 @@ func TestSimpleDnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaStrictLetters),
 				)
-				original := NewSimpleDna(s)
+				original := NewDnaPersistent(s)
 				clone := new(DnaPersistent)
 				*clone = *original
 				mut := original.RevComp()

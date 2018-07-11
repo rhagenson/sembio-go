@@ -11,7 +11,11 @@ import (
 	"github.com/leanovate/gopter/prop"
 )
 
-func TestInitializedSimpleRna(t *testing.T) {
+var (
+	_ Interface = new(RnaPersistent)
+)
+
+func TestInitializedRnaPersistent(t *testing.T) {
 	rna := new(RnaPersistent)
 
 	if rna.Alphabet() != new(alphabet.RnaStrict) {
@@ -23,12 +27,12 @@ func TestInitializedSimpleRna(t *testing.T) {
 	// TODO: Write test for runtime panic on dna.Postion() and dna.Range()
 }
 
-func TestSimpleRnaCreation(t *testing.T) {
+func TestRnaPersistentCreation(t *testing.T) {
 	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("SimpleRna is same length as input",
+	properties.Property("RnaPersistent is same length as input",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bigr.RandomStringFromRunes(
@@ -36,13 +40,13 @@ func TestSimpleRnaCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaStrictLetters),
 				)
-				dna := NewSimpleRna(s)
+				dna := NewRnaPersistent(s)
 				return dna.Length() == n
 			},
 			gen.UIntRange(1, seqLen),
 		),
 	)
-	properties.Property("SimpleRna has same positions as input",
+	properties.Property("RnaPersistent has same positions as input",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bigr.RandomStringFromRunes(
@@ -50,7 +54,7 @@ func TestSimpleRnaCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaStrictLetters),
 				)
-				dna := NewSimpleRna(s)
+				dna := NewRnaPersistent(s)
 				got := dna.Range(0, n)
 				return got == s
 			},
@@ -60,7 +64,7 @@ func TestSimpleRnaCreation(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestSimpleRnaPersistence(t *testing.T) {
+func TestRnaPersistentPersistence(t *testing.T) {
 	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
@@ -78,7 +82,7 @@ func TestSimpleRnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaStrictLetters),
 				)
-				original := NewSimpleRna(s)
+				original := NewRnaPersistent(s)
 				clone := new(RnaPersistent)
 				*clone = *original
 				mut := original.WithPosition(n*(1/2), t)
@@ -101,7 +105,7 @@ func TestSimpleRnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaStrictLetters),
 				)
-				original := NewSimpleRna(s)
+				original := NewRnaPersistent(s)
 				clone := new(RnaPersistent)
 				*clone = *original
 				mut := original.WithRange(n*(1/4), n*(3/4), t)

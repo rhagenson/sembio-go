@@ -40,20 +40,20 @@ func (s *DnaPersistent) Range(start, stop uint) string {
 
 // WithPosition mutates a sequence position
 func (s *DnaPersistent) WithPosition(n uint, pos string) *DnaPersistent {
-	seq := NewSimpleDna(s.seq[:n] + pos + s.seq[n+1:])
+	seq := NewDnaPersistent(s.seq[:n] + pos + s.seq[n+1:])
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
 
 // WithRange mutates a range of sequence positions
 func (s *DnaPersistent) WithRange(start, stop uint, pos string) *DnaPersistent {
-	seq := NewSimpleDna(s.seq[:start] + pos + s.seq[stop:])
+	seq := NewDnaPersistent(s.seq[:start] + pos + s.seq[stop:])
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
 
-// NewSimpleDna creates a new SimpleDna instance if the input is valid DNA
-func NewSimpleDna(s string) *DnaPersistent {
+// NewDnaPersistent creates a new DnaPersistent instance if the input is valid DNA
+func NewDnaPersistent(s string) *DnaPersistent {
 	seq := new(DnaPersistent)
 	seq.seq = s
 	seq.errs = make([]error, 1)
@@ -82,7 +82,7 @@ func (s *DnaPersistent) Complement() *DnaPersistent {
 	for i := 0; i < len(t); i++ {
 		t[i] = helpers.CompATGC(byte(s.seq[i]))
 	}
-	seq := NewSimpleDna(string(t))
+	seq := NewDnaPersistent(string(t))
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
@@ -94,7 +94,7 @@ func (s *DnaPersistent) Reverse() *DnaPersistent {
 	for i := 0; i < l/2; i++ {
 		t[i], t[l-1-i] = s.seq[l-1-i], s.seq[i]
 	}
-	seq := NewSimpleDna(string(t))
+	seq := NewDnaPersistent(string(t))
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
@@ -108,7 +108,7 @@ func (s *DnaPersistent) RevComp() *DnaPersistent {
 		t[i] = helpers.CompATGC(s.seq[l-1-i])
 		t[l-1-i] = helpers.CompATGC(s.seq[i])
 	}
-	seq := NewSimpleDna(string(t))
+	seq := NewDnaPersistent(string(t))
 	seq.errs = append(s.errs, seq.errs...)
 	return seq
 }
