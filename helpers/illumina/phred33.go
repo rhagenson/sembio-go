@@ -20,5 +20,8 @@ func Phred33QScore(char byte) (uint8, error) {
 	if MinPhred33 <= char && char <= MaxPhred33 {
 		return char - MinPhred33, nil
 	}
-	return 0, fmt.Errorf("%q is not a valid Illumina Phred quality score symbol", char)
+	return 0, fmt.Errorf(
+		"%q is not a valid Illumina Phred quality score symbol",
+		char,
+	)
 }
