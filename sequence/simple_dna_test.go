@@ -11,8 +11,6 @@ import (
 	"github.com/leanovate/gopter/prop"
 )
 
-var _ DnaStrictSequence = new(SimpleDna)
-
 func TestInitializedSimpleDNA(t *testing.T) {
 	dna := new(SimpleDna)
 

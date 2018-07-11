@@ -11,8 +11,6 @@ import (
 	"github.com/leanovate/gopter/prop"
 )
 
-var _ RnaStrictSequence = new(SimpleRna)
-
 func TestInitializedSimpleRna(t *testing.T) {
 	rna := new(SimpleRna)
 
