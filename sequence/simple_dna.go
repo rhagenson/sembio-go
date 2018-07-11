@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"bitbucket.org/rhagenson/bigr/alphabet"
+	"bitbucket.org/rhagenson/bigr/helpers"
 )
 
 // SimpleDna is the simplest, string-backed representation of DNA
@@ -72,4 +73,41 @@ func NewSimpleDna(s string) *SimpleDna {
 // Errors returns any accumulated errors
 func (s *SimpleDna) Errors() []error {
 	return s.Errors()
+}
+
+// Complement returns the base pair complement
+func (s *SimpleDna) Complement() *SimpleDna {
+	t := make([]byte, s.Length())
+	for i := 0; i < len(t); i++ {
+		t[i] = helpers.CompATGC(byte(s.seq[i]))
+	}
+	seq := NewSimpleDna(string(t))
+	seq.errs = append(s.errs, seq.errs...)
+	return seq
+}
+
+// Reverse reverses the sequence
+func (s *SimpleDna) Reverse() *SimpleDna {
+	l := int(s.Length())
+	t := []byte(s.Range(0, s.Length()))
+	for i := 0; i < l/2; i++ {
+		t[i], t[l-1-i] = s.seq[l-1-i], s.seq[i]
+	}
+	seq := NewSimpleDna(string(t))
+	seq.errs = append(s.errs, seq.errs...)
+	return seq
+}
+
+// RevComp reverses and complements the sequence directly
+// rather than chain the Reverse().Comp() operations together
+func (s *SimpleDna) RevComp() *SimpleDna {
+	l := int(s.Length())
+	t := []byte(s.Range(0, s.Length()))
+	for i := 0; i < l/2; i++ {
+		t[i] = helpers.CompATGC(s.seq[l-1-i])
+		t[l-1-i] = helpers.CompATGC(s.seq[i])
+	}
+	seq := NewSimpleDna(string(t))
+	seq.errs = append(s.errs, seq.errs...)
+	return seq
 }

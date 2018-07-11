@@ -111,5 +111,59 @@ func TestSimpleDnaPersistence(t *testing.T) {
 			gen.UIntRange(1, seqLen), // Length of sequence
 		),
 	)
+	properties.Property("Reverse does not mutate in-place",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(alphabet.DnaStrictLetters),
+				)
+				original := NewSimpleDna(s)
+				clone := new(SimpleDna)
+				*clone = *original
+				mut := original.Reverse()
+				return reflect.DeepEqual(original, clone) &&
+					!reflect.DeepEqual(original, mut)
+			},
+			gen.UIntRange(1, seqLen), // Length of sequence
+		),
+	)
+	properties.Property("Complement does not mutate in-place",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(alphabet.DnaStrictLetters),
+				)
+				original := NewSimpleDna(s)
+				clone := new(SimpleDna)
+				*clone = *original
+				mut := original.Complement()
+				return reflect.DeepEqual(original, clone) &&
+					!reflect.DeepEqual(original, mut)
+			},
+			gen.UIntRange(1, seqLen), // Length of sequence
+		),
+	)
+	properties.Property("RevComp does not mutate in-place",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(alphabet.DnaStrictLetters),
+				)
+				original := NewSimpleDna(s)
+				clone := new(SimpleDna)
+				*clone = *original
+				mut := original.RevComp()
+				return reflect.DeepEqual(original, clone) &&
+					!reflect.DeepEqual(original, mut)
+			},
+			gen.UIntRange(1, seqLen), // Length of sequence
+		),
+	)
 	properties.TestingRun(t)
 }
