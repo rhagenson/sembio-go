@@ -1,32 +1,32 @@
 package alphabet
 
-// gap is the character used to represent a sequence gap.
-const gap = "-"
+// Gap is the character used to represent a sequence gap.
+const GapLetter = "-"
 
-// dnaStrictLetters is the strict four-letter representation of DNA.
+// DnaStrictLetters is the strict four-letter representation of DNA.
 //	ATGC: Any of one nucelotide codes (i.e., 4 choose 1)
-const dnaStrictLetters = "ATGC"
+const DnaStrictLetters = "ATGC"
 
-// dnaIupacLetters is the IUPAC representation of DNA.
+// DnaIupacLetters is the IUPAC representation of DNA.
 // 	ATGC: Any of one nucelotide codes (i.e., 4 choose 1)
 //	RYSWKM: Any of two nucelotide codes (i.e., 4 choose 2)
 //	BDHVN: Any of three nucleotide codes (i.e., 4 choose 3)
 //	-: Gap code (i.e., 4 choose 0)
-const dnaIupacLetters = dnaStrictLetters + "RYSWKM" + "BDHVN" + gap
+const DnaIupacLetters = DnaStrictLetters + "RYSWKM" + "BDHVN" + GapLetter
 
 // rnaStrictLetters is the strict four-letter representation of DNA.
 //	AUGC: Any of one nucelotide codes (i.e., 4 choose 1)
-const rnaStrictLetters = "AUGC"
+const RnaStrictLetters = "AUGC"
 
-// rnaIupacLetters is the IUPAC representation of RNA.
+// RnaIupacLetters is the IUPAC representation of RNA.
 //  AUGC: Any of one nucelotide codes (i.e., 4 choose 1)
 //	RYSWKM: Any of two nucelotide codes (i.e., 4 choose 2)
 //	BDHVN: Any of three nucleotide codes (i.e., 4 choose 3)
 //	-: Gap code (i.e., 4 choose 0)
-const rnaIupacLetters = rnaStrictLetters + "RYSWKM" + "BDHVN" + gap
+const RnaIupacLetters = RnaStrictLetters + "RYSWKM" + "BDHVN" + GapLetter
 
-// proteinGapped is the gapless standard protein letters.
-const proteinStrict = "ACDEFGHIKLMNPQRSTVWY"
+// ProteinGapped is the gapless standard protein letters.
+const ProteinStrictLetters = "ACDEFGHIKLMNPQRSTVWY"
 
-// proteinGapped is the gapped standard protein letters.
-const proteinGapped = proteinStrict + gap
+// ProteinGapped is the gapped standard protein letters.
+const ProteinGappedLetters = ProteinStrictLetters + GapLetter

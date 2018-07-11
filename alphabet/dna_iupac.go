@@ -9,7 +9,7 @@ type DNAIupac struct{}
 // Contains checks that given Letter elements are in the Alphabet
 func (d *DNAIupac) Contains(letters []byte) (valid []bool) {
 	for idx, letter := range letters {
-		valid[idx] = strings.IndexByte(dnaIupacLetters, letter) > 0
+		valid[idx] = strings.IndexByte(DnaIupacLetters, letter) > 0
 	}
 	return
 }

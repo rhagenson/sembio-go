@@ -9,7 +9,7 @@ type DNAStrict struct{}
 // Contains checks that given Letter elements are in the Alphabet
 func (d *DNAStrict) Contains(letters []byte) (valid []bool) {
 	for idx, letter := range letters {
-		valid[idx] = strings.IndexByte(dnaStrictLetters, letter) > 0
+		valid[idx] = strings.IndexByte(DnaStrictLetters, letter) > 0
 	}
 	return
 }
