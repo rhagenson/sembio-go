@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"bitbucket.org/rhagenson/bigr/alphabet"
+	"bitbucket.org/rhagenson/bigr/helpers"
 )
 
 // RnaPersistent is the simplest, string-backed representation of RNA with
@@ -74,4 +75,41 @@ func NewRnaPersistent(s string) *RnaPersistent {
 // Errors returns any accumulated errors
 func (s *RnaPersistent) Errors() []error {
 	return s.Errors()
+}
+
+// Complement returns the base pair complement
+func (s *RnaPersistent) Complement() *RnaPersistent {
+	t := make([]byte, s.Length())
+	for i := 0; i < len(t); i++ {
+		t[i] = helpers.CompAUGC(byte(s.seq[i]))
+	}
+	seq := NewRnaPersistent(string(t))
+	seq.errs = append(s.errs, seq.errs...)
+	return seq
+}
+
+// Reverse reverses the sequence
+func (s *RnaPersistent) Reverse() *RnaPersistent {
+	l := int(s.Length())
+	t := []byte(s.Range(0, s.Length()))
+	for i := 0; i < l/2; i++ {
+		t[i], t[l-1-i] = s.seq[l-1-i], s.seq[i]
+	}
+	seq := NewRnaPersistent(string(t))
+	seq.errs = append(s.errs, seq.errs...)
+	return seq
+}
+
+// RevComp reverses and complements the sequence directly
+// rather than chain the Reverse().Comp() operations together
+func (s *RnaPersistent) RevComp() *RnaPersistent {
+	l := int(s.Length())
+	t := []byte(s.Range(0, s.Length()))
+	for i := 0; i < l/2; i++ {
+		t[i] = helpers.CompAUGC(s.seq[l-1-i])
+		t[l-1-i] = helpers.CompAUGC(s.seq[i])
+	}
+	seq := NewRnaPersistent(string(t))
+	seq.errs = append(s.errs, seq.errs...)
+	return seq
 }
