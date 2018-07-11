@@ -13,7 +13,24 @@ type Interface interface {
 
 	// Range returns elements from start (inclusive) to stop (exclusive)
 	Range(start, stop uint) string
+}
 
-	// Alphabet is the underlying valid character set
+// Alphabeter provides a way to get at the sequence valid alphabet
+type Alphabeter interface {
 	Alphabet() alphabet.Interface
+}
+
+// Complementer provides a way to get at the sequence complement
+type Complementer interface {
+	Complement() Interface
+}
+
+// Reverser provides a way to get at the reverse sequence
+type Reverser interface {
+	Reverse() Interface
+}
+
+// RevComper provides a way to get at the reverse complement directly
+type RevComper interface {
+	RevComp() Interface
 }
