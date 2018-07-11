@@ -38,26 +38,35 @@ func (s *SimpleDna) Range(start, stop uint) string {
 
 // WithPosition mutates a sequence position
 func (s *SimpleDna) WithPosition(n uint, pos string) *SimpleDna {
-	return NewSimpleDna(s.seq[:n] + pos + s.seq[n+1:])
+	seq := NewSimpleDna(s.seq[:n] + pos + s.seq[n+1:])
+	seq.errs = append(s.errs, seq.errs...)
+	return seq
 }
 
 // WithRange mutates a range of sequence positions
 func (s *SimpleDna) WithRange(start, stop uint, pos string) *SimpleDna {
-	return NewSimpleDna(s.seq[:start] + pos + s.seq[stop:])
+	seq := NewSimpleDna(s.seq[:start] + pos + s.seq[stop:])
+	seq.errs = append(s.errs, seq.errs...)
+	return seq
 }
 
 // NewSimpleDna creates a new SimpleDna instance if the input is valid DNA
-func NewSimpleDna(s string) (seq *SimpleDna) {
+func NewSimpleDna(s string) *SimpleDna {
+	seq := new(SimpleDna)
+	seq.seq = s
+	seq.errs = make([]error, 1)
+
 	acc := 0
 	for _, r := range alphabet.DnaStrictLetters {
 		acc += strings.Count(s, string(r))
 	}
 	if acc != len(s) {
-		seq.errs = append(seq.errs, errors.New("string contains non-valid character"))
-	} else {
-		seq.seq = s
+		seq.errs = append(
+			seq.errs,
+			errors.New("string contains non-valid character"),
+		)
 	}
-	return
+	return seq
 }
 
 // Errors returns any accumulated errors

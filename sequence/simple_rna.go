@@ -38,26 +38,36 @@ func (s *SimpleRna) Range(start, stop uint) string {
 
 // WithPosition mutates a sequence position
 func (s *SimpleRna) WithPosition(n uint, pos string) *SimpleRna {
-	return NewSimpleRna(s.seq[:n] + pos + s.seq[n+1:])
+	seq := NewSimpleRna(s.seq[:n] + pos + s.seq[n+1:])
+	seq.errs = append(s.errs, seq.errs...)
+	return seq
 }
 
 // WithRange mutates a range of sequence positions
 func (s *SimpleRna) WithRange(start, stop uint, pos string) *SimpleRna {
-	return NewSimpleRna(s.seq[:start] + pos + s.seq[stop:])
+	seq := NewSimpleRna(s.seq[:start] + pos + s.seq[stop:])
+	seq.errs = append(s.errs, seq.errs...)
+	return seq
 }
 
 // NewSimpleRna creates a new SimpleRna instance
-func NewSimpleRna(s string) (seq *SimpleRna) {
+func NewSimpleRna(s string) *SimpleRna {
+	seq := new(SimpleRna)
+	seq.seq = s
+	seq.errs = make([]error, 1)
+
 	acc := 0
 	for _, r := range alphabet.RnaStrictLetters {
 		acc += strings.Count(s, string(r))
 	}
 	if acc != len(s) {
-		seq.errs = append(seq.errs, errors.New("string contains non-valid character"))
-	} else {
-		seq.seq = s
+		seq.errs = append(
+			seq.errs,
+			errors.New("string contains non-valid character"),
+		)
 	}
-	return
+
+	return seq
 }
 
 // Errors returns any accumulated errors
