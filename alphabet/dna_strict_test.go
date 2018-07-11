@@ -2,7 +2,7 @@ package alphabet
 
 import "testing"
 
-var _ Interface = new(DNAStrict)
+var _ Interface = new(DnaStrict)
 
 func TestDNAStrictLength(t *testing.T) {
 	if !TestAlphabetProperLength(DnaStrictLetters, 4) {

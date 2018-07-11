@@ -2,7 +2,7 @@ package alphabet
 
 import "testing"
 
-var _ Interface = new(RNAStrict)
+var _ Interface = new(RnaStrict)
 
 func TestRNAStrictLength(t *testing.T) {
 	if !TestAlphabetProperLength(RnaStrictLetters, 4) {

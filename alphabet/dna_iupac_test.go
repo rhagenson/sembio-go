@@ -2,7 +2,7 @@ package alphabet
 
 import "testing"
 
-var _ Interface = new(DNAIupac)
+var _ Interface = new(DnaIupac)
 
 func TestDNAIupacLength(t *testing.T) {
 	if !TestAlphabetProperLength(DnaIupacLetters, 16) {

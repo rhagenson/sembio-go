@@ -2,7 +2,7 @@ package alphabet
 
 import "testing"
 
-var _ Interface = new(RNAIupac)
+var _ Interface = new(RnaIupac)
 
 func TestRNAIupacLength(t *testing.T) {
 	if !TestAlphabetProperLength(RnaIupacLetters, 16) {
