@@ -2,30 +2,26 @@
 
 ## Overview
 
-This directory represents a collection of the minimum interactions with biological data. It will be implemented as a set of Go interfaces and function to abstract away functionality from data layout on-disk. That is to say, there is no reason a simple DNA sequence must be represented as a string, but if a user needs to know what nucleotide is in the 1st or 100th position the DNA sequence representation must support that lookup as well as `Transcribe(dna DNASequence) RNASequence` function should be possible with the representation.
+`bigr` is a bioinformatics library that leverages Go's strange little way of doing things from package-scoped imports to implicit interfacing. Just like the Go is an opinionated language that does things its way, this library is opinionated.
 
-## Why does `<interface>` not have `<method>`?
+## Order of Attribute Precedence
 
-The interfaces are defined to be as small as possible with internal functionality being paramount. In a basic example, the `Sequence` interface knows nothing about how to transcribe/translate itself because the necessary translation table is not internal to the `Sequence`, rather there are functions `Transcribe()` and `Translate()` that define this behavior. The result is that to translate a sequence it is not `Sequence.Translate() -> <TranslatedSequence>` but rather `Translate(Sequence) -> <TranslatedSequence>`. This being said, by moving the transcription/translation functionality outside the `Sequence` interface this allows dedicated `Transcriber` and `Translator` interfaces to be designed as well as the `Transcribe()` and `Translate()` functions to be reused for each new data structure that is transcribable and translatable.
+This library emphasizes the following in order of decreasing importance:
 
-It may be that `<interface>` would have `<method>` in any other library. However, if the data structures that should implement `<interface>` would require information beyond their internal state or including the method would promote defining an otherwise unnecessary private variable than there is no good reason to bloat the interface unnecessarily. It is better to define non-internal functionality as a non-internal method that can be shared between structures and improved in one central location.
-
-## Current Activity
-
-Currently, I (Ryan H.) am collecting standard formats to determine the minimum operations that each biological data type must support (no matter its on-disk structure). My reasoning for stating this is that I want a more mathematical, but quick-to-process manner to work with biological data while being equally capable to switch out on-disk representations to optimize processing for different operations (slow DNA Sequence lookup, but fast DNA translation to Protein). By defining how biological data types interact internally (functions) and with the world around them (interfaces) I can switch out how data is structured more easily.
-
-## Major Challenge
-
-The current major challenge I foresee is defining interfaces that in some way state the validity of a data structure. That is: How do I define that a DNA sequence cannot contain the letter Z? Or must at least contain the four nucleotides, if not the IUPAC ambiguous codes? The best course is a `Validate() bool` method which returns internal validity, but this can be falsified by always returning `true` no matter the validity, which I do not want to allow. The next possibility is functions such as `ValidateDNA(d DNA) bool` which would allow me to check the validity of a type by asking for the proper attributes of its internal state. This latter is likely best, but would require enough methods in each interface to validate the data structure.
-
-## Projected version 1 state
-
-The version 1 state should define the operations across the base types of biological work, i.e., DNA, RNA, Protein, and others that are found in other bioinformatics libraries such as Phylip and PDB.
-
-## Projected version 2 additions
-
-The version 2 state should define data/information lossiness and/or reversibility between types. That is to say that converting DNA to RNA has no loss of information because the operation is reversible, however RNA to Protein loses information because the reverse operation is possible, but may not result in the original RNA sequence. If I can abstract out the measurement of this lossiness that would be great, but I doubt it is possible to do that simply.
-
-## What about `biogo`?
-
-`biogo` does somethings really well, however there are somethings I do not like about it that are too fundamental to change without breaking a lot of existing code. Therefore, I am making a second Bioinformatics Go library that matches what I want. 
+1.  Minimalist API Design
+    -   Do not tell me anything more than I need to hear
+    -   Methods should be named by what they do not how they do it
+    -   Structs should be named by what they hold not how they hold it.
+2.  Modularity
+    -   There are often many approaches and they should be interchangeable, but well-defined in separation
+    -   Scope things appropriately so each step down an import/directory tree is a further decision about what is needed
+3.  Tested
+    -   When I do begin accepting contributions I will require a constant increase in test coverage and example usage
+4.  Program by Contract
+    -   Assume everything is user input and work accordingly such as you can handle many cases, but return a consistent result
+    -   In short, accept interfaces, return structs
+5.  Performance
+    -   Go is a compiled language so it should take advantage of being closer to the metal
+    -   Clarity is more important than performance
+    -   When in doubt, do it both your way and the obvious way with a test showing equivalence, benchmarks for both, and a reference to where one can further understand why the non-obvious way works
+    -   I like fast code just as much as the next programmer, but being able to understand the code without unrolling all the intense thinking that went into it is better
