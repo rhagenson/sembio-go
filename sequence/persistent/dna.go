@@ -2,6 +2,7 @@ package persistent
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"bitbucket.org/rhagenson/bigr/alphabet"
@@ -27,15 +28,25 @@ func (s *Dna) Length() uint {
 
 // Position is the nucleotide found at position n
 func (s *Dna) Position(n uint) string {
-	return string(s.seq[n])
+	if n < uint(len(s.seq)) {
+		return string(s.seq[n])
+	}
+	return ""
 }
 
 // Range is the nucleotides found in the half-open range
 func (s *Dna) Range(start, stop uint) string {
-	if stop == s.Length() {
-		return s.seq[start:]
+	if start < stop && stop <= uint(s.Length()) {
+		if stop == s.Length() {
+			return s.seq[start:]
+		}
+		return s.seq[start:stop]
 	}
-	return s.seq[start:stop]
+	s.errs = append(
+		s.errs,
+		fmt.Errorf("requested impossible range [%d:%d]", start, stop),
+	)
+	return ""
 }
 
 // WithPosition mutates a sequence position
