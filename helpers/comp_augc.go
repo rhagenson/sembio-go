@@ -13,15 +13,15 @@ func CompAUGC(c byte) byte {
 // CompAUGCpairs is the usual way to complement standard AUGC
 func CompAUGCpairs(c byte) byte {
 	switch c {
-	case byte('A'):
-		return byte('U')
-	case byte('U'):
-		return byte('A')
-	case byte('G'):
-		return byte('C')
-	case byte('C'):
-		return byte('G')
+	case 'A':
+		return 'U'
+	case 'U':
+		return 'A'
+	case 'G':
+		return 'C'
+	case 'C':
+		return 'G'
 	default:
-		return byte('X')
+		return 'X'
 	}
 }

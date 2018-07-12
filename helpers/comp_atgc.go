@@ -13,15 +13,15 @@ func CompATGC(c byte) byte {
 // CompATGCpairs is the usual way to complement standard ATGC
 func CompATGCpairs(c byte) byte {
 	switch c {
-	case byte('A'):
-		return byte('T')
-	case byte('T'):
-		return byte('A')
-	case byte('G'):
-		return byte('C')
-	case byte('C'):
-		return byte('G')
+	case 'A':
+		return 'T'
+	case 'T':
+		return 'A'
+	case 'G':
+		return 'C'
+	case 'C':
+		return 'G'
 	default:
-		return byte('X')
+		return 'X'
 	}
 }
