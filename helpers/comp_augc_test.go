@@ -9,7 +9,7 @@ import (
 // TestCompAUGCMethodsAgree checks that the bitwise and usual way of
 // generating the complement of ATGC do agree with respect to ATGC
 func TestCompAUGCMethodsAgree(t *testing.T) {
-	for _, c := range alphabet.RnaStrictLetters {
+	for _, c := range alphabet.RnaLetters {
 		bitwise := CompAUGC(byte(c))
 		usual := CompAUGCpairs(byte(c))
 		if bitwise != usual {

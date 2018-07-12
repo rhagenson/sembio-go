@@ -9,7 +9,7 @@ import (
 // TestCompATGCMethodsAgree checks that the bitwise and usual way of
 // generating the complement of ATGC do agree with respect to ATGC
 func TestCompATGCMethodsAgree(t *testing.T) {
-	for _, c := range alphabet.DnaStrictLetters {
+	for _, c := range alphabet.DnaLetters {
 		bitwise := CompATGC(byte(c))
 		usual := CompATGCpairs(byte(c))
 		if bitwise != usual {

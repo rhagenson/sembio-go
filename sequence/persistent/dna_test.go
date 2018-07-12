@@ -21,8 +21,8 @@ var (
 func TestInitializedDna(t *testing.T) {
 	dna := new(Dna)
 
-	if dna.Alphabet() != new(alphabet.DnaStrict) {
-		t.Errorf("Want: %t, Got: %t", new(alphabet.DnaStrict), dna.Alphabet())
+	if dna.Alphabet() != new(alphabet.Dna) {
+		t.Errorf("Want: %t, Got: %t", new(alphabet.Dna), dna.Alphabet())
 	}
 	if dna.Length() != 0 {
 		t.Errorf("Want: %d, Got: %d", 0, dna.Length())
@@ -83,9 +83,9 @@ func TestDnaMethodsReturnTypes(t *testing.T) {
 	t.Run("Alphabet returns *alphabet.DnaStrict", func(t *testing.T) {
 		r := reflect.ValueOf(s).MethodByName("Alphabet").Call(nil)
 		for i := range r {
-			if r[i].Type() != reflect.TypeOf(new(alphabet.DnaStrict)) {
+			if r[i].Type() != reflect.TypeOf(new(alphabet.Dna)) {
 				t.Errorf("Want: %v, Got: %v",
-					reflect.TypeOf(new(alphabet.DnaStrict)),
+					reflect.TypeOf(new(alphabet.Dna)),
 					r[i].Type(),
 				)
 			}
@@ -104,7 +104,7 @@ func TestDnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaStrictLetters),
+					[]rune(alphabet.DnaLetters),
 				)
 				dna := NewDna(s)
 				return dna.Length() == n
@@ -118,7 +118,7 @@ func TestDnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaStrictLetters),
+					[]rune(alphabet.DnaLetters),
 				)
 				dna := NewDna(s)
 				got := dna.Range(0, n)
@@ -141,12 +141,12 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaStrictLetters),
+					[]rune(alphabet.DnaLetters),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaStrictLetters),
+					[]rune(alphabet.DnaLetters),
 				)
 				original := NewDna(s)
 				clone := new(Dna)
@@ -164,12 +164,12 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaStrictLetters),
+					[]rune(alphabet.DnaLetters),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaStrictLetters),
+					[]rune(alphabet.DnaLetters),
 				)
 				original := NewDna(s)
 				clone := new(Dna)
@@ -187,7 +187,7 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaStrictLetters),
+					[]rune(alphabet.DnaLetters),
 				)
 				original := NewDna(s)
 				clone := new(Dna)
@@ -205,7 +205,7 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaStrictLetters),
+					[]rune(alphabet.DnaLetters),
 				)
 				original := NewDna(s)
 				clone := new(Dna)
@@ -223,7 +223,7 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaStrictLetters),
+					[]rune(alphabet.DnaLetters),
 				)
 				original := NewDna(s)
 				clone := new(Dna)

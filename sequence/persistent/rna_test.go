@@ -21,8 +21,8 @@ var (
 func TestInitializedRna(t *testing.T) {
 	rna := new(Rna)
 
-	if rna.Alphabet() != new(alphabet.RnaStrict) {
-		t.Errorf("Want: %t, Got: %t", new(alphabet.RnaStrict), rna.Alphabet())
+	if rna.Alphabet() != new(alphabet.Rna) {
+		t.Errorf("Want: %t, Got: %t", new(alphabet.Rna), rna.Alphabet())
 	}
 	if rna.Length() != 0 {
 		t.Errorf("Want: %d, Got: %d", 0, rna.Length())
@@ -83,9 +83,9 @@ func TestRnaMethodsReturnTypes(t *testing.T) {
 	t.Run("Alphabet returns *alphabet.RnaStrict", func(t *testing.T) {
 		r := reflect.ValueOf(s).MethodByName("Alphabet").Call(nil)
 		for i := range r {
-			if r[i].Type() != reflect.TypeOf(new(alphabet.RnaStrict)) {
+			if r[i].Type() != reflect.TypeOf(new(alphabet.Rna)) {
 				t.Errorf("Want: %v, Got: %v",
-					reflect.TypeOf(new(alphabet.RnaStrict)),
+					reflect.TypeOf(new(alphabet.Rna)),
 					r[i].Type(),
 				)
 			}
@@ -104,7 +104,7 @@ func TestRnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaStrictLetters),
+					[]rune(alphabet.RnaLetters),
 				)
 				dna := NewRna(s)
 				return dna.Length() == n
@@ -118,7 +118,7 @@ func TestRnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaStrictLetters),
+					[]rune(alphabet.RnaLetters),
 				)
 				dna := NewRna(s)
 				got := dna.Range(0, n)
@@ -141,12 +141,12 @@ func TestRnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaStrictLetters),
+					[]rune(alphabet.RnaLetters),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaStrictLetters),
+					[]rune(alphabet.RnaLetters),
 				)
 				original := NewRna(s)
 				clone := new(Rna)
@@ -164,12 +164,12 @@ func TestRnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaStrictLetters),
+					[]rune(alphabet.RnaLetters),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaStrictLetters),
+					[]rune(alphabet.RnaLetters),
 				)
 				original := NewRna(s)
 				clone := new(Rna)

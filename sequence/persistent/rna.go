@@ -16,8 +16,8 @@ type Rna struct {
 }
 
 // Alphabet is the backing valid StrictRNA alphabet
-func (s *Rna) Alphabet() *alphabet.RnaStrict {
-	return new(alphabet.RnaStrict)
+func (s *Rna) Alphabet() *alphabet.Rna {
+	return new(alphabet.Rna)
 }
 
 // Length is the number of nucleotides in the sequence
@@ -59,7 +59,7 @@ func NewRna(s string) *Rna {
 	seq.errs = make([]error, 0)
 
 	acc := 0
-	for _, r := range alphabet.RnaStrictLetters {
+	for _, r := range alphabet.RnaLetters {
 		acc += strings.Count(s, string(r))
 	}
 	if acc != len(s) {

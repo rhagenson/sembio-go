@@ -16,8 +16,8 @@ type Dna struct {
 }
 
 // Alphabet is the backing valid StrictDNA alphabet
-func (s *Dna) Alphabet() *alphabet.DnaStrict {
-	return new(alphabet.DnaStrict)
+func (s *Dna) Alphabet() *alphabet.Dna {
+	return new(alphabet.Dna)
 }
 
 // Length is the number of nucleotides in the sequence
@@ -59,7 +59,7 @@ func NewDna(s string) *Dna {
 	seq.errs = make([]error, 0)
 
 	acc := 0
-	for _, r := range alphabet.DnaStrictLetters {
+	for _, r := range alphabet.DnaLetters {
 		acc += strings.Count(s, string(r))
 	}
 	if acc != len(s) {
