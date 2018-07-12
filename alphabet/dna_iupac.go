@@ -2,14 +2,20 @@ package alphabet
 
 import "strings"
 
-// DnaIupac is a simple struct that satisfies the Alphabet interface
+// DnaIupac is a simple struct that satisfies the Interface
 // while providing the comlete IUPAC DNA ambiguity characters.
 type DnaIupac struct{}
 
-// Contains checks that given Letter elements are in the Alphabet
-func (d *DnaIupac) Contains(letters []byte) (valid []bool) {
+// Contains checks if the given letters are found
+func (d *DnaIupac) Contains(letters []byte) []bool {
+	found := make([]bool, len(letters))
 	for idx, letter := range letters {
-		valid[idx] = strings.IndexByte(DnaIupacLetters, letter) > 0
+		found[idx] = strings.IndexByte(DnaIupacLetters, letter) > 0
 	}
-	return
+	return found
+}
+
+// Length is the number of letters in DnaIupac
+func (d *DnaIupac) Length() int {
+	return len(DnaIupacLetters)
 }

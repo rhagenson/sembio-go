@@ -4,8 +4,8 @@ import "testing"
 
 var _ Interface = new(RnaIupac)
 
-func TestRNAIupacLength(t *testing.T) {
-	if !TestAlphabetProperLength(RnaIupacLetters, 16) {
-		t.Error("DNAIupac should have sixteen characters.")
-	}
+func TestRnaIupac(t *testing.T) {
+	a := new(RnaIupac)
+	t.Run("Correct length", IsExpectedLength(a, 16))
+	t.Run("Has gap", HasExpectedLetter(a, '-'))
 }

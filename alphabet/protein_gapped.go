@@ -2,14 +2,20 @@ package alphabet
 
 import "strings"
 
-// ProteinGapped is a simple struct that satisfies the Alphabet interface
-// while providing only the unambiguous amino acid character set.
+// ProteinGapped is a simple struct that satisfies the Interface
+// while providing a manner to represent gaps in amino acid chains.
 type ProteinGapped struct{}
 
 // Contains checks that given Letter elements are in the Alphabet
-func (p *ProteinGapped) Contains(letters []byte) (valid []bool) {
+func (p *ProteinGapped) Contains(letters []byte) []bool {
+	found := make([]bool, len(letters))
 	for idx, letter := range letters {
-		valid[idx] = strings.IndexByte(DnaIupacLetters, letter) > 0
+		found[idx] = strings.IndexByte(ProteinGappedLetters, letter) > 0
 	}
-	return
+	return found
+}
+
+// Length is the number of letters in ProteinGapped
+func (p *ProteinGapped) Length() int {
+	return len(ProteinGappedLetters)
 }

@@ -1,11 +1,13 @@
 package alphabet
 
-import "testing"
+import (
+	"testing"
+)
 
 var _ Interface = new(ProteinGapped)
 
-func TestProteinGappedLength(t *testing.T) {
-	if !TestAlphabetProperLength(ProteinGappedLetters, 21) {
-		t.Error("ProteinGapped should have twenty-one characters.")
-	}
+func TestProteinGapped(t *testing.T) {
+	a := new(ProteinGapped)
+	t.Run("Correct length", IsExpectedLength(a, 21))
+	t.Run("Has gap", HasExpectedLetter(a, '-'))
 }
