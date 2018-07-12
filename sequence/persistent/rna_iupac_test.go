@@ -19,19 +19,33 @@ var (
 )
 
 func TestInitializedRnaIupac(t *testing.T) {
-	rna := new(RnaIupac)
+	s := NewRnaIupac("")
 
-	if rna.Alphabet() != new(alphabet.RnaIupac) {
-		t.Errorf("Want: %t, Got: %t", new(alphabet.RnaIupac), rna.Alphabet())
-	}
-	if rna.Length() != 0 {
-		t.Errorf("Want: %d, Got: %d", 0, rna.Length())
-	}
-	// TODO: Write test for runtime panic on dna.Postion() and dna.Range()
+	t.Run("proper alphabet", func(t *testing.T) {
+		if s.Alphabet() != new(alphabet.RnaIupac) {
+			t.Errorf("Want: %t, Got: %t", new(alphabet.RnaIupac), s.Alphabet())
+		}
+	})
+	t.Run("proper length", func(t *testing.T) {
+		if s.Length() != 0 {
+			t.Errorf("Want: %d, Got: %d", 0, s.Length())
+		}
+	})
+	t.Run("proper position", func(t *testing.T) {
+		if s.Position(0) != "" {
+			t.Errorf("Want: %s, Got: %s", "", s.Position(0))
+		}
+	})
+	t.Run("proper range", func(t *testing.T) {
+		if s.Range(0, 1) != "" {
+			t.Errorf("Want: %s, Got: %s", "", s.Range(0, 1))
+		}
+	})
 }
 
 func TestRnaIupacHasMethods(t *testing.T) {
-	s := new(RnaIupac)
+	s := NewRnaIupac("")
+
 	t.Run("Has Reverse method", func(t *testing.T) {
 		if !reflect.ValueOf(s).MethodByName("Reverse").IsValid() {
 			t.Error("Missing Reverse method")
@@ -64,7 +78,7 @@ func TestRnaIupacMethodsReturnTypes(t *testing.T) {
 			}
 		}
 	})
-	t.Run("Reverse returns *RnaIupac", func(t *testing.T) {
+	t.Run("Complement returns *RnaIupac", func(t *testing.T) {
 		r := reflect.ValueOf(s).MethodByName("Complement").Call(nil)
 		for i := range r {
 			if r[i].Type() != reflect.TypeOf(s) {
@@ -72,7 +86,7 @@ func TestRnaIupacMethodsReturnTypes(t *testing.T) {
 			}
 		}
 	})
-	t.Run("Reverse returns *RnaIupac", func(t *testing.T) {
+	t.Run("RevComp returns *RnaIupac", func(t *testing.T) {
 		r := reflect.ValueOf(s).MethodByName("RevComp").Call(nil)
 		for i := range r {
 			if r[i].Type() != reflect.TypeOf(s) {
@@ -210,6 +224,124 @@ func TestRnaIupacAccumulatesErrors(t *testing.T) {
 					}
 				}
 				return true
+			},
+			gen.UIntRange(1, seqLen), // Length of sequence
+		),
+	)
+	properties.Property("start > stop errors",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(alphabet.RnaIupacLetters),
+				)
+				seq := NewRnaIupac(s)
+				seq.Range(n, 0)
+				for _, err := range seq.errs {
+					if err == nil {
+						t.Errorf("RnaIupac should accumulate an err during Range() when start > stop")
+						return false
+					}
+					if !strings.Contains(err.Error(), "impossible range") {
+						t.Errorf("RnaIupac Range error should mention impossible range")
+						return false
+					}
+				}
+				return true
+			},
+			gen.UIntRange(1, seqLen), // Length of sequence
+		),
+	)
+	properties.TestingRun(t)
+}
+
+func TestRnaIupacParallelOperations(t *testing.T) {
+	var seqLen uint = 1000
+	parameters := gopter.DefaultTestParameters()
+	properties := gopter.NewProperties(parameters)
+
+	properties.Property("NewRnaIupac(s) == NewRnaIupac(s)",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(alphabet.RnaIupacLetters),
+				)
+				left := make(chan *RnaIupac)
+				right := make(chan *RnaIupac)
+				go func(s string, out chan *RnaIupac) {
+					out <- NewRnaIupac(s)
+				}(s, left)
+				go func(s string, out chan *RnaIupac) {
+					out <- NewRnaIupac(s)
+				}(s, right)
+				return reflect.DeepEqual(<-left, <-right)
+			},
+			gen.UIntRange(1, seqLen), // Length of sequence
+		),
+	)
+	properties.Property("NewRnaIupac(s).Reverse() == NewRnaIupac(s).Reverse()",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(alphabet.RnaIupacLetters),
+				)
+				left := make(chan *RnaIupac)
+				right := make(chan *RnaIupac)
+				go func(s string, out chan *RnaIupac) {
+					out <- NewRnaIupac(s).Reverse()
+				}(s, left)
+				go func(s string, out chan *RnaIupac) {
+					out <- NewRnaIupac(s).Reverse()
+				}(s, right)
+				return reflect.DeepEqual(<-left, <-right)
+			},
+			gen.UIntRange(1, seqLen), // Length of sequence
+		),
+	)
+	properties.Property("NewRnaIupac(s).RevComp() == NewRnaIupac(s).RevComp()",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(alphabet.RnaIupacLetters),
+				)
+				left := make(chan *RnaIupac)
+				right := make(chan *RnaIupac)
+				go func(s string, out chan *RnaIupac) {
+					out <- NewRnaIupac(s).RevComp()
+				}(s, left)
+				go func(s string, out chan *RnaIupac) {
+					out <- NewRnaIupac(s).RevComp()
+				}(s, right)
+				return reflect.DeepEqual(<-left, <-right)
+			},
+			gen.UIntRange(1, seqLen), // Length of sequence
+		),
+	)
+	properties.Property("NewRnaIupac(s).Complement() == NewRnaIupac(s).Complement()",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(alphabet.RnaIupacLetters),
+				)
+				left := make(chan *RnaIupac)
+				right := make(chan *RnaIupac)
+				seq := NewRnaIupac(s)
+				go func(seq *RnaIupac, out chan *RnaIupac) {
+					out <- seq.Complement()
+				}(seq, left)
+				go func(seq *RnaIupac, out chan *RnaIupac) {
+					out <- seq.Complement()
+				}(seq, right)
+				return reflect.DeepEqual(<-left, <-right)
 			},
 			gen.UIntRange(1, seqLen), // Length of sequence
 		),
