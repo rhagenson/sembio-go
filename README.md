@@ -1,4 +1,4 @@
-# BiGr -- **B**io**I**nformatics **Gr**ammar
+# BiGr -- **Bi**oinformatics **Gr**ammar
 
 ## Overview
 
