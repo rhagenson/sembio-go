@@ -1,17 +1,17 @@
-package helpers
+package complement
 
-// CompAUGC is a bitwise manner to complement standard AUGC
+// Augc is a bitwise manner to complement standard AUGC
 // See: https://blog.kloetzl.info/reverse-complement/ for more information
 // This method should be faster than CompAUGCpairs
-func CompAUGC(c byte) byte {
+func Augc(c byte) byte {
 	if (c & 2) > 0 {
 		return c ^ 4
 	}
 	return c ^ 20
 }
 
-// CompAUGCpairs is the usual way to complement standard AUGC
-func CompAUGCpairs(c byte) byte {
+// AugcPairs is the usual way to complement standard AUGC
+func AugcPairs(c byte) byte {
 	switch c {
 	case 'A':
 		return 'U'

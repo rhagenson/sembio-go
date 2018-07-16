@@ -1,4 +1,4 @@
-package helpers
+package persistent
 
 // ErrorAccumulator keeps a record of past transformation errors on an struct
 type ErrorAccumulator interface {

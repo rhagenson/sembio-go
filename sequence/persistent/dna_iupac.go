@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"bitbucket.org/rhagenson/bigr/alphabet"
-	"bitbucket.org/rhagenson/bigr/helpers"
+	"bitbucket.org/rhagenson/bigr/alphabet/simple"
+	"bitbucket.org/rhagenson/bigr/helpers/complement"
 )
 
 // DnaIupac is the simplest, string-backed representation of DNA with
@@ -17,8 +17,8 @@ type DnaIupac struct {
 }
 
 // Alphabet is the backing valid StrictDNA alphabet
-func (s *DnaIupac) Alphabet() *alphabet.DnaIupac {
-	return new(alphabet.DnaIupac)
+func (s *DnaIupac) Alphabet() *simple.DnaIupac {
+	return new(simple.DnaIupac)
 }
 
 // Length is the number of nucleotides in the sequence
@@ -70,7 +70,7 @@ func NewDnaIupac(s string) *DnaIupac {
 	seq.errs = make([]error, 0)
 
 	acc := 0
-	for _, r := range alphabet.DnaIupacLetters {
+	for _, r := range simple.DnaIupacLetters {
 		acc += strings.Count(s, string(r))
 	}
 	if acc != len(s) {
@@ -91,7 +91,7 @@ func (s *DnaIupac) Errors() []error {
 func (s *DnaIupac) Complement() *DnaIupac {
 	t := make([]byte, s.Length())
 	for i := 0; i < len(t); i++ {
-		t[i] = helpers.CompATGC(byte(s.seq[i]))
+		t[i] = complement.DnaIupac(byte(s.seq[i]))
 	}
 	seq := NewDnaIupac(string(t))
 	seq.errs = append(s.errs, seq.errs...)
@@ -116,8 +116,8 @@ func (s *DnaIupac) RevComp() *DnaIupac {
 	l := int(s.Length())
 	t := []byte(s.Range(0, s.Length()))
 	for i := 0; i < l/2; i++ {
-		t[i] = helpers.CompATGC(s.seq[l-1-i])
-		t[l-1-i] = helpers.CompATGC(s.seq[i])
+		t[i] = complement.DnaIupac(s.seq[l-1-i])
+		t[l-1-i] = complement.DnaIupac(s.seq[i])
 	}
 	seq := NewDnaIupac(string(t))
 	seq.errs = append(s.errs, seq.errs...)

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"bitbucket.org/rhagenson/bigr/alphabet"
-	"bitbucket.org/rhagenson/bigr/helpers"
+	"bitbucket.org/rhagenson/bigr/alphabet/simple"
+	"bitbucket.org/rhagenson/bigr/helpers/complement"
 )
 
 // RnaIupac is the simplest, string-backed representation of RNA with
@@ -17,8 +17,8 @@ type RnaIupac struct {
 }
 
 // Alphabet is the backing valid StrictRNA alphabet
-func (s *RnaIupac) Alphabet() *alphabet.RnaIupac {
-	return new(alphabet.RnaIupac)
+func (s *RnaIupac) Alphabet() *simple.RnaIupac {
+	return new(simple.RnaIupac)
 }
 
 // Length is the number of nucleotides in the sequence
@@ -70,7 +70,7 @@ func NewRnaIupac(s string) *RnaIupac {
 	seq.errs = make([]error, 0)
 
 	acc := 0
-	for _, r := range alphabet.RnaIupacLetters {
+	for _, r := range simple.RnaIupacLetters {
 		acc += strings.Count(s, string(r))
 	}
 	if acc != len(s) {
@@ -92,7 +92,7 @@ func (s *RnaIupac) Errors() []error {
 func (s *RnaIupac) Complement() *RnaIupac {
 	t := make([]byte, s.Length())
 	for i := 0; i < len(t); i++ {
-		t[i] = helpers.CompAUGC(byte(s.seq[i]))
+		t[i] = complement.RnaIupac(byte(s.seq[i]))
 	}
 	seq := NewRnaIupac(string(t))
 	seq.errs = append(s.errs, seq.errs...)
@@ -112,13 +112,13 @@ func (s *RnaIupac) Reverse() *RnaIupac {
 }
 
 // RevComp reverses and complements the sequence directly
-// rather than chain the Reverse().Comp() operations together
+// rather than chain the Reverse().Complement() operations together
 func (s *RnaIupac) RevComp() *RnaIupac {
 	l := int(s.Length())
 	t := []byte(s.Range(0, s.Length()))
 	for i := 0; i < l/2; i++ {
-		t[i] = helpers.CompAUGC(s.seq[l-1-i])
-		t[l-1-i] = helpers.CompAUGC(s.seq[i])
+		t[i] = complement.RnaIupac(s.seq[l-1-i])
+		t[l-1-i] = complement.RnaIupac(s.seq[i])
 	}
 	seq := NewRnaIupac(string(t))
 	seq.errs = append(s.errs, seq.errs...)

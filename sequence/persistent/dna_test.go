@@ -6,8 +6,7 @@ import (
 	"testing"
 
 	"bitbucket.org/rhagenson/bigr"
-	"bitbucket.org/rhagenson/bigr/alphabet"
-	"bitbucket.org/rhagenson/bigr/helpers"
+	"bitbucket.org/rhagenson/bigr/alphabet/simple"
 	"bitbucket.org/rhagenson/bigr/sequence"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
@@ -15,101 +14,47 @@ import (
 )
 
 var (
-	_ sequence.Interface = new(Dna)
+	_ sequence.Interface = NewDna("")
 )
 
 func TestInitializedDna(t *testing.T) {
 	s := NewDna("")
 
-	t.Run("proper alphabet", func(t *testing.T) {
-		if s.Alphabet() != new(alphabet.Dna) {
-			t.Errorf("Want: %t, Got: %t", new(alphabet.Dna), s.Alphabet())
-		}
-	})
-	t.Run("proper length", func(t *testing.T) {
-		if s.Length() != 0 {
-			t.Errorf("Want: %d, Got: %d", 0, s.Length())
-		}
-	})
-	t.Run("proper position", func(t *testing.T) {
-		if s.Position(0) != "" {
-			t.Errorf("Want: %s, Got: %s", "", s.Position(0))
-		}
-	})
-	t.Run("proper range", func(t *testing.T) {
-		if s.Range(0, 1) != "" {
-			t.Errorf("Want: %s, Got: %s", "", s.Range(0, 1))
-		}
-	})
+	t.Run("DNA alphabet",
+		sequence.TestAlphabetIs(s.Alphabet(), new(simple.Dna)),
+	)
+	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
+	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
+	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
 }
 
 func TestDnaHasMethods(t *testing.T) {
 	s := NewDna("")
 
-	t.Run("Has Reverse method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("Reverse").IsValid() {
-			t.Error("Missing Reverse method")
-		}
-	})
-	t.Run("Has Complement method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("Complement").IsValid() {
-			t.Error("Missing Complement method")
-		}
-	})
-	t.Run("Has RevComp method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("RevComp").IsValid() {
-			t.Error("Missing RevComp method")
-		}
-	})
-	t.Run("Has Alphabet method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("Alphabet").IsValid() {
-			t.Error("Missing Alphabet method")
-		}
-	})
+	t.Run("Has Reverse method", bigr.TestForMethodNamed(s, "Reverse"))
+	t.Run("Has Complement method", bigr.TestForMethodNamed(s, "Complement"))
+	t.Run("Has RevComp method", bigr.TestForMethodNamed(s, "RevComp"))
+	t.Run("Has Alphabet method", bigr.TestForMethodNamed(s, "Alphabet"))
 }
 
-func TestDnaMethodsReturnTypes(t *testing.T) {
+func TestDnaMethodReturnType(t *testing.T) {
 	s := NewDna("")
 
-	t.Run("Reverse returns *Dna", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("Reverse").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *Dna")
-			}
-		}
-	})
-	t.Run("Complement returns *Dna", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("Complement").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *Dna")
-			}
-		}
-	})
-	t.Run("RevComp returns *Dna", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("RevComp").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *Dna")
-			}
-		}
-	})
-	t.Run("Alphabet returns *alphabet.DnaStrict", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("Alphabet").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(new(alphabet.Dna)) {
-				t.Errorf("Want: %v, Got: %v",
-					reflect.TypeOf(new(alphabet.Dna)),
-					r[i].Type(),
-				)
-			}
-		}
-	})
+	t.Run("Reverse returns *Dna",
+		bigr.TestMethodReturnsSelfType(s, "Reverse", nil),
+	)
+	t.Run("Complement returns *Dna",
+		bigr.TestMethodReturnsSelfType(s, "Complement", nil),
+	)
+	t.Run("RevComp returns *Dna",
+		bigr.TestMethodReturnsSelfType(s, "RevComp", nil),
+	)
+	t.Run("Alphabet returns *simple.Dna",
+		bigr.TestMethodReturnsType(s, new(simple.Dna), "Alphabet", nil),
+	)
 }
 
 func TestDnaCreation(t *testing.T) {
-	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -119,12 +64,12 @@ func TestDnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				dna := NewDna(s)
 				return dna.Length() == n
 			},
-			gen.UIntRange(1, seqLen),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Dna has same positions as input",
@@ -133,20 +78,19 @@ func TestDnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				dna := NewDna(s)
 				got := dna.Range(0, n)
 				return got == s
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
 }
 
 func TestDnaPersistence(t *testing.T) {
-	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -156,21 +100,20 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				original := NewDna(s)
 				clone := new(Dna)
 				*clone = *original
-				mut := original.WithPosition(n*(1/2), t)
-				return reflect.DeepEqual(original, clone) &&
-					!reflect.DeepEqual(original, mut)
+				_ = original.WithPosition(n*(1/2), t)
+				return reflect.DeepEqual(original, clone)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("WithRange does not mutate in-place",
@@ -179,21 +122,20 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				original := NewDna(s)
 				clone := new(Dna)
 				*clone = *original
-				mut := original.WithRange(n*(1/4), n*(3/4), t)
-				return reflect.DeepEqual(original, clone) &&
-					!reflect.DeepEqual(original, mut)
+				_ = original.WithRange(n*(1/4), n*(3/4), t)
+				return reflect.DeepEqual(original, clone)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Reverse does not mutate in-place",
@@ -202,16 +144,15 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				original := NewDna(s)
 				clone := new(Dna)
 				*clone = *original
-				mut := original.Reverse()
-				return reflect.DeepEqual(original, clone) &&
-					!reflect.DeepEqual(original, mut)
+				_ = original.Reverse()
+				return reflect.DeepEqual(original, clone)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Complement does not mutate in-place",
@@ -220,16 +161,15 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				original := NewDna(s)
 				clone := new(Dna)
 				*clone = *original
-				mut := original.Complement()
-				return reflect.DeepEqual(original, clone) &&
-					!reflect.DeepEqual(original, mut)
+				_ = original.Complement()
+				return reflect.DeepEqual(original, clone)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("RevComp does not mutate in-place",
@@ -238,24 +178,71 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				original := NewDna(s)
 				clone := new(Dna)
 				*clone = *original
-				mut := original.RevComp()
-				return reflect.DeepEqual(original, clone) &&
-					!reflect.DeepEqual(original, mut)
+				_ = original.RevComp()
+				return reflect.DeepEqual(original, clone)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.TestingRun(t)
+}
+
+func TestDnaMethodComplements(t *testing.T) {
+	parameters := gopter.DefaultTestParameters()
+	properties := gopter.NewProperties(parameters)
+
+	properties.Property("Reverse().Reverse() is original",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.DnaLetters),
+				)
+				original := NewDna(s)
+				return reflect.DeepEqual(original, original.Reverse().Reverse())
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("Complement().Complement() is original",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.DnaLetters),
+				)
+				original := NewDna(s)
+				return reflect.DeepEqual(original, original.Complement().Complement())
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("RevComp().RevComp() is original",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.DnaLetters),
+				)
+				original := NewDna(s)
+				return reflect.DeepEqual(original, original.RevComp().RevComp())
+			},
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
 }
 
 func TestDnaAccumulatesErrors(t *testing.T) {
-	var _ helpers.ErrorAccumulator = new(Dna)
-	var seqLen uint = 1000
+	var _ ErrorAccumulator = new(Dna)
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -280,7 +267,7 @@ func TestDnaAccumulatesErrors(t *testing.T) {
 				}
 				return true
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("start > stop errors",
@@ -289,7 +276,7 @@ func TestDnaAccumulatesErrors(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				seq := NewDna(s)
 				seq.Range(n, 0)
@@ -305,14 +292,13 @@ func TestDnaAccumulatesErrors(t *testing.T) {
 				}
 				return true
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
 }
 
 func TestDnaParallelOperations(t *testing.T) {
-	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -322,7 +308,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				left := make(chan *Dna)
 				right := make(chan *Dna)
@@ -334,7 +320,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("NewDna(s).Reverse() == NewDna(s).Reverse()",
@@ -343,7 +329,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				left := make(chan *Dna)
 				right := make(chan *Dna)
@@ -355,7 +341,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("NewDna(s).RevComp() == NewDna(s).RevComp()",
@@ -364,7 +350,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				left := make(chan *Dna)
 				right := make(chan *Dna)
@@ -376,7 +362,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("NewDna(s).Complement() == NewDna(s).Complement()",
@@ -385,7 +371,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaLetters),
+					[]rune(simple.DnaLetters),
 				)
 				left := make(chan *Dna)
 				right := make(chan *Dna)
@@ -398,7 +384,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				}(seq, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)

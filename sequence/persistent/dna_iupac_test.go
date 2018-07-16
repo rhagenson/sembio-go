@@ -6,8 +6,7 @@ import (
 	"testing"
 
 	"bitbucket.org/rhagenson/bigr"
-	"bitbucket.org/rhagenson/bigr/alphabet"
-	"bitbucket.org/rhagenson/bigr/helpers"
+	"bitbucket.org/rhagenson/bigr/alphabet/simple"
 	"bitbucket.org/rhagenson/bigr/sequence"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
@@ -15,101 +14,47 @@ import (
 )
 
 var (
-	_ sequence.Interface = new(DnaIupac)
+	_ sequence.Interface = NewDnaIupac("")
 )
 
 func TestInitializedDnaIupac(t *testing.T) {
-	dna := NewDnaIupac("")
+	s := NewDnaIupac("")
 
-	t.Run("proper alphabet", func(t *testing.T) {
-		if dna.Alphabet() != new(alphabet.DnaIupac) {
-			t.Errorf("Want: %t, Got: %t", new(alphabet.DnaIupac), dna.Alphabet())
-		}
-	})
-	t.Run("proper length", func(t *testing.T) {
-		if dna.Length() != 0 {
-			t.Errorf("Want: %d, Got: %d", 0, dna.Length())
-		}
-	})
-	t.Run("proper position", func(t *testing.T) {
-		if dna.Position(0) != "" {
-			t.Errorf("Want: %s, Got: %s", "", dna.Position(0))
-		}
-	})
-	t.Run("proper range", func(t *testing.T) {
-		if dna.Range(0, 1) != "" {
-			t.Errorf("Want: %s, Got: %s", "", dna.Range(0, 1))
-		}
-	})
+	t.Run("IUPAC DNA alphabet",
+		sequence.TestAlphabetIs(s.Alphabet(), new(simple.DnaIupac)),
+	)
+	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
+	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
+	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
 }
 
 func TestDnaIupacHasMethods(t *testing.T) {
-	s := new(DnaIupac)
-
-	t.Run("Has Reverse method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("Reverse").IsValid() {
-			t.Error("Missing Reverse method")
-		}
-	})
-	t.Run("Has Complement method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("Complement").IsValid() {
-			t.Error("Missing Complement method")
-		}
-	})
-	t.Run("Has RevComp method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("RevComp").IsValid() {
-			t.Error("Missing RevComp method")
-		}
-	})
-	t.Run("Has Alphabet method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("Alphabet").IsValid() {
-			t.Error("Missing Alphabet method")
-		}
-	})
-}
-
-func TestDnaIupacMethodsReturnTypes(t *testing.T) {
 	s := NewDnaIupac("")
 
-	t.Run("Reverse returns *DnaIupac", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("Reverse").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *DnaIupac")
-			}
-		}
-	})
-	t.Run("Complement returns *Rna", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("Complement").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *DnaIupac")
-			}
-		}
-	})
-	t.Run("RevComp returns *Rna", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("RevComp").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *DnaIupac")
-			}
-		}
-	})
-	t.Run("Alphabet returns *alphabet.DnaIupac", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("Alphabet").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(new(alphabet.DnaIupac)) {
-				t.Errorf("Want: %v, Got: %v",
-					reflect.TypeOf(new(alphabet.DnaIupac)),
-					r[i].Type(),
-				)
-			}
-		}
-	})
+	t.Run("Has Reverse method", bigr.TestForMethodNamed(s, "Reverse"))
+	t.Run("Has Complement method", bigr.TestForMethodNamed(s, "Complement"))
+	t.Run("Has RevComp method", bigr.TestForMethodNamed(s, "RevComp"))
+	t.Run("Has Alphabet method", bigr.TestForMethodNamed(s, "Alphabet"))
+}
+
+func TestDnaIupacMethodReturnType(t *testing.T) {
+	s := NewDnaIupac("")
+
+	t.Run("Reverse returns *DnaIupac",
+		bigr.TestMethodReturnsSelfType(s, "Reverse", nil),
+	)
+	t.Run("Complement returns *DnaIupac",
+		bigr.TestMethodReturnsSelfType(s, "Complement", nil),
+	)
+	t.Run("RevComp returns *DnaIupac",
+		bigr.TestMethodReturnsSelfType(s, "RevComp", nil),
+	)
+	t.Run("Alphabet returns *simple.DnaIupac",
+		bigr.TestMethodReturnsType(s, new(simple.DnaIupac), "Alphabet", nil),
+	)
 }
 
 func TestDnaIupacCreation(t *testing.T) {
-	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -119,12 +64,12 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				dna := NewDnaIupac(s)
 				return dna.Length() == n
 			},
-			gen.UIntRange(1, seqLen),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("DnaIupac has same positions as input",
@@ -133,20 +78,19 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				dna := NewDnaIupac(s)
 				got := dna.Range(0, n)
 				return got == s
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
 }
 
 func TestDnaIupacPersistence(t *testing.T) {
-	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -156,12 +100,12 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				original := NewDnaIupac(s)
 				clone := new(DnaIupac)
@@ -170,7 +114,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 				return reflect.DeepEqual(original, clone) &&
 					!reflect.DeepEqual(original, mut)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("WithRange does not mutate in-place",
@@ -179,12 +123,12 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				original := NewDnaIupac(s)
 				clone := new(DnaIupac)
@@ -193,7 +137,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 				return reflect.DeepEqual(original, clone) &&
 					!reflect.DeepEqual(original, mut)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Reverse does not mutate in-place",
@@ -202,7 +146,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				original := NewDnaIupac(s)
 				clone := new(DnaIupac)
@@ -210,7 +154,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 				_ = original.Reverse()
 				return reflect.DeepEqual(original, clone)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Complement does not mutate in-place",
@@ -219,7 +163,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				original := NewDnaIupac(s)
 				clone := new(DnaIupac)
@@ -227,7 +171,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 				_ = original.Complement()
 				return reflect.DeepEqual(original, clone)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("RevComp does not mutate in-place",
@@ -236,7 +180,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				original := NewDnaIupac(s)
 				clone := new(DnaIupac)
@@ -244,15 +188,63 @@ func TestDnaIupacPersistence(t *testing.T) {
 				_ = original.RevComp()
 				return reflect.DeepEqual(original, clone)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.TestingRun(t)
+}
+
+func TestDnaIupacMethodComplements(t *testing.T) {
+	parameters := gopter.DefaultTestParameters()
+	properties := gopter.NewProperties(parameters)
+
+	properties.Property("Reverse().Reverse() is original",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.DnaIupacLetters),
+				)
+				original := NewDnaIupac(s)
+				return reflect.DeepEqual(original, original.Reverse().Reverse())
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("Complement().Complement() is original",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.DnaIupacLetters),
+				)
+				original := NewDnaIupac(s)
+				return reflect.DeepEqual(original, original.Complement().Complement())
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("RevComp().RevComp() is original",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.DnaIupacLetters),
+				)
+				original := NewDnaIupac(s)
+				return reflect.DeepEqual(original, original.RevComp().RevComp())
+			},
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
 }
 
 func TestDnaIupacAccumulatesErrors(t *testing.T) {
-	var _ helpers.ErrorAccumulator = new(DnaIupac)
-	var seqLen uint = 1000
+	var _ ErrorAccumulator = NewDnaIupac("")
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -277,7 +269,7 @@ func TestDnaIupacAccumulatesErrors(t *testing.T) {
 				}
 				return true
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("start > stop errors",
@@ -286,7 +278,7 @@ func TestDnaIupacAccumulatesErrors(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				seq := NewDnaIupac(s)
 				seq.Range(n, 0)
@@ -302,14 +294,13 @@ func TestDnaIupacAccumulatesErrors(t *testing.T) {
 				}
 				return true
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
 }
 
 func TestDnaIupacParallelOperations(t *testing.T) {
-	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -319,7 +310,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				left := make(chan *DnaIupac)
 				right := make(chan *DnaIupac)
@@ -331,7 +322,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("NewDnaIupac(s).Reverse() == NewDnaIupac(s).Reverse()",
@@ -340,7 +331,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				left := make(chan *DnaIupac)
 				right := make(chan *DnaIupac)
@@ -352,7 +343,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("NewDnaIupac(s).RevComp() == NewDnaIupac(s).RevComp()",
@@ -361,7 +352,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				left := make(chan *DnaIupac)
 				right := make(chan *DnaIupac)
@@ -373,7 +364,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("NewDnaIupac(s).Complement() == NewDnaIupac(s).Complement()",
@@ -382,7 +373,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupacLetters),
+					[]rune(simple.DnaIupacLetters),
 				)
 				left := make(chan *DnaIupac)
 				right := make(chan *DnaIupac)
@@ -395,7 +386,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				}(seq, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)

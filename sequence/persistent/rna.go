@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"bitbucket.org/rhagenson/bigr/alphabet"
-	"bitbucket.org/rhagenson/bigr/helpers"
+	"bitbucket.org/rhagenson/bigr/alphabet/simple"
+	"bitbucket.org/rhagenson/bigr/helpers/complement"
 )
 
 // Rna is the simplest, string-backed representation of RNA with
@@ -17,8 +17,8 @@ type Rna struct {
 }
 
 // Alphabet is the backing valid StrictRNA alphabet
-func (s *Rna) Alphabet() *alphabet.Rna {
-	return new(alphabet.Rna)
+func (s *Rna) Alphabet() *simple.Rna {
+	return new(simple.Rna)
 }
 
 // Length is the number of nucleotides in the sequence
@@ -70,7 +70,7 @@ func NewRna(s string) *Rna {
 	seq.errs = make([]error, 0)
 
 	acc := 0
-	for _, r := range alphabet.RnaLetters {
+	for _, r := range simple.RnaLetters {
 		acc += strings.Count(s, string(r))
 	}
 	if acc != len(s) {
@@ -92,7 +92,7 @@ func (s *Rna) Errors() []error {
 func (s *Rna) Complement() *Rna {
 	t := make([]byte, s.Length())
 	for i := 0; i < len(t); i++ {
-		t[i] = helpers.CompAUGC(byte(s.seq[i]))
+		t[i] = complement.Augc(byte(s.seq[i]))
 	}
 	seq := NewRna(string(t))
 	seq.errs = append(s.errs, seq.errs...)
@@ -117,8 +117,8 @@ func (s *Rna) RevComp() *Rna {
 	l := int(s.Length())
 	t := []byte(s.Range(0, s.Length()))
 	for i := 0; i < l/2; i++ {
-		t[i] = helpers.CompAUGC(s.seq[l-1-i])
-		t[l-1-i] = helpers.CompAUGC(s.seq[i])
+		t[i] = complement.Augc(s.seq[l-1-i])
+		t[l-1-i] = complement.Augc(s.seq[i])
 	}
 	seq := NewRna(string(t))
 	seq.errs = append(s.errs, seq.errs...)

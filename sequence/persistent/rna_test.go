@@ -6,8 +6,7 @@ import (
 	"testing"
 
 	"bitbucket.org/rhagenson/bigr"
-	"bitbucket.org/rhagenson/bigr/alphabet"
-	"bitbucket.org/rhagenson/bigr/helpers"
+	"bitbucket.org/rhagenson/bigr/alphabet/simple"
 	"bitbucket.org/rhagenson/bigr/sequence"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
@@ -15,101 +14,47 @@ import (
 )
 
 var (
-	_ sequence.Interface = new(Rna)
+	_ sequence.Interface = NewRna("")
 )
 
 func TestInitializedRna(t *testing.T) {
 	s := NewRna("")
 
-	t.Run("proper alphabet", func(t *testing.T) {
-		if s.Alphabet() != new(alphabet.Rna) {
-			t.Errorf("Want: %t, Got: %t", new(alphabet.Rna), s.Alphabet())
-		}
-	})
-	t.Run("proper length", func(t *testing.T) {
-		if s.Length() != 0 {
-			t.Errorf("Want: %d, Got: %d", 0, s.Length())
-		}
-	})
-	t.Run("proper position", func(t *testing.T) {
-		if s.Position(0) != "" {
-			t.Errorf("Want: %s, Got: %s", "", s.Position(0))
-		}
-	})
-	t.Run("proper range", func(t *testing.T) {
-		if s.Range(0, 1) != "" {
-			t.Errorf("Want: %s, Got: %s", "", s.Range(0, 1))
-		}
-	})
+	t.Run("RNA alphabet",
+		sequence.TestAlphabetIs(s.Alphabet(), new(simple.Rna)),
+	)
+	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
+	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
+	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
 }
 
 func TestRnaHasMethods(t *testing.T) {
 	s := NewRna("")
 
-	t.Run("Has Reverse method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("Reverse").IsValid() {
-			t.Error("Missing Reverse method")
-		}
-	})
-	t.Run("Has Complement method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("Complement").IsValid() {
-			t.Error("Missing Complement method")
-		}
-	})
-	t.Run("Has RevComp method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("RevComp").IsValid() {
-			t.Error("Missing RevComp method")
-		}
-	})
-	t.Run("Has Alphabet method", func(t *testing.T) {
-		if !reflect.ValueOf(s).MethodByName("Alphabet").IsValid() {
-			t.Error("Missing Alphabet method")
-		}
-	})
+	t.Run("Has Reverse method", bigr.TestForMethodNamed(s, "Reverse"))
+	t.Run("Has Complement method", bigr.TestForMethodNamed(s, "Complement"))
+	t.Run("Has RevComp method", bigr.TestForMethodNamed(s, "RevComp"))
+	t.Run("Has Alphabet method", bigr.TestForMethodNamed(s, "Alphabet"))
 }
 
 func TestRnaMethodsReturnTypes(t *testing.T) {
 	s := NewRna("")
 
-	t.Run("Reverse returns *Rna", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("Reverse").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *Rna")
-			}
-		}
-	})
-	t.Run("Complement returns *Rna", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("Complement").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *Rna")
-			}
-		}
-	})
-	t.Run("RevComp returns *Rna", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("RevComp").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(s) {
-				t.Error("Does not return a new *Rna")
-			}
-		}
-	})
-	t.Run("Alphabet returns *alphabet.RnaStrict", func(t *testing.T) {
-		r := reflect.ValueOf(s).MethodByName("Alphabet").Call(nil)
-		for i := range r {
-			if r[i].Type() != reflect.TypeOf(new(alphabet.Rna)) {
-				t.Errorf("Want: %v, Got: %v",
-					reflect.TypeOf(new(alphabet.Rna)),
-					r[i].Type(),
-				)
-			}
-		}
-	})
+	t.Run("Reverse returns *Rna",
+		bigr.TestMethodReturnsSelfType(s, "Reverse", nil),
+	)
+	t.Run("Complement returns *Rna",
+		bigr.TestMethodReturnsSelfType(s, "Complement", nil),
+	)
+	t.Run("RevComp returns *Rna",
+		bigr.TestMethodReturnsSelfType(s, "RevComp", nil),
+	)
+	t.Run("Alphabet returns *simple.Rna",
+		bigr.TestMethodReturnsType(s, new(simple.Rna), "Alphabet", nil),
+	)
 }
 
 func TestRnaCreation(t *testing.T) {
-	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -119,12 +64,12 @@ func TestRnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				dna := NewRna(s)
 				return dna.Length() == n
 			},
-			gen.UIntRange(1, seqLen),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Rna has same positions as input",
@@ -133,20 +78,19 @@ func TestRnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				dna := NewRna(s)
 				got := dna.Range(0, n)
 				return got == s
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
 }
 
 func TestRnaPersistence(t *testing.T) {
-	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -156,21 +100,21 @@ func TestRnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				original := NewRna(s)
-				clone := new(Rna)
+				clone := NewRna("")
 				*clone = *original
 				mut := original.WithPosition(n*(1/2), t)
 				return reflect.DeepEqual(original, clone) &&
 					!reflect.DeepEqual(original, mut)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("WithRange does not mutate in-place",
@@ -179,29 +123,128 @@ func TestRnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				original := NewRna(s)
-				clone := new(Rna)
+				clone := NewRna("")
 				*clone = *original
 				mut := original.WithRange(n*(1/4), n*(3/4), t)
 				return reflect.DeepEqual(original, clone) &&
 					!reflect.DeepEqual(original, mut)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("Reverse does not mutate in-place",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.RnaLetters),
+				)
+				original := NewRna(s)
+				clone := new(Rna)
+				*clone = *original
+				_ = original.Reverse()
+				return reflect.DeepEqual(original, clone)
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("Complement does not mutate in-place",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.RnaLetters),
+				)
+				original := NewRna(s)
+				clone := new(Rna)
+				*clone = *original
+				_ = original.Complement()
+				return reflect.DeepEqual(original, clone)
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("RevComp does not mutate in-place",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.RnaLetters),
+				)
+				original := NewRna(s)
+				clone := new(Rna)
+				*clone = *original
+				_ = original.RevComp()
+				return reflect.DeepEqual(original, clone)
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.TestingRun(t)
+}
+
+func TestRnaMethodComplements(t *testing.T) {
+	parameters := gopter.DefaultTestParameters()
+	properties := gopter.NewProperties(parameters)
+
+	properties.Property("Reverse().Reverse() is original",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.RnaLetters),
+				)
+				original := NewRna(s)
+				return reflect.DeepEqual(original, original.Reverse().Reverse())
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("Complement().Complement() is original",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.RnaLetters),
+				)
+				original := NewRna(s)
+				return reflect.DeepEqual(original, original.Complement().Complement())
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("RevComp().RevComp() is original",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.RnaLetters),
+				)
+				original := NewRna(s)
+				return reflect.DeepEqual(original, original.RevComp().RevComp())
+			},
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
 }
 
 func TestRnaAccumulatesErrors(t *testing.T) {
-	var _ helpers.ErrorAccumulator = new(Rna)
-	var seqLen uint = 1000
+	var _ ErrorAccumulator = NewRna("")
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -226,7 +269,7 @@ func TestRnaAccumulatesErrors(t *testing.T) {
 				}
 				return true
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("start > stop errors",
@@ -235,7 +278,7 @@ func TestRnaAccumulatesErrors(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				seq := NewRna(s)
 				seq.Range(n, 0)
@@ -251,14 +294,13 @@ func TestRnaAccumulatesErrors(t *testing.T) {
 				}
 				return true
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
 }
 
 func TestRnaParallelOperations(t *testing.T) {
-	var seqLen uint = 1000
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -268,7 +310,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				left := make(chan *Rna)
 				right := make(chan *Rna)
@@ -280,7 +322,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("NewRna(s).Reverse() == NewRna(s).Reverse()",
@@ -289,7 +331,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				left := make(chan *Rna)
 				right := make(chan *Rna)
@@ -301,7 +343,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("NewRna(s).RevComp() == NewRna(s).RevComp()",
@@ -310,7 +352,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				left := make(chan *Rna)
 				right := make(chan *Rna)
@@ -322,7 +364,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("NewRna(s).Complement() == NewRna(s).Complement()",
@@ -331,7 +373,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaLetters),
+					[]rune(simple.RnaLetters),
 				)
 				left := make(chan *Rna)
 				right := make(chan *Rna)
@@ -344,7 +386,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				}(seq, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
-			gen.UIntRange(1, seqLen), // Length of sequence
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)

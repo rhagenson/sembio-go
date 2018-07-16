@@ -1,65 +1,79 @@
-package helpers
+package complement
 
 import (
 	"testing"
 
-	"bitbucket.org/rhagenson/bigr/alphabet"
+	"bitbucket.org/rhagenson/bigr/alphabet/simple"
 )
 
-// TestCompAUGCMethodsAgree checks that the bitwise and usual way of
+// TestAugcMethodsAgree checks that the bitwise and usual way of
 // generating the complement of ATGC do agree with respect to ATGC
-func TestCompAUGCMethodsAgree(t *testing.T) {
-	for _, c := range alphabet.RnaLetters {
-		bitwise := CompAUGC(byte(c))
-		usual := CompAUGCpairs(byte(c))
+func TestAugcMethodsAgree(t *testing.T) {
+	for _, c := range simple.RnaLetters {
+		bitwise := Augc(byte(c))
+		usual := AugcPairs(byte(c))
 		if bitwise != usual {
 			t.Errorf("Bitwise comp: %q != Usual comp: %q", bitwise, usual)
 		}
 	}
 }
 
-func BenchmarkCompAUGC(b *testing.B) {
+// TestAugcPairsReturnX checks that when encountering an unknown nucleotide results in 'X' placeholder
+func TestAugcPairsReturnX(t *testing.T) {
+	for _, c := range "XNQZ" {
+		usual := AugcPairs(byte(c))
+		if usual != 'X' {
+			t.Errorf(
+				"Want: %q, Got: %q",
+				'X',
+				usual,
+			)
+		}
+	}
+}
+
+func BenchmarkCompAugcMethods(b *testing.B) {
 	b.Run("Complement A", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			CompATGC(byte('A'))
+			Augc(byte('A'))
 		}
 	})
 	b.Run("Complement U", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			CompATGC(byte('U'))
+			Augc(byte('U'))
 		}
 	})
 	b.Run("Complement G", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			CompATGC(byte('G'))
+			Augc(byte('G'))
 		}
 	})
 	b.Run("Complement C", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			CompATGC(byte('C'))
+			Augc(byte('C'))
 		}
 	})
 }
 
-func BenchmarkCompAUGCpairs(b *testing.B) {
+func BenchmarkCompAugcPairs(b *testing.B) {
 	b.Run("Complement A", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			CompATGCpairs(byte('A'))
+			AugcPairs(byte('A'))
 		}
 	})
 	b.Run("Complement U", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			CompATGCpairs(byte('U'))
+			AugcPairs(byte('U'))
 		}
 	})
 	b.Run("Complement G", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			CompATGCpairs(byte('G'))
+			AugcPairs(byte('G'))
 		}
 	})
 	b.Run("Complement C", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			CompATGCpairs(byte('C'))
+			AugcPairs(byte('C'))
 		}
 	})
 }

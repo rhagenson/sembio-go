@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"bitbucket.org/rhagenson/bigr/alphabet"
-	"bitbucket.org/rhagenson/bigr/helpers"
+	"bitbucket.org/rhagenson/bigr/alphabet/simple"
+	"bitbucket.org/rhagenson/bigr/helpers/complement"
 )
 
 // Dna is the simplest, string-backed representation of DNA with
@@ -17,8 +17,8 @@ type Dna struct {
 }
 
 // Alphabet is the backing valid StrictDNA alphabet
-func (s *Dna) Alphabet() *alphabet.Dna {
-	return new(alphabet.Dna)
+func (s *Dna) Alphabet() *simple.Dna {
+	return new(simple.Dna)
 }
 
 // Length is the number of nucleotides in the sequence
@@ -70,7 +70,7 @@ func NewDna(s string) *Dna {
 	seq.errs = make([]error, 0)
 
 	acc := 0
-	for _, r := range alphabet.DnaLetters {
+	for _, r := range simple.DnaLetters {
 		acc += strings.Count(s, string(r))
 	}
 	if acc != len(s) {
@@ -91,7 +91,7 @@ func (s *Dna) Errors() []error {
 func (s *Dna) Complement() *Dna {
 	t := make([]byte, s.Length())
 	for i := 0; i < len(t); i++ {
-		t[i] = helpers.CompATGC(byte(s.seq[i]))
+		t[i] = complement.Atgc(byte(s.seq[i]))
 	}
 	seq := NewDna(string(t))
 	seq.errs = append(s.errs, seq.errs...)
@@ -116,8 +116,8 @@ func (s *Dna) RevComp() *Dna {
 	l := int(s.Length())
 	t := []byte(s.Range(0, s.Length()))
 	for i := 0; i < l/2; i++ {
-		t[i] = helpers.CompATGC(s.seq[l-1-i])
-		t[l-1-i] = helpers.CompATGC(s.seq[i])
+		t[i] = complement.Atgc(s.seq[l-1-i])
+		t[l-1-i] = complement.Atgc(s.seq[i])
 	}
 	seq := NewDna(string(t))
 	seq.errs = append(s.errs, seq.errs...)

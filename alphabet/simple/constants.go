@@ -1,4 +1,4 @@
-package alphabet
+package simple
 
 // GapLetter is the character used to represent a sequence gap.
 const GapLetter = "-"
