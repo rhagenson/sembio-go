@@ -257,7 +257,7 @@ func TestRnaAccumulatesErrors(t *testing.T) {
 					[]rune("XNQZ"),
 				)
 				seq := NewRna(s)
-				for _, err := range seq.errs {
+				for _, err := range seq.Errors() {
 					if err == nil {
 						t.Errorf("Rna should accumulate an err using non-standard chars")
 						return false
@@ -282,7 +282,7 @@ func TestRnaAccumulatesErrors(t *testing.T) {
 				)
 				seq := NewRna(s)
 				seq.Range(n, 0)
-				for _, err := range seq.errs {
+				for _, err := range seq.Errors() {
 					if err == nil {
 						t.Errorf("Rna should accumulate an err during Range() when start > stop")
 						return false

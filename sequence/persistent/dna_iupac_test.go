@@ -257,7 +257,7 @@ func TestDnaIupacAccumulatesErrors(t *testing.T) {
 					[]rune("XNQZ"),
 				)
 				seq := NewDnaIupac(s)
-				for _, err := range seq.errs {
+				for _, err := range seq.Errors() {
 					if err == nil {
 						t.Errorf("DnaIupac should accumulate an err using non-standard chars")
 						return false
@@ -282,7 +282,7 @@ func TestDnaIupacAccumulatesErrors(t *testing.T) {
 				)
 				seq := NewDnaIupac(s)
 				seq.Range(n, 0)
-				for _, err := range seq.errs {
+				for _, err := range seq.Errors() {
 					if err == nil {
 						t.Errorf("DnaIupac should accumulate an err during Range() when start > stop")
 						return false

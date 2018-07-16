@@ -84,7 +84,9 @@ func NewDna(s string) *Dna {
 
 // Errors returns any accumulated errors
 func (s *Dna) Errors() []error {
-	return s.Errors()
+	errs := make([]error, len(s.errs))
+	copy(errs, s.errs)
+	return errs
 }
 
 // Complement returns the base pair complement
