@@ -36,12 +36,12 @@ func (s *Rna) Position(n uint) string {
 
 // Range is the nucleotides found in the half-open range
 func (s *Rna) Range(start, stop uint) string {
-	if start < stop && stop <= uint(s.Length()) {
-		if stop == s.Length() {
-			return s.seq[start:]
-		}
+	if stop == s.Length() {
+		return s.seq[start:]
+	} else if start < stop && stop < s.Length() {
 		return s.seq[start:stop]
 	}
+
 	s.errs = append(
 		s.errs,
 		fmt.Errorf("requested impossible range [%d:%d]", start, stop),
