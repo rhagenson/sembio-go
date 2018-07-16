@@ -87,6 +87,43 @@ func TestRnaCreation(t *testing.T) {
 			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
+	properties.Property("Rna has same internal range as input",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.RnaLetters),
+				)
+				rna := NewRna(s)
+				onefourth := n * (1 / 4)
+				threefourths := n * (3 / 4)
+				got := rna.Range(onefourth, threefourths)
+				return got == s[onefourth:threefourths]
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("Rna has same internal postions as input",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.RnaLetters),
+				)
+				rna := NewRna(s)
+				onefourth := n * (1 / 4)
+				threefourth := n * (3 / 4)
+				gotoneforth := rna.Position(onefourth)
+				wantoneforth := string(s[onefourth])
+				gotthreeforth := rna.Position(threefourth)
+				wantthreeforth := string(s[threefourth])
+				return gotoneforth == wantoneforth && gotthreeforth == wantthreeforth
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
 	properties.TestingRun(t)
 }
 

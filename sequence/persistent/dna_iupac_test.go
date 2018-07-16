@@ -87,6 +87,43 @@ func TestDnaIupacCreation(t *testing.T) {
 			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
+	properties.Property("DnaIupac has same internal range as input",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.DnaIupacLetters),
+				)
+				dna := NewDnaIupac(s)
+				onefourth := n * (1 / 4)
+				threefourths := n * (3 / 4)
+				got := dna.Range(onefourth, threefourths)
+				return got == s[onefourth:threefourths]
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("DnaIupac has same internal postions as input",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.DnaIupacLetters),
+				)
+				dna := NewDnaIupac(s)
+				onefourth := n * (1 / 4)
+				threefourth := n * (3 / 4)
+				gotoneforth := dna.Position(onefourth)
+				wantoneforth := string(s[onefourth])
+				gotthreeforth := dna.Position(threefourth)
+				wantthreeforth := string(s[threefourth])
+				return gotoneforth == wantoneforth && gotthreeforth == wantthreeforth
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
 	properties.TestingRun(t)
 }
 

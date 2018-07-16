@@ -66,8 +66,8 @@ func TestRnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				dna := NewRnaIupac(s)
-				return dna.Length() == n
+				rna := NewRnaIupac(s)
+				return rna.Length() == n
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -80,9 +80,46 @@ func TestRnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				dna := NewRnaIupac(s)
-				got := dna.Range(0, n)
+				rna := NewRnaIupac(s)
+				got := rna.Range(0, n)
 				return got == s
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("RnaIupac has same internal range as input",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.RnaIupacLetters),
+				)
+				rna := NewRnaIupac(s)
+				onefourth := n * (1 / 4)
+				threefourths := n * (3 / 4)
+				got := rna.Range(onefourth, threefourths)
+				return got == s[onefourth:threefourths]
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("RnaIupac has same internal postions as input",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bigr.RandomStringFromRunes(
+					bigr.TestSeed,
+					n,
+					[]rune(simple.RnaIupacLetters),
+				)
+				rna := NewRnaIupac(s)
+				onefourth := n * (1 / 4)
+				threefourth := n * (3 / 4)
+				gotoneforth := rna.Position(onefourth)
+				wantoneforth := string(s[onefourth])
+				gotthreeforth := rna.Position(threefourth)
+				wantthreeforth := string(s[threefourth])
+				return gotoneforth == wantoneforth && gotthreeforth == wantthreeforth
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
