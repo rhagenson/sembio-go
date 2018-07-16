@@ -2,14 +2,12 @@ package complement
 
 import (
 	"testing"
-
-	"bitbucket.org/rhagenson/bigr/alphabet/simple"
 )
 
 // TestAugcMethodsAgree checks that the bitwise and usual way of
 // generating the complement of ATGC do agree with respect to ATGC
 func TestAugcMethodsAgree(t *testing.T) {
-	for _, c := range simple.RnaLetters {
+	for _, c := range "AUGC" {
 		bitwise := Augc(byte(c))
 		usual := AugcPairs(byte(c))
 		if bitwise != usual {

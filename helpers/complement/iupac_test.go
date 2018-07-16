@@ -2,14 +2,12 @@ package complement
 
 import (
 	"testing"
-
-	"bitbucket.org/rhagenson/bigr/alphabet/simple"
 )
 
-// TestCompRnaIupacIsReversible checks that the complement of a complement is
+// TestRnaIupacIsReversible checks that the complement of a complement is
 // the original
-func TestCompRnaIupacIsReversible(t *testing.T) {
-	for _, c := range simple.RnaIupacLetters {
+func TestRnaIupacIsReversible(t *testing.T) {
+	for _, c := range "AUGC" + "RYSWKM" + "BDHVN" {
 		comp := RnaIupac(byte(c))
 		if RnaIupac(comp) != byte(c) {
 			t.Errorf("Want: %q; Got: %q", byte(c), comp)
@@ -17,10 +15,24 @@ func TestCompRnaIupacIsReversible(t *testing.T) {
 	}
 }
 
+// TestIupacPairsReturnX checks that when encountering an unknown nucleotide results in 'X' placeholder
+func TestIupacPairsReturnX(t *testing.T) {
+	for _, c := range "XQZ" {
+		usual := IupacPairs(byte(c))
+		if usual != 'X' {
+			t.Errorf(
+				"Want: %q, Got: %q",
+				'X',
+				usual,
+			)
+		}
+	}
+}
+
 // TestCompDnaIupacIsReversible checks that the complement of a complement is
 // the original
 func TestCompDnaIupacIsReversible(t *testing.T) {
-	for _, c := range simple.DnaIupacLetters {
+	for _, c := range "ATGC" + "RYSWKM" + "BDHVN" {
 		comp := DnaIupac(byte(c))
 		if DnaIupac(comp) != byte(c) {
 			t.Errorf("Want: %q; Got: %q", byte(c), comp)

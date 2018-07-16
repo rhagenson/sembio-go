@@ -2,14 +2,12 @@ package complement
 
 import (
 	"testing"
-
-	"bitbucket.org/rhagenson/bigr/alphabet/simple"
 )
 
 // TestAtgcMethodsAgree checks that the bitwise and usual way of
 // generating the complement of Atgc do agree with respect to Atgc
 func TestAtgcMethodsAgree(t *testing.T) {
-	for _, c := range simple.DnaLetters {
+	for _, c := range "ATGC" {
 		bitwise := Atgc(byte(c))
 		usual := AtgcPairs(byte(c))
 		if bitwise != usual {
@@ -30,6 +28,28 @@ func TestAtgcPairsReturnX(t *testing.T) {
 			)
 		}
 	}
+}
+
+// TestAtgcMethodsAreReversible checks that the complement of a complement is
+// the original
+func TestAtgcMethodsAreReversible(t *testing.T) {
+	t.Run("Pairs are reversible", func(t *testing.T) {
+		for _, c := range "ATGC" {
+			comp := AtgcPairs(byte(c))
+			if AtgcPairs(comp) != byte(c) {
+				t.Errorf("Want: %q; Got: %q", byte(c), comp)
+			}
+		}
+	})
+	t.Run("Bitwise method are reversible", func(t *testing.T) {
+		for _, c := range "ATGC" {
+			comp := Atgc(byte(c))
+			if Atgc(comp) != byte(c) {
+				t.Errorf("Want: %q; Got: %q", byte(c), comp)
+			}
+		}
+	})
+
 }
 
 func BenchmarkAtgcMethods(b *testing.B) {

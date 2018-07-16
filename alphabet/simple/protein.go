@@ -10,7 +10,7 @@ type Protein struct{}
 func (p *Protein) Contains(letters []byte) []bool {
 	found := make([]bool, len(letters))
 	for idx, letter := range letters {
-		found[idx] = strings.IndexByte(ProteinLetters, letter) > 0
+		found[idx] = strings.IndexByte(ProteinLetters, letter) > -1
 	}
 	return found
 }

@@ -10,7 +10,7 @@ type DnaIupac struct{}
 func (d *DnaIupac) Contains(letters []byte) []bool {
 	found := make([]bool, len(letters))
 	for idx, letter := range letters {
-		found[idx] = strings.IndexByte(DnaIupacLetters, letter) > 0
+		found[idx] = strings.IndexByte(DnaIupacLetters, letter) > -1
 	}
 	return found
 }
