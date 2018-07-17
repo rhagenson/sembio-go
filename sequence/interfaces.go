@@ -7,8 +7,8 @@ type Interface interface {
 	Length() uint
 
 	// Position is the n-th element
-	Position(n uint) string
+	Position(n uint) (string, error)
 
 	// Range returns elements from start (inclusive) to stop (exclusive)
-	Range(start, stop uint) string
+	Range(start, stop uint) (string, error)
 }

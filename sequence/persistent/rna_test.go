@@ -14,11 +14,11 @@ import (
 )
 
 var (
-	_ sequence.Interface = NewRna("")
+	_ sequence.Interface = new(Rna)
 )
 
 func TestInitializedRna(t *testing.T) {
-	s := NewRna("")
+	s, _ := NewRna("")
 
 	t.Run("RNA alphabet",
 		sequence.TestAlphabetIs(s.Alphabet(), new(simple.Rna)),
@@ -29,7 +29,7 @@ func TestInitializedRna(t *testing.T) {
 }
 
 func TestRnaHasMethods(t *testing.T) {
-	s := NewRna("")
+	s, _ := NewRna("")
 
 	t.Run("Has Reverse method", bigr.TestForMethodNamed(s, "Reverse"))
 	t.Run("Has Complement method", bigr.TestForMethodNamed(s, "Complement"))
@@ -38,7 +38,7 @@ func TestRnaHasMethods(t *testing.T) {
 }
 
 func TestRnaMethodsReturnTypes(t *testing.T) {
-	s := NewRna("")
+	s, _ := NewRna("")
 
 	t.Run("Reverse returns *Rna",
 		bigr.TestMethodReturnsSelfType(s, "Reverse", nil),
@@ -66,8 +66,8 @@ func TestRnaCreation(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				dna := NewRna(s)
-				return dna.Length() == n
+				rna, _ := NewRna(s)
+				return rna.Length() == n
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -80,8 +80,8 @@ func TestRnaCreation(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				dna := NewRna(s)
-				got := dna.Range(0, n)
+				rna, _ := NewRna(s)
+				got, _ := rna.Range(0, n)
 				return got == s
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -95,10 +95,10 @@ func TestRnaCreation(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				rna := NewRna(s)
+				rna, _ := NewRna(s)
 				onefourth := n * (1 / 4)
 				threefourths := n * (3 / 4)
-				got := rna.Range(onefourth, threefourths)
+				got, _ := rna.Range(onefourth, threefourths)
 				return got == s[onefourth:threefourths]
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -112,12 +112,12 @@ func TestRnaCreation(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				rna := NewRna(s)
+				rna, _ := NewRna(s)
 				onefourth := n * (1 / 4)
 				threefourth := n * (3 / 4)
-				gotoneforth := rna.Position(onefourth)
+				gotoneforth, _ := rna.Position(onefourth)
 				wantoneforth := string(s[onefourth])
-				gotthreeforth := rna.Position(threefourth)
+				gotthreeforth, _ := rna.Position(threefourth)
 				wantthreeforth := string(s[threefourth])
 				return gotoneforth == wantoneforth && gotthreeforth == wantthreeforth
 			},
@@ -144,10 +144,10 @@ func TestRnaPersistence(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				original := NewRna(s)
-				clone := NewRna("")
+				original, _ := NewRna(s)
+				clone := new(Rna)
 				*clone = *original
-				mut := original.WithPosition(n*(1/2), t)
+				mut, _ := original.WithPosition(n*(1/2), t)
 				return reflect.DeepEqual(original, clone) &&
 					!reflect.DeepEqual(original, mut)
 			},
@@ -167,10 +167,10 @@ func TestRnaPersistence(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				original := NewRna(s)
-				clone := NewRna("")
+				original, _ := NewRna(s)
+				clone := new(Rna)
 				*clone = *original
-				mut := original.WithRange(n*(1/4), n*(3/4), t)
+				mut, _ := original.WithRange(n*(1/4), n*(3/4), t)
 				return reflect.DeepEqual(original, clone) &&
 					!reflect.DeepEqual(original, mut)
 			},
@@ -185,10 +185,10 @@ func TestRnaPersistence(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				original := NewRna(s)
+				original, _ := NewRna(s)
 				clone := new(Rna)
 				*clone = *original
-				_ = original.Reverse()
+				original.Reverse()
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -202,10 +202,10 @@ func TestRnaPersistence(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				original := NewRna(s)
+				original, _ := NewRna(s)
 				clone := new(Rna)
 				*clone = *original
-				_ = original.Complement()
+				original.Complement()
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -219,10 +219,10 @@ func TestRnaPersistence(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				original := NewRna(s)
+				original, _ := NewRna(s)
 				clone := new(Rna)
 				*clone = *original
-				_ = original.RevComp()
+				original.RevComp()
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -243,8 +243,10 @@ func TestRnaMethodComplements(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				original := NewRna(s)
-				return reflect.DeepEqual(original, original.Reverse().Reverse())
+				want, _ := NewRna(s)
+				rev, _ := want.Reverse()
+				got, _ := rev.Reverse()
+				return reflect.DeepEqual(want, got)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -257,8 +259,10 @@ func TestRnaMethodComplements(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				original := NewRna(s)
-				return reflect.DeepEqual(original, original.Complement().Complement())
+				want, _ := NewRna(s)
+				rev, _ := want.Complement()
+				got, _ := rev.Complement()
+				return reflect.DeepEqual(want, got)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -271,8 +275,10 @@ func TestRnaMethodComplements(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				original := NewRna(s)
-				return reflect.DeepEqual(original, original.RevComp().RevComp())
+				want, _ := NewRna(s)
+				rev, _ := want.RevComp()
+				got, _ := rev.RevComp()
+				return reflect.DeepEqual(want, got)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -281,7 +287,7 @@ func TestRnaMethodComplements(t *testing.T) {
 }
 
 func TestRnaAccumulatesErrors(t *testing.T) {
-	var _ ErrorAccumulator = NewRna("")
+	var _ ErrorAccumulator = new(Rna)
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -293,16 +299,14 @@ func TestRnaAccumulatesErrors(t *testing.T) {
 					n,
 					[]rune("XNQZ"),
 				)
-				seq := NewRna(s)
-				for _, err := range seq.Errors() {
-					if err == nil {
-						t.Errorf("Rna should accumulate an err using non-standard chars")
-						return false
-					}
-					if !strings.Contains(err.Error(), "invalid character(s)") {
-						t.Errorf("Rna creation error should mention invalid character(s)")
-						return false
-					}
+				_, err := NewRna(s)
+				if err == nil {
+					t.Errorf("Rna should accumulate an err using non-standard chars")
+					return false
+				}
+				if !strings.Contains(err.Error(), "invalid character(s)") {
+					t.Errorf("Rna creation error should mention invalid character(s)")
+					return false
 				}
 				return true
 			},
@@ -317,17 +321,15 @@ func TestRnaAccumulatesErrors(t *testing.T) {
 					n,
 					[]rune(simple.RnaLetters),
 				)
-				seq := NewRna(s)
-				seq.Range(n, 0)
-				for _, err := range seq.Errors() {
-					if err == nil {
-						t.Errorf("Rna should accumulate an err during Range() when start > stop")
-						return false
-					}
-					if !strings.Contains(err.Error(), "impossible range") {
-						t.Errorf("Rna Range error should mention impossible range")
-						return false
-					}
+				seq, _ := NewRna(s)
+				_, err := seq.Range(n, 0)
+				if err == nil {
+					t.Errorf("Rna should accumulate an err during Range() when start > stop")
+					return false
+				}
+				if !strings.Contains(err.Error(), "impossible range") {
+					t.Errorf("Rna Range error should mention impossible range")
+					return false
 				}
 				return true
 			},
@@ -352,10 +354,12 @@ func TestRnaParallelOperations(t *testing.T) {
 				left := make(chan *Rna)
 				right := make(chan *Rna)
 				go func(s string, out chan *Rna) {
-					out <- NewRna(s)
+					seq, _ := NewRna(s)
+					out <- seq
 				}(s, left)
 				go func(s string, out chan *Rna) {
-					out <- NewRna(s)
+					seq, _ := NewRna(s)
+					out <- seq
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
@@ -373,10 +377,14 @@ func TestRnaParallelOperations(t *testing.T) {
 				left := make(chan *Rna)
 				right := make(chan *Rna)
 				go func(s string, out chan *Rna) {
-					out <- NewRna(s).Reverse()
+					seq, _ := NewRna(s)
+					rev, _ := seq.Reverse()
+					out <- rev
 				}(s, left)
 				go func(s string, out chan *Rna) {
-					out <- NewRna(s).Reverse()
+					seq, _ := NewRna(s)
+					rev, _ := seq.Reverse()
+					out <- rev
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
@@ -394,10 +402,14 @@ func TestRnaParallelOperations(t *testing.T) {
 				left := make(chan *Rna)
 				right := make(chan *Rna)
 				go func(s string, out chan *Rna) {
-					out <- NewRna(s).RevComp()
+					seq, _ := NewRna(s)
+					revcomp, _ := seq.RevComp()
+					out <- revcomp
 				}(s, left)
 				go func(s string, out chan *Rna) {
-					out <- NewRna(s).RevComp()
+					seq, _ := NewRna(s)
+					revcomp, _ := seq.RevComp()
+					out <- revcomp
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
@@ -414,13 +426,16 @@ func TestRnaParallelOperations(t *testing.T) {
 				)
 				left := make(chan *Rna)
 				right := make(chan *Rna)
-				seq := NewRna(s)
-				go func(seq *Rna, out chan *Rna) {
-					out <- seq.Complement()
-				}(seq, left)
-				go func(seq *Rna, out chan *Rna) {
-					out <- seq.Complement()
-				}(seq, right)
+				go func(s string, out chan *Rna) {
+					seq, _ := NewRna(s)
+					comp, _ := seq.Complement()
+					out <- comp
+				}(s, left)
+				go func(s string, out chan *Rna) {
+					seq, _ := NewRna(s)
+					comp, _ := seq.Complement()
+					out <- comp
+				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
 			gen.UIntRange(1, sequence.TestableLength),

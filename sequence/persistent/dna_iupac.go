@@ -16,7 +16,7 @@ type DnaIupac struct {
 	errs []error
 }
 
-// Alphabet is the backing valid StrictDNA alphabet
+// Alphabet is the backing valid IUPAC DNA alphabet
 func (s *DnaIupac) Alphabet() *simple.DnaIupac {
 	return new(simple.DnaIupac)
 }
@@ -27,44 +27,48 @@ func (s *DnaIupac) Length() uint {
 }
 
 // Position is the nucleotide found at position n
-func (s *DnaIupac) Position(n uint) string {
+func (s *DnaIupac) Position(n uint) (string, error) {
 	if n < uint(len(s.seq)) {
-		return string(s.seq[n])
+		return string(s.seq[n]), nil
 	}
-	return ""
+	s.errs = append(
+		s.errs,
+		fmt.Errorf("requested impossible position [%d]", n),
+	)
+	return "", s.errs[len(s.errs)-1]
 }
 
 // Range is the nucleotides found in the half-open range
-func (s *DnaIupac) Range(start, stop uint) string {
+func (s *DnaIupac) Range(start, stop uint) (string, error) {
 	if stop == s.Length() {
-		return s.seq[start:]
+		return s.seq[start:], nil
 	} else if start < stop && stop < s.Length() {
-		return s.seq[start:stop]
+		return s.seq[start:stop], nil
 	}
 
 	s.errs = append(
 		s.errs,
 		fmt.Errorf("requested impossible range [%d:%d]", start, stop),
 	)
-	return ""
+	return "", s.errs[len(s.errs)-1]
 }
 
 // WithPosition mutates a sequence position
-func (s *DnaIupac) WithPosition(n uint, pos string) *DnaIupac {
-	seq := NewDnaIupac(s.seq[:n] + pos + s.seq[n+1:])
+func (s *DnaIupac) WithPosition(n uint, pos string) (*DnaIupac, error) {
+	seq, err := NewDnaIupac(s.seq[:n] + pos + s.seq[n+1:])
 	seq.errs = append(s.errs, seq.errs...)
-	return seq
+	return seq, err
 }
 
 // WithRange mutates a range of sequence positions
-func (s *DnaIupac) WithRange(start, stop uint, pos string) *DnaIupac {
-	seq := NewDnaIupac(s.seq[:start] + pos + s.seq[stop:])
+func (s *DnaIupac) WithRange(start, stop uint, pos string) (*DnaIupac, error) {
+	seq, err := NewDnaIupac(s.seq[:start] + pos + s.seq[stop:])
 	seq.errs = append(s.errs, seq.errs...)
-	return seq
+	return seq, err
 }
 
 // NewDnaIupac creates a new DnaIupac instance if the input is valid DNA
-func NewDnaIupac(s string) *DnaIupac {
+func NewDnaIupac(s string) (*DnaIupac, error) {
 	seq := new(DnaIupac)
 	seq.seq = s
 	seq.errs = make([]error, 0)
@@ -78,8 +82,9 @@ func NewDnaIupac(s string) *DnaIupac {
 			seq.errs,
 			errors.New("sequence contains invalid character(s) on creation"),
 		)
+		return seq, seq.errs[len(seq.errs)-1]
 	}
-	return seq
+	return seq, nil
 }
 
 // Errors returns any accumulated errors
@@ -90,38 +95,50 @@ func (s *DnaIupac) Errors() []error {
 }
 
 // Complement returns the base pair complement
-func (s *DnaIupac) Complement() *DnaIupac {
+func (s *DnaIupac) Complement() (*DnaIupac, error) {
 	t := make([]byte, s.Length())
 	for i := 0; i < len(t); i++ {
 		t[i] = complement.DnaIupac(byte(s.seq[i]))
 	}
-	seq := NewDnaIupac(string(t))
+	seq, err := NewDnaIupac(string(t))
 	seq.errs = append(s.errs, seq.errs...)
-	return seq
+	return seq, err
 }
 
 // Reverse reverses the sequence
-func (s *DnaIupac) Reverse() *DnaIupac {
+func (s *DnaIupac) Reverse() (*DnaIupac, error) {
 	l := int(s.Length())
-	t := []byte(s.Range(0, s.Length()))
+	t := make([]byte, l)
+	if st, err := s.Range(0, s.Length()); err != nil {
+		t = []byte(st)
+	} else {
+		s.errs = append(s.errs, err)
+		return s, err
+	}
 	for i := 0; i < l/2; i++ {
 		t[i], t[l-1-i] = s.seq[l-1-i], s.seq[i]
 	}
-	seq := NewDnaIupac(string(t))
+	seq, err := NewDnaIupac(string(t))
 	seq.errs = append(s.errs, seq.errs...)
-	return seq
+	return seq, err
 }
 
 // RevComp reverses and complements the sequence directly
 // rather than chain the Reverse().Comp() operations together
-func (s *DnaIupac) RevComp() *DnaIupac {
+func (s *DnaIupac) RevComp() (*DnaIupac, error) {
 	l := int(s.Length())
-	t := []byte(s.Range(0, s.Length()))
+	t := make([]byte, l)
+	if st, err := s.Range(0, s.Length()); err != nil {
+		t = []byte(st)
+	} else {
+		s.errs = append(s.errs, err)
+		return s, err
+	}
 	for i := 0; i < l/2; i++ {
 		t[i] = complement.DnaIupac(s.seq[l-1-i])
 		t[l-1-i] = complement.DnaIupac(s.seq[i])
 	}
-	seq := NewDnaIupac(string(t))
+	seq, err := NewDnaIupac(string(t))
 	seq.errs = append(s.errs, seq.errs...)
-	return seq
+	return seq, err
 }

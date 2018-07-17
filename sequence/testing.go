@@ -30,8 +30,9 @@ func TestLengthIs(s Interface, exp uint) func(t *testing.T) {
 // TestPositionIs is a test helper that wraps a check for known position
 func TestPositionIs(s Interface, p uint, exp string) func(t *testing.T) {
 	return func(t *testing.T) {
-		if !reflect.DeepEqual(exp, s.Position(p)) {
-			t.Errorf("Want: %q, Got: %q", exp, s.Position(p))
+		got, _ := s.Position(p)
+		if !reflect.DeepEqual(exp, got) {
+			t.Errorf("Want: %q, Got: %q", exp, got)
 		}
 	}
 }
@@ -39,8 +40,9 @@ func TestPositionIs(s Interface, p uint, exp string) func(t *testing.T) {
 // TestRangeIs is a test helper that wraps a check for known range
 func TestRangeIs(s Interface, st, sp uint, exp string) func(t *testing.T) {
 	return func(t *testing.T) {
-		if !reflect.DeepEqual(exp, s.Range(st, sp)) {
-			t.Errorf("Want: %q, Got: %q", exp, s.Range(st, sp))
+		got, _ := s.Range(st, sp)
+		if !reflect.DeepEqual(exp, got) {
+			t.Errorf("Want: %q, Got: %q", exp, got)
 		}
 	}
 }

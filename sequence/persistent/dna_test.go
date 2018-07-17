@@ -14,11 +14,11 @@ import (
 )
 
 var (
-	_ sequence.Interface = NewDna("")
+	_ sequence.Interface = new(Dna)
 )
 
 func TestInitializedDna(t *testing.T) {
-	s := NewDna("")
+	s, _ := NewDna("")
 
 	t.Run("DNA alphabet",
 		sequence.TestAlphabetIs(s.Alphabet(), new(simple.Dna)),
@@ -29,7 +29,7 @@ func TestInitializedDna(t *testing.T) {
 }
 
 func TestDnaHasMethods(t *testing.T) {
-	s := NewDna("")
+	s, _ := NewDna("")
 
 	t.Run("Has Reverse method", bigr.TestForMethodNamed(s, "Reverse"))
 	t.Run("Has Complement method", bigr.TestForMethodNamed(s, "Complement"))
@@ -38,7 +38,7 @@ func TestDnaHasMethods(t *testing.T) {
 }
 
 func TestDnaMethodReturnType(t *testing.T) {
-	s := NewDna("")
+	s, _ := NewDna("")
 
 	t.Run("Reverse returns *Dna",
 		bigr.TestMethodReturnsSelfType(s, "Reverse", nil),
@@ -66,7 +66,7 @@ func TestDnaCreation(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				dna := NewDna(s)
+				dna, _ := NewDna(s)
 				return dna.Length() == n
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -80,8 +80,8 @@ func TestDnaCreation(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				dna := NewDna(s)
-				got := dna.Range(0, n)
+				dna, _ := NewDna(s)
+				got, _ := dna.Range(0, n)
 				return got == s
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -95,10 +95,10 @@ func TestDnaCreation(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				dna := NewDna(s)
+				dna, _ := NewDna(s)
 				onefourth := n * (1 / 4)
 				threefourths := n * (3 / 4)
-				got := dna.Range(onefourth, threefourths)
+				got, _ := dna.Range(onefourth, threefourths)
 				return got == s[onefourth:threefourths]
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -112,12 +112,12 @@ func TestDnaCreation(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				dna := NewDna(s)
+				dna, _ := NewDna(s)
 				onefourth := n * (1 / 4)
 				threefourth := n * (3 / 4)
-				gotoneforth := dna.Position(onefourth)
+				gotoneforth, _ := dna.Position(onefourth)
 				wantoneforth := string(s[onefourth])
-				gotthreeforth := dna.Position(threefourth)
+				gotthreeforth, _ := dna.Position(threefourth)
 				wantthreeforth := string(s[threefourth])
 				return gotoneforth == wantoneforth && gotthreeforth == wantthreeforth
 			},
@@ -144,10 +144,10 @@ func TestDnaPersistence(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				original := NewDna(s)
+				original, _ := NewDna(s)
 				clone := new(Dna)
 				*clone = *original
-				_ = original.WithPosition(n*(1/2), t)
+				original.WithPosition(n*(1/2), t)
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -166,10 +166,10 @@ func TestDnaPersistence(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				original := NewDna(s)
+				original, _ := NewDna(s)
 				clone := new(Dna)
 				*clone = *original
-				_ = original.WithRange(n*(1/4), n*(3/4), t)
+				original.WithRange(n*(1/4), n*(3/4), t)
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -183,10 +183,10 @@ func TestDnaPersistence(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				original := NewDna(s)
+				original, _ := NewDna(s)
 				clone := new(Dna)
 				*clone = *original
-				_ = original.Reverse()
+				original.Reverse()
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -200,10 +200,10 @@ func TestDnaPersistence(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				original := NewDna(s)
+				original, _ := NewDna(s)
 				clone := new(Dna)
 				*clone = *original
-				_ = original.Complement()
+				original.Complement()
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -217,10 +217,10 @@ func TestDnaPersistence(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				original := NewDna(s)
+				original, _ := NewDna(s)
 				clone := new(Dna)
 				*clone = *original
-				_ = original.RevComp()
+				original.RevComp()
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -241,8 +241,10 @@ func TestDnaMethodComplements(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				original := NewDna(s)
-				return reflect.DeepEqual(original, original.Reverse().Reverse())
+				want, _ := NewDna(s)
+				rev, _ := want.Reverse()
+				got, _ := rev.Reverse()
+				return reflect.DeepEqual(want, got)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -255,8 +257,10 @@ func TestDnaMethodComplements(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				original := NewDna(s)
-				return reflect.DeepEqual(original, original.Complement().Complement())
+				want, _ := NewDna(s)
+				rev, _ := want.Complement()
+				got, _ := rev.Complement()
+				return reflect.DeepEqual(want, got)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -269,8 +273,10 @@ func TestDnaMethodComplements(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				original := NewDna(s)
-				return reflect.DeepEqual(original, original.RevComp().RevComp())
+				want, _ := NewDna(s)
+				rev, _ := want.RevComp()
+				got, _ := rev.RevComp()
+				return reflect.DeepEqual(want, got)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -291,16 +297,14 @@ func TestDnaAccumulatesErrors(t *testing.T) {
 					n,
 					[]rune("XNQZ"),
 				)
-				seq := NewDna(s)
-				for _, err := range seq.Errors() {
-					if err == nil {
-						t.Errorf("Dna should accumulate an err using non-standard chars")
-						return false
-					}
-					if !strings.Contains(err.Error(), "invalid character(s)") {
-						t.Errorf("Dna creation error should mention invalid character(s)")
-						return false
-					}
+				_, err := NewDna(s)
+				if err == nil {
+					t.Errorf("Dna should accumulate an err using non-standard chars")
+					return false
+				}
+				if !strings.Contains(err.Error(), "invalid character(s)") {
+					t.Errorf("Dna creation error should mention invalid character(s)")
+					return false
 				}
 				return true
 			},
@@ -315,17 +319,15 @@ func TestDnaAccumulatesErrors(t *testing.T) {
 					n,
 					[]rune(simple.DnaLetters),
 				)
-				seq := NewDna(s)
-				seq.Range(n, 0)
-				for _, err := range seq.Errors() {
-					if err == nil {
-						t.Errorf("Dna should accumulate an err during Range() when start > stop")
-						return false
-					}
-					if !strings.Contains(err.Error(), "impossible range") {
-						t.Errorf("Dna Range error should mention impossible range")
-						return false
-					}
+				seq, _ := NewDna(s)
+				_, err := seq.Range(n, 0)
+				if err == nil {
+					t.Errorf("Dna should accumulate an err during Range() when start > stop")
+					return false
+				}
+				if !strings.Contains(err.Error(), "impossible range") {
+					t.Errorf("Dna Range error should mention impossible range")
+					return false
 				}
 				return true
 			},
@@ -350,10 +352,12 @@ func TestDnaParallelOperations(t *testing.T) {
 				left := make(chan *Dna)
 				right := make(chan *Dna)
 				go func(s string, out chan *Dna) {
-					out <- NewDna(s)
+					seq, _ := NewDna(s)
+					out <- seq
 				}(s, left)
 				go func(s string, out chan *Dna) {
-					out <- NewDna(s)
+					seq, _ := NewDna(s)
+					out <- seq
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
@@ -371,10 +375,14 @@ func TestDnaParallelOperations(t *testing.T) {
 				left := make(chan *Dna)
 				right := make(chan *Dna)
 				go func(s string, out chan *Dna) {
-					out <- NewDna(s).Reverse()
+					seq, _ := NewDna(s)
+					rev, _ := seq.Reverse()
+					out <- rev
 				}(s, left)
 				go func(s string, out chan *Dna) {
-					out <- NewDna(s).Reverse()
+					seq, _ := NewDna(s)
+					rev, _ := seq.Reverse()
+					out <- rev
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
@@ -392,10 +400,14 @@ func TestDnaParallelOperations(t *testing.T) {
 				left := make(chan *Dna)
 				right := make(chan *Dna)
 				go func(s string, out chan *Dna) {
-					out <- NewDna(s).RevComp()
+					seq, _ := NewDna(s)
+					revcomp, _ := seq.RevComp()
+					out <- revcomp
 				}(s, left)
 				go func(s string, out chan *Dna) {
-					out <- NewDna(s).RevComp()
+					seq, _ := NewDna(s)
+					revcomp, _ := seq.RevComp()
+					out <- revcomp
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
@@ -412,13 +424,16 @@ func TestDnaParallelOperations(t *testing.T) {
 				)
 				left := make(chan *Dna)
 				right := make(chan *Dna)
-				seq := NewDna(s)
-				go func(seq *Dna, out chan *Dna) {
-					out <- seq.Complement()
-				}(seq, left)
-				go func(seq *Dna, out chan *Dna) {
-					out <- seq.Complement()
-				}(seq, right)
+				go func(s string, out chan *Dna) {
+					seq, _ := NewDna(s)
+					comp, _ := seq.Complement()
+					out <- comp
+				}(s, left)
+				go func(s string, out chan *Dna) {
+					seq, _ := NewDna(s)
+					comp, _ := seq.Complement()
+					out <- comp
+				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
 			gen.UIntRange(1, sequence.TestableLength),

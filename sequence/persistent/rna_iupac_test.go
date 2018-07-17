@@ -14,11 +14,11 @@ import (
 )
 
 var (
-	_ sequence.Interface = NewRnaIupac("")
+	_ sequence.Interface = new(RnaIupac)
 )
 
 func TestInitializedRnaIupac(t *testing.T) {
-	s := NewRnaIupac("")
+	s, _ := NewRnaIupac("")
 
 	t.Run("IUPAC RNA alphabet",
 		sequence.TestAlphabetIs(s.Alphabet(), new(simple.RnaIupac)),
@@ -29,7 +29,7 @@ func TestInitializedRnaIupac(t *testing.T) {
 }
 
 func TestRnaIupacHasMethods(t *testing.T) {
-	s := NewRnaIupac("")
+	s, _ := NewRnaIupac("")
 
 	t.Run("Has Reverse method", bigr.TestForMethodNamed(s, "Reverse"))
 	t.Run("Has Complement method", bigr.TestForMethodNamed(s, "Complement"))
@@ -38,7 +38,7 @@ func TestRnaIupacHasMethods(t *testing.T) {
 }
 
 func TestRnaIupacMethodsReturnTypes(t *testing.T) {
-	s := NewRnaIupac("")
+	s, _ := NewRnaIupac("")
 
 	t.Run("Reverse returns *RnaIupac",
 		bigr.TestMethodReturnsSelfType(s, "Reverse", nil),
@@ -66,7 +66,7 @@ func TestRnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				rna := NewRnaIupac(s)
+				rna, _ := NewRnaIupac(s)
 				return rna.Length() == n
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -80,8 +80,8 @@ func TestRnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				rna := NewRnaIupac(s)
-				got := rna.Range(0, n)
+				rna, _ := NewRnaIupac(s)
+				got, _ := rna.Range(0, n)
 				return got == s
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -95,10 +95,10 @@ func TestRnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				rna := NewRnaIupac(s)
+				rna, _ := NewRnaIupac(s)
 				onefourth := n * (1 / 4)
 				threefourths := n * (3 / 4)
-				got := rna.Range(onefourth, threefourths)
+				got, _ := rna.Range(onefourth, threefourths)
 				return got == s[onefourth:threefourths]
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -112,12 +112,12 @@ func TestRnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				rna := NewRnaIupac(s)
+				rna, _ := NewRnaIupac(s)
 				onefourth := n * (1 / 4)
 				threefourth := n * (3 / 4)
-				gotoneforth := rna.Position(onefourth)
+				gotoneforth, _ := rna.Position(onefourth)
 				wantoneforth := string(s[onefourth])
-				gotthreeforth := rna.Position(threefourth)
+				gotthreeforth, _ := rna.Position(threefourth)
 				wantthreeforth := string(s[threefourth])
 				return gotoneforth == wantoneforth && gotthreeforth == wantthreeforth
 			},
@@ -144,10 +144,10 @@ func TestRnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				original := NewRnaIupac(s)
+				original, _ := NewRnaIupac(s)
 				clone := new(RnaIupac)
 				*clone = *original
-				mut := original.WithPosition(n*(1/2), t)
+				mut, _ := original.WithPosition(n*(1/2), t)
 				return reflect.DeepEqual(original, clone) &&
 					!reflect.DeepEqual(original, mut)
 			},
@@ -167,10 +167,10 @@ func TestRnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				original := NewRnaIupac(s)
+				original, _ := NewRnaIupac(s)
 				clone := new(RnaIupac)
 				*clone = *original
-				mut := original.WithRange(n*(1/4), n*(3/4), t)
+				mut, _ := original.WithRange(n*(1/4), n*(3/4), t)
 				return reflect.DeepEqual(original, clone) &&
 					!reflect.DeepEqual(original, mut)
 			},
@@ -185,10 +185,10 @@ func TestRnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				original := NewRnaIupac(s)
+				original, _ := NewRnaIupac(s)
 				clone := new(RnaIupac)
 				*clone = *original
-				_ = original.Reverse()
+				original.Reverse()
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -202,10 +202,10 @@ func TestRnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				original := NewRnaIupac(s)
+				original, _ := NewRnaIupac(s)
 				clone := new(RnaIupac)
 				*clone = *original
-				_ = original.Complement()
+				original.Complement()
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -219,10 +219,10 @@ func TestRnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				original := NewRnaIupac(s)
+				original, _ := NewRnaIupac(s)
 				clone := new(RnaIupac)
 				*clone = *original
-				_ = original.RevComp()
+				original.RevComp()
 				return reflect.DeepEqual(original, clone)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -243,8 +243,10 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				original := NewRnaIupac(s)
-				return reflect.DeepEqual(original, original.Reverse().Reverse())
+				want, _ := NewRnaIupac(s)
+				rev, _ := want.Reverse()
+				got, _ := rev.Reverse()
+				return reflect.DeepEqual(want, got)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -257,8 +259,10 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				original := NewRnaIupac(s)
-				return reflect.DeepEqual(original, original.Complement().Complement())
+				want, _ := NewRnaIupac(s)
+				rev, _ := want.Complement()
+				got, _ := rev.Complement()
+				return reflect.DeepEqual(want, got)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -271,8 +275,10 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				original := NewRnaIupac(s)
-				return reflect.DeepEqual(original, original.RevComp().RevComp())
+				want, _ := NewRnaIupac(s)
+				rev, _ := want.RevComp()
+				got, _ := rev.RevComp()
+				return reflect.DeepEqual(want, got)
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -281,7 +287,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 }
 
 func TestRnaIupacAccumulatesErrors(t *testing.T) {
-	var _ ErrorAccumulator = NewRnaIupac("")
+	var _ ErrorAccumulator = new(RnaIupac)
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -293,16 +299,14 @@ func TestRnaIupacAccumulatesErrors(t *testing.T) {
 					n,
 					[]rune("XNQZ"),
 				)
-				seq := NewRnaIupac(s)
-				for _, err := range seq.Errors() {
-					if err == nil {
-						t.Errorf("RnaIupac should accumulate an err using non-standard chars")
-						return false
-					}
-					if !strings.Contains(err.Error(), "invalid character(s)") {
-						t.Errorf("RnaIupac creation error should mention invalid character(s)")
-						return false
-					}
+				_, err := NewRnaIupac(s)
+				if err == nil {
+					t.Errorf("RnaIupac should accumulate an err using non-standard chars")
+					return false
+				}
+				if !strings.Contains(err.Error(), "invalid character(s)") {
+					t.Errorf("RnaIupac creation error should mention invalid character(s)")
+					return false
 				}
 				return true
 			},
@@ -317,17 +321,15 @@ func TestRnaIupacAccumulatesErrors(t *testing.T) {
 					n,
 					[]rune(simple.RnaIupacLetters),
 				)
-				seq := NewRnaIupac(s)
-				seq.Range(n, 0)
-				for _, err := range seq.Errors() {
-					if err == nil {
-						t.Errorf("RnaIupac should accumulate an err during Range() when start > stop")
-						return false
-					}
-					if !strings.Contains(err.Error(), "impossible range") {
-						t.Errorf("RnaIupac Range error should mention impossible range")
-						return false
-					}
+				seq, _ := NewRnaIupac(s)
+				_, err := seq.Range(n, 0)
+				if err == nil {
+					t.Errorf("RnaIupac should accumulate an err during Range() when start > stop")
+					return false
+				}
+				if !strings.Contains(err.Error(), "impossible range") {
+					t.Errorf("RnaIupac Range error should mention impossible range")
+					return false
 				}
 				return true
 			},
@@ -352,10 +354,12 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				left := make(chan *RnaIupac)
 				right := make(chan *RnaIupac)
 				go func(s string, out chan *RnaIupac) {
-					out <- NewRnaIupac(s)
+					seq, _ := NewRnaIupac(s)
+					out <- seq
 				}(s, left)
 				go func(s string, out chan *RnaIupac) {
-					out <- NewRnaIupac(s)
+					seq, _ := NewRnaIupac(s)
+					out <- seq
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
@@ -373,10 +377,14 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				left := make(chan *RnaIupac)
 				right := make(chan *RnaIupac)
 				go func(s string, out chan *RnaIupac) {
-					out <- NewRnaIupac(s).Reverse()
+					seq, _ := NewRnaIupac(s)
+					rev, _ := seq.Reverse()
+					out <- rev
 				}(s, left)
 				go func(s string, out chan *RnaIupac) {
-					out <- NewRnaIupac(s).Reverse()
+					seq, _ := NewRnaIupac(s)
+					rev, _ := seq.Reverse()
+					out <- rev
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
@@ -394,10 +402,14 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				left := make(chan *RnaIupac)
 				right := make(chan *RnaIupac)
 				go func(s string, out chan *RnaIupac) {
-					out <- NewRnaIupac(s).RevComp()
+					seq, _ := NewRnaIupac(s)
+					revcomp, _ := seq.RevComp()
+					out <- revcomp
 				}(s, left)
 				go func(s string, out chan *RnaIupac) {
-					out <- NewRnaIupac(s).RevComp()
+					seq, _ := NewRnaIupac(s)
+					revcomp, _ := seq.RevComp()
+					out <- revcomp
 				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
@@ -414,13 +426,16 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				)
 				left := make(chan *RnaIupac)
 				right := make(chan *RnaIupac)
-				seq := NewRnaIupac(s)
-				go func(seq *RnaIupac, out chan *RnaIupac) {
-					out <- seq.Complement()
-				}(seq, left)
-				go func(seq *RnaIupac, out chan *RnaIupac) {
-					out <- seq.Complement()
-				}(seq, right)
+				go func(s string, out chan *RnaIupac) {
+					seq, _ := NewRnaIupac(s)
+					comp, _ := seq.Complement()
+					out <- comp
+				}(s, left)
+				go func(s string, out chan *RnaIupac) {
+					seq, _ := NewRnaIupac(s)
+					comp, _ := seq.Complement()
+					out <- comp
+				}(s, right)
 				return reflect.DeepEqual(<-left, <-right)
 			},
 			gen.UIntRange(1, sequence.TestableLength),

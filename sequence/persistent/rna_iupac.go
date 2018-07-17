@@ -27,44 +27,48 @@ func (s *RnaIupac) Length() uint {
 }
 
 // Position is the nucleotide found at position n
-func (s *RnaIupac) Position(n uint) string {
+func (s *RnaIupac) Position(n uint) (string, error) {
 	if n < uint(len(s.seq)) {
-		return string(s.seq[n])
+		return string(s.seq[n]), nil
 	}
-	return ""
+	s.errs = append(
+		s.errs,
+		fmt.Errorf("requested impossible position [%d]", n),
+	)
+	return "", s.errs[len(s.errs)-1]
 }
 
 // Range is the nucleotides found in the half-open range
-func (s *RnaIupac) Range(start, stop uint) string {
+func (s *RnaIupac) Range(start, stop uint) (string, error) {
 	if stop == s.Length() {
-		return s.seq[start:]
+		return s.seq[start:], nil
 	} else if start < stop && stop < s.Length() {
-		return s.seq[start:stop]
+		return s.seq[start:stop], nil
 	}
 
 	s.errs = append(
 		s.errs,
 		fmt.Errorf("requested impossible range [%d:%d]", start, stop),
 	)
-	return ""
+	return "", s.errs[len(s.errs)-1]
 }
 
 // WithPosition mutates a sequence position
-func (s *RnaIupac) WithPosition(n uint, pos string) *RnaIupac {
-	seq := NewRnaIupac(s.seq[:n] + pos + s.seq[n+1:])
+func (s *RnaIupac) WithPosition(n uint, pos string) (*RnaIupac, error) {
+	seq, err := NewRnaIupac(s.seq[:n] + pos + s.seq[n+1:])
 	seq.errs = append(s.errs, seq.errs...)
-	return seq
+	return seq, err
 }
 
 // WithRange mutates a range of sequence positions
-func (s *RnaIupac) WithRange(start, stop uint, pos string) *RnaIupac {
-	seq := NewRnaIupac(s.seq[:start] + pos + s.seq[stop:])
+func (s *RnaIupac) WithRange(start, stop uint, pos string) (*RnaIupac, error) {
+	seq, err := NewRnaIupac(s.seq[:start] + pos + s.seq[stop:])
 	seq.errs = append(s.errs, seq.errs...)
-	return seq
+	return seq, err
 }
 
 // NewRnaIupac creates a new RnaIupac instance
-func NewRnaIupac(s string) *RnaIupac {
+func NewRnaIupac(s string) (*RnaIupac, error) {
 	seq := new(RnaIupac)
 	seq.seq = s
 	seq.errs = make([]error, 0)
@@ -78,9 +82,9 @@ func NewRnaIupac(s string) *RnaIupac {
 			seq.errs,
 			errors.New("sequence contains invalid character(s) on creation"),
 		)
+		return seq, seq.errs[len(seq.errs)-1]
 	}
-
-	return seq
+	return seq, nil
 }
 
 // Errors returns any accumulated errors
@@ -91,38 +95,50 @@ func (s *RnaIupac) Errors() []error {
 }
 
 // Complement returns the base pair complement
-func (s *RnaIupac) Complement() *RnaIupac {
+func (s *RnaIupac) Complement() (*RnaIupac, error) {
 	t := make([]byte, s.Length())
 	for i := 0; i < len(t); i++ {
 		t[i] = complement.RnaIupac(byte(s.seq[i]))
 	}
-	seq := NewRnaIupac(string(t))
+	seq, err := NewRnaIupac(string(t))
 	seq.errs = append(s.errs, seq.errs...)
-	return seq
+	return seq, err
 }
 
 // Reverse reverses the sequence
-func (s *RnaIupac) Reverse() *RnaIupac {
+func (s *RnaIupac) Reverse() (*RnaIupac, error) {
 	l := int(s.Length())
-	t := []byte(s.Range(0, s.Length()))
+	t := make([]byte, l)
+	if st, err := s.Range(0, s.Length()); err != nil {
+		t = []byte(st)
+	} else {
+		s.errs = append(s.errs, err)
+		return s, err
+	}
 	for i := 0; i < l/2; i++ {
 		t[i], t[l-1-i] = s.seq[l-1-i], s.seq[i]
 	}
-	seq := NewRnaIupac(string(t))
+	seq, err := NewRnaIupac(string(t))
 	seq.errs = append(s.errs, seq.errs...)
-	return seq
+	return seq, err
 }
 
 // RevComp reverses and complements the sequence directly
 // rather than chain the Reverse().Complement() operations together
-func (s *RnaIupac) RevComp() *RnaIupac {
+func (s *RnaIupac) RevComp() (*RnaIupac, error) {
 	l := int(s.Length())
-	t := []byte(s.Range(0, s.Length()))
+	t := make([]byte, l)
+	if st, err := s.Range(0, s.Length()); err != nil {
+		t = []byte(st)
+	} else {
+		s.errs = append(s.errs, err)
+		return s, err
+	}
 	for i := 0; i < l/2; i++ {
 		t[i] = complement.RnaIupac(s.seq[l-1-i])
 		t[l-1-i] = complement.RnaIupac(s.seq[i])
 	}
-	seq := NewRnaIupac(string(t))
+	seq, err := NewRnaIupac(string(t))
 	seq.errs = append(s.errs, seq.errs...)
-	return seq
+	return seq, err
 }
