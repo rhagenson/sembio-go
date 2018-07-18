@@ -8,4 +8,7 @@ type Interface interface {
 
 	// Length is the number of letters in the Alphabet
 	Length() int
+
+	// Copy will return the equivalent string denoting valid letters
+	Copy() string
 }
