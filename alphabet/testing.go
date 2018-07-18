@@ -21,7 +21,7 @@ func IsExpectedLength(a Interface, n int) func(t *testing.T) {
 // an alphabet.Interface implementation having a given letter
 func HasExpectedLetter(a Interface, c byte) func(t *testing.T) {
 	return func(t *testing.T) {
-		for _, ok := range a.Contains([]byte{c}) {
+		for _, ok := range a.Contains(c) {
 			if !ok {
 				t.Errorf("missing expected letter: %q", c)
 			}

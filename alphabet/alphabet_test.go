@@ -10,7 +10,7 @@ func TestDna(t *testing.T) {
 	t.Run("Correct length", IsExpectedLength(a, 4))
 	t.Run("Expected letters", func(t *testing.T) {
 		letters := "ATGC"
-		for i, v := range a.Contains([]byte(letters)) {
+		for i, v := range a.Contains([]byte(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -26,7 +26,7 @@ func TestDnaIupac(t *testing.T) {
 	t.Run("Has gap", HasExpectedLetter(a, '-'))
 	t.Run("Expected letters", func(t *testing.T) {
 		letters := "ATGC" + "RYSWKM" + "BDHVN"
-		for i, v := range a.Contains([]byte(letters)) {
+		for i, v := range a.Contains([]byte(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -41,7 +41,7 @@ func TestRna(t *testing.T) {
 	t.Run("Correct length", IsExpectedLength(a, 4))
 	t.Run("Expected letters", func(t *testing.T) {
 		letters := "AUGC"
-		for i, v := range a.Contains([]byte(letters)) {
+		for i, v := range a.Contains([]byte(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -57,7 +57,7 @@ func TestRnaIupac(t *testing.T) {
 	t.Run("Has gap", HasExpectedLetter(a, '-'))
 	t.Run("Expected letters", func(t *testing.T) {
 		letters := "AUGC" + "RYSWKM" + "BDHVN"
-		for i, v := range a.Contains([]byte(letters)) {
+		for i, v := range a.Contains([]byte(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -72,7 +72,7 @@ func TestProtein(t *testing.T) {
 	t.Run("Correct length", IsExpectedLength(a, 20))
 	t.Run("Expected letters", func(t *testing.T) {
 		letters := "ACDEFGHIKLMNPQRSTVWY"
-		for i, v := range a.Contains([]byte(letters)) {
+		for i, v := range a.Contains([]byte(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -88,7 +88,7 @@ func TestProteinGapped(t *testing.T) {
 	t.Run("Has gap", HasExpectedLetter(a, '-'))
 	t.Run("Expected letters", func(t *testing.T) {
 		letters := "ACDEFGHIKLMNPQRSTVWY"
-		for i, v := range a.Contains([]byte(letters)) {
+		for i, v := range a.Contains([]byte(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])

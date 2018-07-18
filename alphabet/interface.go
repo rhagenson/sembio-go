@@ -4,7 +4,7 @@ package alphabet
 // where validity of a given latter can be checked.
 type Interface interface {
 	// Contains checks that the given elements are in the Alphabet
-	Contains([]byte) []bool
+	Contains(...byte) []bool
 
 	// Length is the number of letters in the Alphabet
 	Length() int
