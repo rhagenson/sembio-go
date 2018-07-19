@@ -7,6 +7,5 @@ pipelines:
           script:
             - source bitbucket-pipelines.sh
 
-            - cd ${PKG_PATH}
             - go get -t -v -u ./...
             - go test -v -cover ./...
