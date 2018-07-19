@@ -1,5 +1,5 @@
 /*
 Package sequence defines the abstract interface for a biological
-sequence -- be it DNA, RNA, Protein, Kmer, or otherwise.
+sequence -- be it DNA, RNA, Protein, or otherwise.
 */
 package sequence
