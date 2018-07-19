@@ -1,57 +1,41 @@
-package persistent
+package sequence
 
 import (
-	"reflect"
 	"strings"
 	"testing"
 
 	"bitbucket.org/rhagenson/bigr"
-	"bitbucket.org/rhagenson/bigr/alphabet/simple"
-	"bitbucket.org/rhagenson/bigr/sequence"
+	"bitbucket.org/rhagenson/bigr/alphabet"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
-var (
-	_ sequence.Interface = new(RnaIupac)
-)
-
 func TestInitializedRnaIupac(t *testing.T) {
 	s, _ := NewRnaIupac("")
-
-	t.Run("IUPAC RNA alphabet",
-		sequence.TestAlphabetIs(s.Alphabet(), new(simple.RnaIupac)),
-	)
-	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
-	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
-	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
+	t.Run("Length is zero", TestLengthIs(s, 0))
+	t.Run("Position is empty", TestPositionIs(s, 0, ""))
+	t.Run("Range is empty", TestRangeIs(s, 0, 1, ""))
 }
 
 func TestRnaIupacHasMethods(t *testing.T) {
 	s, _ := NewRnaIupac("")
 
-	t.Run("Has Reverse method", bigr.TestForMethodNamed(s, "Reverse"))
-	t.Run("Has Complement method", bigr.TestForMethodNamed(s, "Complement"))
-	t.Run("Has RevComp method", bigr.TestForMethodNamed(s, "RevComp"))
-	t.Run("Has Alphabet method", bigr.TestForMethodNamed(s, "Alphabet"))
-}
-
-func TestRnaIupacMethodsReturnTypes(t *testing.T) {
-	s, _ := NewRnaIupac("")
-
-	t.Run("Reverse returns *RnaIupac",
-		bigr.TestMethodReturnsSelfType(s, "Reverse", nil),
-	)
-	t.Run("Complement returns *RnaIupac",
-		bigr.TestMethodReturnsSelfType(s, "Complement", nil),
-	)
-	t.Run("RevComp returns *RnaIupac",
-		bigr.TestMethodReturnsSelfType(s, "RevComp", nil),
-	)
-	t.Run("Alphabet returns *simple.RnaIupac",
-		bigr.TestMethodReturnsType(s, new(simple.RnaIupac), "Alphabet", nil),
-	)
+	t.Run("Has Reverse method", func(t *testing.T) {
+		if _, err := s.Reverse(); err != nil {
+			t.Error("Reverse method does not exist")
+		}
+	})
+	t.Run("Has Complement method", func(t *testing.T) {
+		if _, err := s.Complement(); err != nil {
+			t.Error("Complement method does not exist")
+		}
+	})
+	t.Run("Has RevComp method", func(t *testing.T) {
+		if _, err := s.RevComp(); err != nil {
+			t.Error("RevComp method does not exist")
+		}
+	})
 }
 
 func TestRnaIupacCreation(t *testing.T) {
@@ -64,12 +48,12 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
-				rna, _ := NewRnaIupac(s)
-				return rna.Length() == n
+				seq, _ := NewRnaIupac(s)
+				return seq.Length() == n
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.Property("RnaIupac has same positions as input",
@@ -78,13 +62,13 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
-				rna, _ := NewRnaIupac(s)
-				got, _ := rna.Range(0, n)
+				seq, _ := NewRnaIupac(s)
+				got, _ := seq.Range(0, n)
 				return got == s
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.Property("RnaIupac has same internal range as input",
@@ -93,15 +77,15 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
-				rna, _ := NewRnaIupac(s)
+				seq, _ := NewRnaIupac(s)
 				onefourth := n * (1 / 4)
 				threefourths := n * (3 / 4)
-				got, _ := rna.Range(onefourth, threefourths)
+				got, _ := seq.Range(onefourth, threefourths)
 				return got == s[onefourth:threefourths]
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.Property("RnaIupac has same internal postions as input",
@@ -110,18 +94,18 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
-				rna, _ := NewRnaIupac(s)
+				seq, _ := NewRnaIupac(s)
 				onefourth := n * (1 / 4)
 				threefourth := n * (3 / 4)
-				gotoneforth, _ := rna.Position(onefourth)
+				gotoneforth, _ := seq.Position(onefourth)
 				wantoneforth := string(s[onefourth])
-				gotthreeforth, _ := rna.Position(threefourth)
+				gotthreeforth, _ := seq.Position(threefourth)
 				wantthreeforth := string(s[threefourth])
 				return gotoneforth == wantoneforth && gotthreeforth == wantthreeforth
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.TestingRun(t)
@@ -137,21 +121,20 @@ func TestRnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				original, _ := NewRnaIupac(s)
-				clone := new(RnaIupac)
+				clone := new(Sequence)
 				*clone = *original
-				mut, _ := original.WithPosition(n*(1/2), t)
-				return reflect.DeepEqual(original, clone) &&
-					!reflect.DeepEqual(original, mut)
+				original.With(PositionAs(n*(1/2), t))
+				return original.seq == clone.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.Property("WithRange does not mutate in-place",
@@ -160,21 +143,20 @@ func TestRnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				original, _ := NewRnaIupac(s)
-				clone := new(RnaIupac)
+				clone := new(Sequence)
 				*clone = *original
-				mut, _ := original.WithRange(n*(1/4), n*(3/4), t)
-				return reflect.DeepEqual(original, clone) &&
-					!reflect.DeepEqual(original, mut)
+				original.With(RangeAs(n*(1/4), n*(3/4), t))
+				return original.seq == clone.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.Property("Reverse does not mutate in-place",
@@ -183,15 +165,15 @@ func TestRnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				original, _ := NewRnaIupac(s)
-				clone := new(RnaIupac)
+				clone := new(Sequence)
 				*clone = *original
 				original.Reverse()
-				return reflect.DeepEqual(original, clone)
+				return original.seq == clone.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.Property("Complement does not mutate in-place",
@@ -200,15 +182,15 @@ func TestRnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				original, _ := NewRnaIupac(s)
-				clone := new(RnaIupac)
+				clone := new(Sequence)
 				*clone = *original
 				original.Complement()
-				return reflect.DeepEqual(original, clone)
+				return original.seq == clone.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.Property("RevComp does not mutate in-place",
@@ -217,15 +199,15 @@ func TestRnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				original, _ := NewRnaIupac(s)
-				clone := new(RnaIupac)
+				clone := new(Sequence)
 				*clone = *original
 				original.RevComp()
-				return reflect.DeepEqual(original, clone)
+				return original.seq == clone.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.TestingRun(t)
@@ -241,14 +223,14 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				want, _ := NewRnaIupac(s)
 				rev, _ := want.Reverse()
 				got, _ := rev.Reverse()
-				return reflect.DeepEqual(want, got)
+				return want.seq == got.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.Property("Complement().Complement() is original",
@@ -257,14 +239,14 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				want, _ := NewRnaIupac(s)
 				rev, _ := want.Complement()
 				got, _ := rev.Complement()
-				return reflect.DeepEqual(want, got)
+				return want.seq == got.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.Property("RevComp().RevComp() is original",
@@ -273,21 +255,20 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				want, _ := NewRnaIupac(s)
 				rev, _ := want.RevComp()
 				got, _ := rev.RevComp()
-				return reflect.DeepEqual(want, got)
+				return want.seq == got.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.TestingRun(t)
 }
 
-func TestRnaIupacAccumulatesErrors(t *testing.T) {
-	var _ ErrorAccumulator = new(RnaIupac)
+func TestRnaIupacErrors(t *testing.T) {
 	parameters := gopter.DefaultTestParameters()
 	properties := gopter.NewProperties(parameters)
 
@@ -299,18 +280,18 @@ func TestRnaIupacAccumulatesErrors(t *testing.T) {
 					n,
 					[]rune("XNQZ"),
 				)
-				_, err := NewRnaIupac(s)
-				if err == nil {
-					t.Errorf("RnaIupac should accumulate an err using non-standard chars")
-					return false
-				}
-				if !strings.Contains(err.Error(), "invalid character(s)") {
-					t.Errorf("RnaIupac creation error should mention invalid character(s)")
+				if _, err := NewRnaIupac(s); err != nil {
+					if !strings.Contains(err.Error(), "not in alphabet") {
+						t.Errorf("RnaIupac creation error should mention not in alphabet")
+						return false
+					}
+				} else {
+					t.Errorf("RnaIupac should error when using invalid characters")
 					return false
 				}
 				return true
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.Property("start > stop errors",
@@ -319,7 +300,7 @@ func TestRnaIupacAccumulatesErrors(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
 				seq, _ := NewRnaIupac(s)
 				_, err := seq.Range(n, 0)
@@ -333,7 +314,7 @@ func TestRnaIupacAccumulatesErrors(t *testing.T) {
 				}
 				return true
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.TestingRun(t)
@@ -349,96 +330,97 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
-				left := make(chan *RnaIupac)
-				right := make(chan *RnaIupac)
-				go func(s string, out chan *RnaIupac) {
+				ret := make(chan *Sequence)
+				go func(s string, out chan *Sequence) {
 					seq, _ := NewRnaIupac(s)
 					out <- seq
-				}(s, left)
-				go func(s string, out chan *RnaIupac) {
+				}(s, ret)
+				go func(s string, out chan *Sequence) {
 					seq, _ := NewRnaIupac(s)
 					out <- seq
-				}(s, right)
-				return reflect.DeepEqual(<-left, <-right)
+				}(s, ret)
+				first := <-ret
+				second := <-ret
+				return first.seq == second.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
-	properties.Property("NewRnaIupac(s).Reverse() == NewRnaIupac(s).Reverse()",
+	properties.Property("seq.Reverse() == seq.Reverse()",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
-				left := make(chan *RnaIupac)
-				right := make(chan *RnaIupac)
-				go func(s string, out chan *RnaIupac) {
-					seq, _ := NewRnaIupac(s)
+				ret := make(chan *Sequence)
+				seq, _ := NewRnaIupac(s)
+				go func(seq *Sequence, out chan *Sequence) {
 					rev, _ := seq.Reverse()
 					out <- rev
-				}(s, left)
-				go func(s string, out chan *RnaIupac) {
-					seq, _ := NewRnaIupac(s)
+				}(seq, ret)
+				go func(seq *Sequence, out chan *Sequence) {
 					rev, _ := seq.Reverse()
 					out <- rev
-				}(s, right)
-				return reflect.DeepEqual(<-left, <-right)
+				}(seq, ret)
+				first := <-ret
+				second := <-ret
+				return first.seq == second.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
-	properties.Property("NewRnaIupac(s).RevComp() == NewRnaIupac(s).RevComp()",
+	properties.Property("seq.RevComp() == seq.RevComp()",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
-				left := make(chan *RnaIupac)
-				right := make(chan *RnaIupac)
-				go func(s string, out chan *RnaIupac) {
-					seq, _ := NewRnaIupac(s)
-					revcomp, _ := seq.RevComp()
-					out <- revcomp
-				}(s, left)
-				go func(s string, out chan *RnaIupac) {
-					seq, _ := NewRnaIupac(s)
-					revcomp, _ := seq.RevComp()
-					out <- revcomp
-				}(s, right)
-				return reflect.DeepEqual(<-left, <-right)
+				ret := make(chan *Sequence)
+				seq, _ := NewRnaIupac(s)
+				go func(seq *Sequence, out chan *Sequence) {
+					rev, _ := seq.Reverse()
+					out <- rev
+				}(seq, ret)
+				go func(seq *Sequence, out chan *Sequence) {
+					rev, _ := seq.Reverse()
+					out <- rev
+				}(seq, ret)
+				first := <-ret
+				second := <-ret
+				return first.seq == second.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
-	properties.Property("NewRnaIupac(s).Complement() == NewRnaIupac(s).Complement()",
+	properties.Property("seq.Complement() == seq.Complement()",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(simple.RnaIupacLetters),
+					[]rune(alphabet.RnaIupac),
 				)
-				left := make(chan *RnaIupac)
-				right := make(chan *RnaIupac)
-				go func(s string, out chan *RnaIupac) {
-					seq, _ := NewRnaIupac(s)
-					comp, _ := seq.Complement()
-					out <- comp
-				}(s, left)
-				go func(s string, out chan *RnaIupac) {
-					seq, _ := NewRnaIupac(s)
-					comp, _ := seq.Complement()
-					out <- comp
-				}(s, right)
-				return reflect.DeepEqual(<-left, <-right)
+				ret := make(chan *Sequence)
+				seq, _ := NewRnaIupac(s)
+				go func(seq *Sequence, out chan *Sequence) {
+					rev, _ := seq.Reverse()
+					out <- rev
+				}(seq, ret)
+				go func(seq *Sequence, out chan *Sequence) {
+					rev, _ := seq.Reverse()
+					out <- rev
+				}(seq, ret)
+				first := <-ret
+				second := <-ret
+				return first.seq == second.seq
 			},
-			gen.UIntRange(1, sequence.TestableLength),
+			gen.UIntRange(1, TestableLength),
 		),
 	)
 	properties.TestingRun(t)
