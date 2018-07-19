@@ -12,3 +12,28 @@ type Interface interface {
 	// Range returns elements from start (inclusive) to stop (exclusive)
 	Range(start, stop uint) (string, error)
 }
+
+// Reverser can reverse the sequence
+type Reverser interface {
+	Reverse() (*Sequence, error)
+}
+
+// Complementer can complement the sequence
+type Complementer interface {
+	Complement() (*Sequence, error)
+}
+
+// RevComper can reverse-complement the sequence
+type RevComper interface {
+	RevComp() (*Sequence, error)
+}
+
+// Translater can translate the sequence
+type Translater interface {
+	Translate() (*Sequence, error)
+}
+
+// Transcriber can transcribe the sequence
+type Transcriber interface {
+	Transcribe() (*Sequence, error)
+}
