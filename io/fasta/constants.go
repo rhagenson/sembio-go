@@ -1,0 +1,5 @@
+package fasta
+
+const (
+	fastaHeaderPrefix = '>'
+)
