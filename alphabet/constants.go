@@ -1,24 +1,41 @@
 package alphabet
 
 // The general collection of different single byte biological alphabets
-const (
+var (
 	// Dna is the four letter standard encoding
-	Dna = Alphabet(DnaLetters)
-
+	Dna = Alphabet{
+		letters: DnaLetters,
+		width:   1,
+	}
 	// DnaIupac is the sixteen letter IUPAC encoding
-	DnaIupac = Alphabet(DnaIupacLetters)
+	DnaIupac = Alphabet{
+		letters: DnaIupacLetters,
+		width:   1,
+	}
 
 	// Rna is the four letter standard encoding
-	Rna = Alphabet(RnaLetters)
+	Rna = Alphabet{
+		letters: RnaLetters,
+		width:   1,
+	}
 
 	// RnaIupac is the sixteen letter IUPAC encoding
-	RnaIupac = Alphabet(RnaIupacLetters)
+	RnaIupac = Alphabet{
+		letters: RnaIupacLetters,
+		width:   1,
+	}
 
 	// Protein is the twenty letter standard encoding
-	Protein = Alphabet(ProteinLetters)
+	Protein = Alphabet{
+		letters: ProteinLetters,
+		width:   1,
+	}
 
 	// Protein is the twenty letter standard encoding plus a gap letter
-	ProteinGapped = Alphabet(ProteinGappedLetters)
+	ProteinGapped = Alphabet{
+		letters: ProteinGappedLetters,
+		width:   1,
+	}
 )
 
 const (

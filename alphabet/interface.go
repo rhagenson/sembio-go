@@ -4,11 +4,11 @@ package alphabet
 // where validity of a given latter can be checked.
 type Interface interface {
 	// Contains checks that the given elements are in the Alphabet
-	Contains(...byte) []bool
+	Contains(...string) []bool
 
 	// Length is the number of letters in the Alphabet
 	Length() int
 
-	// Copy will return the equivalent string denoting valid letters
-	Copy() string
+	// String will return the equivalent string denoting valid letters
+	String() string
 }

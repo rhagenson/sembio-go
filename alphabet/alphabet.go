@@ -3,23 +3,31 @@ package alphabet
 import "strings"
 
 // Alphabet is a collection of letters
-type Alphabet string
+type Alphabet struct {
+	letters string
+	width   int
+}
 
 // Length is numbers of letters in the Alphabet
 func (a Alphabet) Length() int {
-	return len(a)
+	return len(a.letters) / a.width
 }
 
 // Contains confirms whether an array of potential letters are in the Alphabet
-func (a Alphabet) Contains(ls ...byte) []bool {
+func (a Alphabet) Contains(ls ...string) []bool {
 	found := make([]bool, len(ls))
 	for idx, letter := range ls {
-		found[idx] = strings.IndexByte(string(a), letter) > -1
+		found[idx] = strings.Index(a.letters, letter)%a.width == 0
 	}
 	return found
 }
 
-// Copy generates a stringified copy of the Alphabet
-func (a Alphabet) Copy() string {
-	return string(a)
+// String generates a stringified copy of the Alphabet
+func (a Alphabet) String() string {
+	return a.letters
+}
+
+// Width is the byte width of the Alphabet
+func (a Alphabet) Width() int {
+	return a.width
 }
