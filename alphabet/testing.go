@@ -34,20 +34,16 @@ func HasExpectedLetter(a Interface, c string) func(t *testing.T) {
 
 // TestSplitByN splits a string into n sized chunks
 func TestSplitByN(s string, n int) []string {
-	sub := ""
-	subs := []string{}
+	if len(s)%n != 0 {
+		return nil
+	}
+	subs := make([]string, len(s)/n)
 
 	runes := bytes.Runes([]byte(s))
-	l := len(runes)
-	for i, r := range runes {
-		sub = sub + string(r)
-		if (i+1)%n == 0 {
-			subs = append(subs, sub)
-			sub = ""
-		} else if (i + 1) == l {
-			subs = append(subs, sub)
-		}
+	idx := 0
+	for i := 0; i < len(s)+n-1; i = i + n {
+		subs[idx] = string(runes[i : i+n])
+		idx++
 	}
-
 	return subs
 }
