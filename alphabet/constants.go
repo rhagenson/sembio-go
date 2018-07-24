@@ -17,7 +17,7 @@ var (
 	Protein = New(ProteinLetters, 1)
 
 	// Protein is the twenty letter standard encoding plus a gap letter
-	ProteinGapped = New(ProteinGappedLetters, 1)
+	ProteinGapped = New(ProteinLetters+GapLetter, 1)
 )
 
 const (
@@ -25,17 +25,18 @@ const (
 	GapLetter = "-"
 
 	// IupacLetters are the IUPAC ambiguous encodings
-	IupacLetters = "RYSWKM" + "BDHVN"
+	IupacLetters = "RYSWKM" + "BDHV" + "N"
 
 	// DnaLetters is the strict four-letter representation of DNA.
 	//	ATGC: Any of one nucelotide codes (i.e., 4 choose 1)
 	DnaLetters = "ATGC"
 
 	// DnaIupacLetters is the IUPAC representation of DNA.
+	//  -: Any of zero nucleotide codes (i.e., 4 choose 0)
 	// 	ATGC: Any of one nucelotide codes (i.e., 4 choose 1)
 	//	RYSWKM: Any of two nucelotide codes (i.e., 4 choose 2)
-	//	BDHVN: Any of three nucleotide codes (i.e., 4 choose 3)
-	//	-: Gap code (i.e., 4 choose 0)
+	//	BDHV: Any of three nucleotide codes (i.e., 4 choose 3)
+	//  N: Any of four nucleotide codes (i.e., 4 choose 4)
 	DnaIupacLetters = DnaLetters + IupacLetters + GapLetter
 
 	// RnaLetters is the strict four-letter representation of DNA.
@@ -43,15 +44,13 @@ const (
 	RnaLetters = "AUGC"
 
 	// RnaIupacLetters is the IUPAC representation of RNA.
+	//  -: Any of zero nucleotide codes (i.e., 4 choose 0)
 	//  AUGC: Any of one nucelotide codes (i.e., 4 choose 1)
 	//	RYSWKM: Any of two nucelotide codes (i.e., 4 choose 2)
-	//	BDHVN: Any of three nucleotide codes (i.e., 4 choose 3)
-	//	-: Gap code (i.e., 4 choose 0)
+	//	BDHV: Any of three nucleotide codes (i.e., 4 choose 3)
+	//  N: Any of four nucleotide codes (i.e., 4 choose 4)
 	RnaIupacLetters = RnaLetters + IupacLetters + GapLetter
 
 	// ProteinLetters is the gapless standard protein letters.
 	ProteinLetters = "ACDEFGHIKLMNPQRSTVWY"
-
-	// ProteinGappedLetters is the gapped standard protein letters.
-	ProteinGappedLetters = ProteinLetters + GapLetter
 )

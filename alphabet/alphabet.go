@@ -22,10 +22,10 @@ func (a Alphabet) Length() int {
 }
 
 // Contains confirms whether an array of potential letters are in the Alphabet
-func (a Alphabet) Contains(ls ...string) []bool {
-	found := make([]bool, len(ls))
-	for idx, letter := range ls {
-		found[idx] = strings.Index(a.String(), letter)%a.Width() == 0
+func (a Alphabet) Contains(letters ...string) []bool {
+	found := make([]bool, len(letters))
+	for i, l := range letters {
+		found[i] = strings.Index(a.String(), l)%a.Width() == 0
 	}
 	return found
 }
