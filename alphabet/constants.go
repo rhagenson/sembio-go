@@ -11,7 +11,7 @@ var (
 	Rna = New(RnaLetters, 1)
 
 	// RnaIupac is the sixteen letter IUPAC encoding
-	RnaIupac = New(RnaLetters, 1)
+	RnaIupac = New(RnaIupacLetters, 1)
 
 	// Protein is the twenty letter standard encoding
 	Protein = New(ProteinLetters, 1)
