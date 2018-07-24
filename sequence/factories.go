@@ -4,6 +4,10 @@ import (
 	"bitbucket.org/rhagenson/bigr/alphabet"
 )
 
+// Generator funcs create a particular *Sequence from a given string
+// The string may be invalid and therefore an error can result.
+type Generator func(string) (*Sequence, error)
+
 // NewDna generates a new sequence that validates against the Dna alphabet
 func NewDna(s string) (*Sequence, error) {
 	n := New(
