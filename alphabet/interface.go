@@ -14,5 +14,5 @@ type Interface interface {
 
 	// Width is the byte width of letters
 	// Zero (default int value) is the same as one to represent single-byte width
-	Width() int
+	Width() uint
 }
