@@ -39,6 +39,42 @@ func RandomStringFromRunes(seed int64, n uint, valid []rune) string {
 	return string(b)
 }
 
+// RandomWeightedString generates a random weighted string of length n
+// If n < sum(weights) the an approximation for proper weighting is used
+func RandomWeightedString(seed int64, n uint, weights map[rune]uint) string {
+	tot := uint(0)
+	for _, w := range weights {
+		tot += w
+	}
+	// TODO: If weights have a greatest common denominator, they should be reduced
+	valid := make([]rune, tot)
+	index := uint(0)
+	for r, w := range weights {
+		for i := index; i < index+w; i++ {
+			valid[i] = r
+		}
+		index += w
+	}
+	return RandomStringFromRunes(seed, n, valid)
+}
+
+func gcd(ns []uint) uint {
+	res := uint(0)
+	for i := 0; i < len(ns)-1; i++ {
+		res = gcdPair(ns[i], ns[i+1])
+	}
+	return res
+}
+
+func gcdPair(a, b uint) uint {
+	for b > 0 {
+		temp := b
+		b = a % b
+		a = temp
+	}
+	return a
+}
+
 // TestForMethodNamed is a test helper that wraps a check for method by name
 // Ideally I would use interfaces to test this property, but interfaces
 // match by function signature, not by interface so:

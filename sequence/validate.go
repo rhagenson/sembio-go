@@ -15,13 +15,14 @@ type Validator interface {
 }
 
 // AlphabetIs specifies whether a Sequence conforms to a given Alphabet
-func AlphabetIs(a alphabet.Alphabet) ValFunc {
+func AlphabetIs(a *alphabet.Alphabet) ValFunc {
 	return ValFunc(
 		func(x *Sequence) error {
-			for _, l := range x.seq {
-				for _, b := range a.Contains(byte(l)) {
-					if !b {
-						return fmt.Errorf("%q not in alphabet", l)
+			for i := uint(0); i < x.Length()+a.Width()-1; i = i + a.Width() {
+				letter := x.seq[i : i+a.Width()]
+				for _, found := range a.Contains(letter) {
+					if !found {
+						return fmt.Errorf("%q not in alphabet", letter)
 					}
 				}
 			}

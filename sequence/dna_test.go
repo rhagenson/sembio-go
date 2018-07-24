@@ -48,7 +48,7 @@ func TestDnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				seq, _ := NewDna(s)
 				return seq.Length() == n
@@ -62,7 +62,7 @@ func TestDnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				seq, _ := NewDna(s)
 				got, _ := seq.Range(0, n)
@@ -77,7 +77,7 @@ func TestDnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				seq, _ := NewDna(s)
 				onefourth := n * (1 / 4)
@@ -94,7 +94,7 @@ func TestDnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				seq, _ := NewDna(s)
 				onefourth := n * (1 / 4)
@@ -121,12 +121,12 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := NewDna(s)
 				clone := new(Sequence)
@@ -143,12 +143,12 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := NewDna(s)
 				clone := new(Sequence)
@@ -165,7 +165,7 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := NewDna(s)
 				clone := new(Sequence)
@@ -182,7 +182,7 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := NewDna(s)
 				clone := new(Sequence)
@@ -199,7 +199,7 @@ func TestDnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := NewDna(s)
 				clone := new(Sequence)
@@ -223,7 +223,7 @@ func TestDnaMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				want, _ := NewDna(s)
 				rev, _ := want.Reverse()
@@ -239,7 +239,7 @@ func TestDnaMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				want, _ := NewDna(s)
 				rev, _ := want.Complement()
@@ -255,7 +255,7 @@ func TestDnaMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				want, _ := NewDna(s)
 				rev, _ := want.RevComp()
@@ -286,7 +286,7 @@ func TestDnaErrors(t *testing.T) {
 						return false
 					}
 				} else {
-					t.Errorf("Dna should error when using invalid characters")
+					t.Errorf("Dna should error when using invalid characters, error")
 					return false
 				}
 				return true
@@ -300,7 +300,7 @@ func TestDnaErrors(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				seq, _ := NewDna(s)
 				_, err := seq.Range(n, 0)
@@ -330,7 +330,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				ret := make(chan *Sequence)
 				go func(s string, out chan *Sequence) {
@@ -354,7 +354,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewDna(s)
@@ -379,7 +379,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewDna(s)
@@ -404,7 +404,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Dna),
+					[]rune(alphabet.Dna.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewDna(s)

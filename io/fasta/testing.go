@@ -14,7 +14,7 @@ import (
 // lines using the letters from alphabet.Interface
 func RandomFasta(seed int64, n uint, a alphabet.Interface) io.Reader {
 	rand.Seed(seed)
-	valid := a.Copy()
+	valid := a.String()
 	linelen := func() uint {
 		if n < 80 {
 			return n / 2
