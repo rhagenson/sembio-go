@@ -10,14 +10,14 @@ type Alphabet struct {
 
 // Length is numbers of letters in the Alphabet
 func (a Alphabet) Length() int {
-	return len(a.letters) / a.width
+	return len(a.String()) / a.Width()
 }
 
 // Contains confirms whether an array of potential letters are in the Alphabet
 func (a Alphabet) Contains(ls ...string) []bool {
 	found := make([]bool, len(ls))
 	for idx, letter := range ls {
-		found[idx] = strings.Index(a.letters, letter)%a.width == 0
+		found[idx] = strings.Index(a.String(), letter)%a.Width() == 0
 	}
 	return found
 }
@@ -29,5 +29,8 @@ func (a Alphabet) String() string {
 
 // Width is the byte width of the Alphabet
 func (a Alphabet) Width() int {
+	if a.width == 0 {
+		return 1
+	}
 	return a.width
 }
