@@ -48,7 +48,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				seq, _ := NewRnaIupac(s)
 				return seq.Length() == n
@@ -62,7 +62,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				seq, _ := NewRnaIupac(s)
 				got, _ := seq.Range(0, n)
@@ -77,7 +77,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				seq, _ := NewRnaIupac(s)
 				onefourth := n * (1 / 4)
@@ -94,7 +94,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				seq, _ := NewRnaIupac(s)
 				onefourth := n * (1 / 4)
@@ -121,12 +121,12 @@ func TestRnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				original, _ := NewRnaIupac(s)
 				clone := new(Sequence)
@@ -143,12 +143,12 @@ func TestRnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				original, _ := NewRnaIupac(s)
 				clone := new(Sequence)
@@ -165,7 +165,7 @@ func TestRnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				original, _ := NewRnaIupac(s)
 				clone := new(Sequence)
@@ -182,7 +182,7 @@ func TestRnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				original, _ := NewRnaIupac(s)
 				clone := new(Sequence)
@@ -199,7 +199,7 @@ func TestRnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				original, _ := NewRnaIupac(s)
 				clone := new(Sequence)
@@ -223,7 +223,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				want, _ := NewRnaIupac(s)
 				rev, _ := want.Reverse()
@@ -239,7 +239,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				want, _ := NewRnaIupac(s)
 				rev, _ := want.Complement()
@@ -255,7 +255,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				want, _ := NewRnaIupac(s)
 				rev, _ := want.RevComp()
@@ -300,7 +300,7 @@ func TestRnaIupacErrors(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				seq, _ := NewRnaIupac(s)
 				_, err := seq.Range(n, 0)
@@ -330,7 +330,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				ret := make(chan *Sequence)
 				go func(s string, out chan *Sequence) {
@@ -354,7 +354,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewRnaIupac(s)
@@ -379,7 +379,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewRnaIupac(s)
@@ -404,7 +404,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.RnaIupac),
+					[]rune(alphabet.RnaIupac.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewRnaIupac(s)

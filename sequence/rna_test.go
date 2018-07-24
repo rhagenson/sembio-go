@@ -48,7 +48,7 @@ func TestRnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				seq, _ := NewRna(s)
 				return seq.Length() == n
@@ -62,7 +62,7 @@ func TestRnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				seq, _ := NewRna(s)
 				got, _ := seq.Range(0, n)
@@ -77,7 +77,7 @@ func TestRnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				seq, _ := NewRna(s)
 				onefourth := n * (1 / 4)
@@ -94,7 +94,7 @@ func TestRnaCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				seq, _ := NewRna(s)
 				onefourth := n * (1 / 4)
@@ -121,12 +121,12 @@ func TestRnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := NewRna(s)
 				clone := new(Sequence)
@@ -143,12 +143,12 @@ func TestRnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := NewRna(s)
 				clone := new(Sequence)
@@ -165,7 +165,7 @@ func TestRnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := NewRna(s)
 				clone := new(Sequence)
@@ -182,7 +182,7 @@ func TestRnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := NewRna(s)
 				clone := new(Sequence)
@@ -199,7 +199,7 @@ func TestRnaPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := NewRna(s)
 				clone := new(Sequence)
@@ -223,7 +223,7 @@ func TestRnaMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				want, _ := NewRna(s)
 				rev, _ := want.Reverse()
@@ -239,7 +239,7 @@ func TestRnaMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				want, _ := NewRna(s)
 				rev, _ := want.Complement()
@@ -255,7 +255,7 @@ func TestRnaMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				want, _ := NewRna(s)
 				rev, _ := want.RevComp()
@@ -300,7 +300,7 @@ func TestRnaErrors(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				seq, _ := NewRna(s)
 				_, err := seq.Range(n, 0)
@@ -330,7 +330,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				ret := make(chan *Sequence)
 				go func(s string, out chan *Sequence) {
@@ -354,7 +354,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewRna(s)
@@ -379,7 +379,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewRna(s)
@@ -404,7 +404,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.Rna),
+					[]rune(alphabet.Rna.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewRna(s)

@@ -48,7 +48,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				seq, _ := NewDnaIupac(s)
 				return seq.Length() == n
@@ -62,7 +62,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				seq, _ := NewDnaIupac(s)
 				got, _ := seq.Range(0, n)
@@ -77,7 +77,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				seq, _ := NewDnaIupac(s)
 				onefourth := n * (1 / 4)
@@ -94,7 +94,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				seq, _ := NewDnaIupac(s)
 				onefourth := n * (1 / 4)
@@ -121,12 +121,12 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := NewDnaIupac(s)
 				clone := new(Sequence)
@@ -143,12 +143,12 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				t := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := NewDnaIupac(s)
 				clone := new(Sequence)
@@ -165,7 +165,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := NewDnaIupac(s)
 				clone := new(Sequence)
@@ -182,7 +182,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := NewDnaIupac(s)
 				clone := new(Sequence)
@@ -199,7 +199,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := NewDnaIupac(s)
 				clone := new(Sequence)
@@ -223,7 +223,7 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				want, _ := NewDnaIupac(s)
 				rev, _ := want.Reverse()
@@ -239,7 +239,7 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				want, _ := NewDnaIupac(s)
 				rev, _ := want.Complement()
@@ -255,7 +255,7 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				want, _ := NewDnaIupac(s)
 				rev, _ := want.RevComp()
@@ -300,7 +300,7 @@ func TestDnaIupacErrors(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				seq, _ := NewDnaIupac(s)
 				_, err := seq.Range(n, 0)
@@ -330,7 +330,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				ret := make(chan *Sequence)
 				go func(s string, out chan *Sequence) {
@@ -354,7 +354,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewDnaIupac(s)
@@ -379,7 +379,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewDnaIupac(s)
@@ -404,7 +404,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bigr.RandomStringFromRunes(
 					bigr.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac),
+					[]rune(alphabet.DnaIupac.String()),
 				)
 				ret := make(chan *Sequence)
 				seq, _ := NewDnaIupac(s)
