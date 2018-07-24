@@ -1,7 +1,7 @@
 package alphabet
 
-// Interface is the abstract representation of a standard N-letter alphabet
-// where validity of a given latter can be checked.
+// Interface is the abstract representation of a finite-letter alphabet
+// where validity of a given letter can be checked.
 type Interface interface {
 	// Contains checks that the given elements are in the Alphabet
 	Contains(...string) []bool
