@@ -8,6 +8,14 @@ type Alphabet struct {
 	width   int
 }
 
+// New is an Alphabet generator
+func New(letters string, width int) *Alphabet {
+	return &Alphabet{
+		letters: letters,
+		width:   width,
+	}
+}
+
 // Length is numbers of letters in the Alphabet
 func (a Alphabet) Length() int {
 	return len(a.String()) / a.Width()
