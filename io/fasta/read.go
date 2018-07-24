@@ -2,14 +2,15 @@ package fasta
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"strings"
 
 	"bitbucket.org/rhagenson/bigr/sequence"
 )
 
-// Read reads in a FASTA file at r which should use the alphabet of t
-func Read(r io.Reader, f func(string) (sequence.Interface, error)) (Interface, error) {
+// Read parses a FASTA file at r, using the genrator f to validate the body
+func Read(r io.Reader, f sequence.Generator) (Interface, error) {
 	br := bufio.NewScanner(r)
 	br.Split(bufio.ScanLines)
 
@@ -17,6 +18,9 @@ func Read(r io.Reader, f func(string) (sequence.Interface, error)) (Interface, e
 	body := ""
 	for br.Scan() {
 		if strings.HasPrefix(br.Text(), string(fastaHeaderPrefix)) {
+			if header != "" {
+				return nil, fmt.Errorf("fasta should only have one header line")
+			}
 			header = header + strings.TrimSpace(
 				strings.TrimLeft(
 					br.Text(),
@@ -33,5 +37,5 @@ func Read(r io.Reader, f func(string) (sequence.Interface, error)) (Interface, e
 	return &Fasta{
 		header: header,
 		body:   seq,
-	}, err
+	}, fmt.Errorf("invalid sequence: %v", err)
 }
