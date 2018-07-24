@@ -21,7 +21,6 @@ func Phred33QScore(char byte) (uint8, error) {
 		return char - MinPhred33, nil
 	}
 	return 0, fmt.Errorf(
-		"%q is not a valid Illumina Phred quality score symbol",
-		char,
+		"%q is not a valid Illumina Phred33 symbol", char,
 	)
 }
