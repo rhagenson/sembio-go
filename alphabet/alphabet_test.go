@@ -18,6 +18,16 @@ func TestDna(t *testing.T) {
 			})
 		}
 	})
+	t.Run("Incorrect letters", func(t *testing.T) {
+		letters := TestSplitByN("XJZ", 1)
+		for i, v := range a.Contains(letters...) {
+			t.Run(fmt.Sprintf("Excludes %q", letters[i]), func(t *testing.T) {
+				if v {
+					t.Errorf("Should not contain %q", letters[i])
+				}
+			})
+		}
+	})
 }
 
 func TestDnaIupac(t *testing.T) {
@@ -34,6 +44,16 @@ func TestDnaIupac(t *testing.T) {
 			})
 		}
 	})
+	t.Run("Incorrect letters", func(t *testing.T) {
+		letters := TestSplitByN("XJZ", 1)
+		for i, v := range a.Contains(letters...) {
+			t.Run(fmt.Sprintf("Excludes %q", letters[i]), func(t *testing.T) {
+				if v {
+					t.Errorf("Should not contain %q", letters[i])
+				}
+			})
+		}
+	})
 }
 
 func TestRna(t *testing.T) {
@@ -45,6 +65,16 @@ func TestRna(t *testing.T) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
+				}
+			})
+		}
+	})
+	t.Run("Incorrect letters", func(t *testing.T) {
+		letters := TestSplitByN("XJZ", 1)
+		for i, v := range a.Contains(letters...) {
+			t.Run(fmt.Sprintf("Excludes %q", letters[i]), func(t *testing.T) {
+				if v {
+					t.Errorf("Should not contain %q", letters[i])
 				}
 			})
 		}
@@ -65,6 +95,16 @@ func TestRnaIupac(t *testing.T) {
 			})
 		}
 	})
+	t.Run("Incorrect letters", func(t *testing.T) {
+		letters := TestSplitByN("XJZ", 1)
+		for i, v := range a.Contains(letters...) {
+			t.Run(fmt.Sprintf("Excludes %q", letters[i]), func(t *testing.T) {
+				if v {
+					t.Errorf("Should not contain %q", letters[i])
+				}
+			})
+		}
+	})
 }
 
 func TestProtein(t *testing.T) {
@@ -76,6 +116,16 @@ func TestProtein(t *testing.T) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
+				}
+			})
+		}
+	})
+	t.Run("Incorrect letters", func(t *testing.T) {
+		letters := TestSplitByN("XJZ", 1)
+		for i, v := range a.Contains(letters...) {
+			t.Run(fmt.Sprintf("Excludes %q", letters[i]), func(t *testing.T) {
+				if v {
+					t.Errorf("Should not contain %q", letters[i])
 				}
 			})
 		}
@@ -92,6 +142,16 @@ func TestProteinGapped(t *testing.T) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
+				}
+			})
+		}
+	})
+	t.Run("Incorrect letters", func(t *testing.T) {
+		letters := TestSplitByN("XJZ", 1)
+		for i, v := range a.Contains(letters...) {
+			t.Run(fmt.Sprintf("Excludes %q", letters[i]), func(t *testing.T) {
+				if v {
+					t.Errorf("Should not contain %q", letters[i])
 				}
 			})
 		}

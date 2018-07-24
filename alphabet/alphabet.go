@@ -25,7 +25,9 @@ func (a Alphabet) Length() int {
 func (a Alphabet) Contains(letters ...string) []bool {
 	found := make([]bool, len(letters))
 	for i, l := range letters {
-		found[i] = strings.Index(a.String(), l)%a.Width() == 0
+		aligned := strings.Index(a.String(), l)%a.Width() == 0
+		present := strings.Index(a.String(), l) > -1
+		found[i] = aligned && present
 	}
 	return found
 }
