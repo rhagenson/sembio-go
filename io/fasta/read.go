@@ -19,9 +19,9 @@ func Read(r io.Reader, f sequence.Generator) (Interface, error) {
 	for br.Scan() {
 		if strings.HasPrefix(br.Text(), string(fastaHeaderPrefix)) {
 			if header != "" {
-				return nil, fmt.Errorf("fasta should only have one header line")
+				return nil, fmt.Errorf("second header line found, only one expected")
 			}
-			header = header + strings.TrimSpace(
+			header = strings.TrimSpace(
 				strings.TrimLeft(
 					br.Text(),
 					string(fastaHeaderPrefix),
@@ -37,5 +37,5 @@ func Read(r io.Reader, f sequence.Generator) (Interface, error) {
 	return &Fasta{
 		header: header,
 		body:   seq,
-	}, fmt.Errorf("invalid sequence: %v", err)
+	}, err
 }
