@@ -129,7 +129,7 @@ func TestDnaPersistence(t *testing.T) {
 					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := NewDna(s)
-				clone := new(Sequence)
+				clone := new(Dna)
 				*clone = *original
 				original.With(PositionAs(n*(1/2), t))
 				return original.seq == clone.seq
@@ -151,7 +151,7 @@ func TestDnaPersistence(t *testing.T) {
 					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := NewDna(s)
-				clone := new(Sequence)
+				clone := new(Dna)
 				*clone = *original
 				original.With(RangeAs(n*(1/4), n*(3/4), t))
 				return original.seq == clone.seq
@@ -168,7 +168,7 @@ func TestDnaPersistence(t *testing.T) {
 					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := NewDna(s)
-				clone := new(Sequence)
+				clone := new(Dna)
 				*clone = *original
 				original.Reverse()
 				return original.seq == clone.seq
@@ -185,7 +185,7 @@ func TestDnaPersistence(t *testing.T) {
 					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := NewDna(s)
-				clone := new(Sequence)
+				clone := new(Dna)
 				*clone = *original
 				original.Complement()
 				return original.seq == clone.seq
@@ -202,7 +202,7 @@ func TestDnaPersistence(t *testing.T) {
 					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := NewDna(s)
-				clone := new(Sequence)
+				clone := new(Dna)
 				*clone = *original
 				original.RevComp()
 				return original.seq == clone.seq
@@ -227,8 +227,8 @@ func TestDnaMethodComplements(t *testing.T) {
 				)
 				want, _ := NewDna(s)
 				rev, _ := want.Reverse()
-				got, _ := rev.Reverse()
-				return want.seq == got.seq
+				got, _ := rev.(*Dna).Reverse()
+				return want.seq == got.(*Dna).seq
 			},
 			gen.UIntRange(1, TestableLength),
 		),
@@ -243,8 +243,8 @@ func TestDnaMethodComplements(t *testing.T) {
 				)
 				want, _ := NewDna(s)
 				rev, _ := want.Complement()
-				got, _ := rev.Complement()
-				return want.seq == got.seq
+				got, _ := rev.(*Dna).Complement()
+				return want.seq == got.(*Dna).seq
 			},
 			gen.UIntRange(1, TestableLength),
 		),
@@ -259,8 +259,8 @@ func TestDnaMethodComplements(t *testing.T) {
 				)
 				want, _ := NewDna(s)
 				rev, _ := want.RevComp()
-				got, _ := rev.RevComp()
-				return want.seq == got.seq
+				got, _ := rev.(*Dna).RevComp()
+				return want.seq == got.(*Dna).seq
 			},
 			gen.UIntRange(1, TestableLength),
 		),
@@ -332,12 +332,12 @@ func TestDnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
-				ret := make(chan *Sequence)
-				go func(s string, out chan *Sequence) {
+				ret := make(chan *Dna)
+				go func(s string, out chan *Dna) {
 					seq, _ := NewDna(s)
 					out <- seq
 				}(s, ret)
-				go func(s string, out chan *Sequence) {
+				go func(s string, out chan *Dna) {
 					seq, _ := NewDna(s)
 					out <- seq
 				}(s, ret)
@@ -348,7 +348,7 @@ func TestDnaParallelOperations(t *testing.T) {
 			gen.UIntRange(1, TestableLength),
 		),
 	)
-	properties.Property("seq.Reverse() == seq.Reverse()",
+	properties.Property("seq.(*Dna).Reverse() == seq.(*Dna).Reverse()",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bigr.RandomStringFromRunes(
@@ -356,15 +356,15 @@ func TestDnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
-				ret := make(chan *Sequence)
+				ret := make(chan *Dna)
 				seq, _ := NewDna(s)
-				go func(seq *Sequence, out chan *Sequence) {
+				go func(seq *Dna, out chan *Dna) {
 					rev, _ := seq.Reverse()
-					out <- rev
+					out <- rev.(*Dna)
 				}(seq, ret)
-				go func(seq *Sequence, out chan *Sequence) {
+				go func(seq *Dna, out chan *Dna) {
 					rev, _ := seq.Reverse()
-					out <- rev
+					out <- rev.(*Dna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
@@ -381,15 +381,15 @@ func TestDnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
-				ret := make(chan *Sequence)
+				ret := make(chan *Dna)
 				seq, _ := NewDna(s)
-				go func(seq *Sequence, out chan *Sequence) {
-					rev, _ := seq.Reverse()
-					out <- rev
+				go func(seq *Dna, out chan *Dna) {
+					rev, _ := seq.RevComp()
+					out <- rev.(*Dna)
 				}(seq, ret)
-				go func(seq *Sequence, out chan *Sequence) {
-					rev, _ := seq.Reverse()
-					out <- rev
+				go func(seq *Dna, out chan *Dna) {
+					rev, _ := seq.RevComp()
+					out <- rev.(*Dna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
@@ -406,15 +406,15 @@ func TestDnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
-				ret := make(chan *Sequence)
+				ret := make(chan *Dna)
 				seq, _ := NewDna(s)
-				go func(seq *Sequence, out chan *Sequence) {
-					rev, _ := seq.Reverse()
-					out <- rev
+				go func(seq *Dna, out chan *Dna) {
+					rev, _ := seq.Complement()
+					out <- rev.(*Dna)
 				}(seq, ret)
-				go func(seq *Sequence, out chan *Sequence) {
-					rev, _ := seq.Reverse()
-					out <- rev
+				go func(seq *Dna, out chan *Dna) {
+					rev, _ := seq.Complement()
+					out <- rev.(*Dna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret

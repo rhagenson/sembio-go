@@ -15,25 +15,25 @@ type Interface interface {
 
 // Reverser can reverse the sequence
 type Reverser interface {
-	Reverse() (*Sequence, error)
+	Reverse() (Interface, error)
 }
 
 // Complementer can complement the sequence
 type Complementer interface {
-	Complement() (*Sequence, error)
+	Complement() (Interface, error)
 }
 
 // RevComper can reverse-complement the sequence
 type RevComper interface {
-	RevComp() (*Sequence, error)
+	RevComp() (Interface, error)
 }
 
 // Translater can translate the sequence
 type Translater interface {
-	Translate() (*Sequence, error)
+	Translate() (Interface, error)
 }
 
 // Transcriber can transcribe the sequence
 type Transcriber interface {
-	Transcribe() (*Sequence, error)
+	Transcribe() (Interface, error)
 }
