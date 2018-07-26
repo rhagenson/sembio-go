@@ -12,7 +12,7 @@ var _ Complementer = new(RnaIupac)
 // RnaIupac is a sequence witch validates aginst the RnaIupac alphabet
 // and knows how to reverse, complement, and revcomp itself
 type RnaIupac struct {
-	*sequence
+	*backer
 }
 
 // NewRnaIupac generates a New sequence that validates against the RnaIupac alphabet

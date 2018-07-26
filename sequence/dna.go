@@ -12,7 +12,7 @@ var _ Complementer = new(Dna)
 // Dna is a sequence witch validates aginst the Dna alphabet
 // and knows how to reverse, complement, and revcomp itself
 type Dna struct {
-	*sequence
+	*backer
 }
 
 // NewDna generates a New sequence that validates against the Dna alphabet

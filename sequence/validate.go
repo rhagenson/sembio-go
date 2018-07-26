@@ -7,7 +7,7 @@ import (
 )
 
 // ValFunc is a function that validates a sequence
-type ValFunc func(*sequence) error
+type ValFunc func(*backer) error
 
 // Validator provides a variadic method to validate the sequence
 type Validator interface {
@@ -17,7 +17,7 @@ type Validator interface {
 // AlphabetIs specifies whether a sequence conforms to a given Alphabet
 func AlphabetIs(a *alphabet.Alphabet) ValFunc {
 	return ValFunc(
-		func(x *sequence) error {
+		func(x *backer) error {
 			for i := uint(0); i < x.Length()+a.Width()-1; i = i + a.Width() {
 				letter := x.seq[i : i+a.Width()]
 				for _, found := range a.Contains(letter) {

@@ -12,7 +12,7 @@ var _ Complementer = new(Rna)
 // Rna is a sequence witch validates aginst the Rna alphabet
 // and knows how to reverse, complement, and revcomp itself
 type Rna struct {
-	*sequence
+	*backer
 }
 
 // NewRna generates a New sequence that validates against the Rna alphabet

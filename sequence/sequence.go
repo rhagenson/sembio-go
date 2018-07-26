@@ -4,16 +4,15 @@ import (
 	"fmt"
 )
 
-// sequence stores a linear sequence, accumulates its errors, and has
-// optional validators
-type sequence struct {
+// backer stores a linear sequence and has optional validators
+type backer struct {
 	seq        string
 	validators []ValFunc
 }
 
 // newBacker generates a new backing sequence with optional validators
-func newBacker(s string, vs ...ValFunc) *sequence {
-	seq := &sequence{
+func newBacker(s string, vs ...ValFunc) *backer {
+	seq := &backer{
 		seq:        s,
 		validators: make([]ValFunc, 0),
 	}
@@ -23,8 +22,8 @@ func newBacker(s string, vs ...ValFunc) *sequence {
 
 // With runs a series of transformative actions, returning the final result
 // Attention: With does not call Validate.
-func (x *sequence) With(fs ...WithFunc) *sequence {
-	y := new(sequence)
+func (x *backer) With(fs ...WithFunc) *backer {
+	y := new(backer)
 	*y = *x // Create copy to protext the receiver from Wither funcs
 	for _, f := range fs {
 		y = f(y)
@@ -33,8 +32,8 @@ func (x *sequence) With(fs ...WithFunc) *sequence {
 }
 
 // Validate runs a series of Validator funcs, returning the first error
-func (x *sequence) Validate() error {
-	y := new(sequence)
+func (x *backer) Validate() error {
+	y := new(backer)
 	for _, f := range x.validators {
 		*y = *x // Create a copy to protect Validator funcs from each other
 		err := f(y)
@@ -46,12 +45,12 @@ func (x *sequence) Validate() error {
 }
 
 // Length is the number of positions in the sequence
-func (x *sequence) Length() uint {
+func (x *backer) Length() uint {
 	return uint(len(x.seq))
 }
 
 // Position is the letter found at position n
-func (x *sequence) Position(n uint) (string, error) {
+func (x *backer) Position(n uint) (string, error) {
 	if n < x.Length() {
 		return string(x.seq[n]), nil
 	}
@@ -59,7 +58,7 @@ func (x *sequence) Position(n uint) (string, error) {
 }
 
 // Range is the letters found in the half-open range
-func (x *sequence) Range(st, sp uint) (string, error) {
+func (x *backer) Range(st, sp uint) (string, error) {
 	if sp == x.Length() {
 		return x.seq[st:], nil
 	} else if st < sp && sp < x.Length() {
