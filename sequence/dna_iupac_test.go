@@ -129,7 +129,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := NewDnaIupac(s)
-				clone := new(Sequence)
+				clone := new(DnaIupac)
 				*clone = *original
 				original.With(PositionAs(n*(1/2), t))
 				return original.seq == clone.seq
@@ -151,7 +151,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := NewDnaIupac(s)
-				clone := new(Sequence)
+				clone := new(DnaIupac)
 				*clone = *original
 				original.With(RangeAs(n*(1/4), n*(3/4), t))
 				return original.seq == clone.seq
@@ -168,7 +168,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := NewDnaIupac(s)
-				clone := new(Sequence)
+				clone := new(DnaIupac)
 				*clone = *original
 				original.Reverse()
 				return original.seq == clone.seq
@@ -185,7 +185,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := NewDnaIupac(s)
-				clone := new(Sequence)
+				clone := new(DnaIupac)
 				*clone = *original
 				original.Complement()
 				return original.seq == clone.seq
@@ -202,7 +202,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := NewDnaIupac(s)
-				clone := new(Sequence)
+				clone := new(DnaIupac)
 				*clone = *original
 				original.RevComp()
 				return original.seq == clone.seq
@@ -227,8 +227,8 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				)
 				want, _ := NewDnaIupac(s)
 				rev, _ := want.Reverse()
-				got, _ := rev.Reverse()
-				return want.seq == got.seq
+				got, _ := rev.(*DnaIupac).Reverse()
+				return want.seq == got.(*DnaIupac).seq
 			},
 			gen.UIntRange(1, TestableLength),
 		),
@@ -243,8 +243,8 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				)
 				want, _ := NewDnaIupac(s)
 				rev, _ := want.Complement()
-				got, _ := rev.Complement()
-				return want.seq == got.seq
+				got, _ := rev.(*DnaIupac).Complement()
+				return want.seq == got.(*DnaIupac).seq
 			},
 			gen.UIntRange(1, TestableLength),
 		),
@@ -259,8 +259,8 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				)
 				want, _ := NewDnaIupac(s)
 				rev, _ := want.RevComp()
-				got, _ := rev.RevComp()
-				return want.seq == got.seq
+				got, _ := rev.(*DnaIupac).RevComp()
+				return want.seq == got.(*DnaIupac).seq
 			},
 			gen.UIntRange(1, TestableLength),
 		),
@@ -332,12 +332,12 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				ret := make(chan *Sequence)
-				go func(s string, out chan *Sequence) {
+				ret := make(chan *DnaIupac)
+				go func(s string, out chan *DnaIupac) {
 					seq, _ := NewDnaIupac(s)
 					out <- seq
 				}(s, ret)
-				go func(s string, out chan *Sequence) {
+				go func(s string, out chan *DnaIupac) {
 					seq, _ := NewDnaIupac(s)
 					out <- seq
 				}(s, ret)
@@ -356,15 +356,15 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				ret := make(chan *Sequence)
+				ret := make(chan *DnaIupac)
 				seq, _ := NewDnaIupac(s)
-				go func(seq *Sequence, out chan *Sequence) {
+				go func(seq *DnaIupac, out chan *DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev
+					out <- rev.(*DnaIupac)
 				}(seq, ret)
-				go func(seq *Sequence, out chan *Sequence) {
+				go func(seq *DnaIupac, out chan *DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev
+					out <- rev.(*DnaIupac)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
@@ -381,15 +381,15 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				ret := make(chan *Sequence)
+				ret := make(chan *DnaIupac)
 				seq, _ := NewDnaIupac(s)
-				go func(seq *Sequence, out chan *Sequence) {
+				go func(seq *DnaIupac, out chan *DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev
+					out <- rev.(*DnaIupac)
 				}(seq, ret)
-				go func(seq *Sequence, out chan *Sequence) {
+				go func(seq *DnaIupac, out chan *DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev
+					out <- rev.(*DnaIupac)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
@@ -406,15 +406,15 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				ret := make(chan *Sequence)
+				ret := make(chan *DnaIupac)
 				seq, _ := NewDnaIupac(s)
-				go func(seq *Sequence, out chan *Sequence) {
+				go func(seq *DnaIupac, out chan *DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev
+					out <- rev.(*DnaIupac)
 				}(seq, ret)
-				go func(seq *Sequence, out chan *Sequence) {
+				go func(seq *DnaIupac, out chan *DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev
+					out <- rev.(*DnaIupac)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret

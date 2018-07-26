@@ -129,7 +129,7 @@ func TestRnaPersistence(t *testing.T) {
 					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := NewRna(s)
-				clone := new(Sequence)
+				clone := new(Rna)
 				*clone = *original
 				original.With(PositionAs(n*(1/2), t))
 				return original.seq == clone.seq
@@ -151,7 +151,7 @@ func TestRnaPersistence(t *testing.T) {
 					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := NewRna(s)
-				clone := new(Sequence)
+				clone := new(Rna)
 				*clone = *original
 				original.With(RangeAs(n*(1/4), n*(3/4), t))
 				return original.seq == clone.seq
@@ -168,7 +168,7 @@ func TestRnaPersistence(t *testing.T) {
 					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := NewRna(s)
-				clone := new(Sequence)
+				clone := new(Rna)
 				*clone = *original
 				original.Reverse()
 				return original.seq == clone.seq
@@ -185,7 +185,7 @@ func TestRnaPersistence(t *testing.T) {
 					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := NewRna(s)
-				clone := new(Sequence)
+				clone := new(Rna)
 				*clone = *original
 				original.Complement()
 				return original.seq == clone.seq
@@ -202,7 +202,7 @@ func TestRnaPersistence(t *testing.T) {
 					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := NewRna(s)
-				clone := new(Sequence)
+				clone := new(Rna)
 				*clone = *original
 				original.RevComp()
 				return original.seq == clone.seq
@@ -227,8 +227,8 @@ func TestRnaMethodComplements(t *testing.T) {
 				)
 				want, _ := NewRna(s)
 				rev, _ := want.Reverse()
-				got, _ := rev.Reverse()
-				return want.seq == got.seq
+				got, _ := rev.(*Rna).Reverse()
+				return want.seq == got.(*Rna).seq
 			},
 			gen.UIntRange(1, TestableLength),
 		),
@@ -243,8 +243,8 @@ func TestRnaMethodComplements(t *testing.T) {
 				)
 				want, _ := NewRna(s)
 				rev, _ := want.Complement()
-				got, _ := rev.Complement()
-				return want.seq == got.seq
+				got, _ := rev.(*Rna).Complement()
+				return want.seq == got.(*Rna).seq
 			},
 			gen.UIntRange(1, TestableLength),
 		),
@@ -259,8 +259,8 @@ func TestRnaMethodComplements(t *testing.T) {
 				)
 				want, _ := NewRna(s)
 				rev, _ := want.RevComp()
-				got, _ := rev.RevComp()
-				return want.seq == got.seq
+				got, _ := rev.(*Rna).RevComp()
+				return want.seq == got.(*Rna).seq
 			},
 			gen.UIntRange(1, TestableLength),
 		),
@@ -332,12 +332,12 @@ func TestRnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *Sequence)
-				go func(s string, out chan *Sequence) {
+				ret := make(chan *Rna)
+				go func(s string, out chan *Rna) {
 					seq, _ := NewRna(s)
 					out <- seq
 				}(s, ret)
-				go func(s string, out chan *Sequence) {
+				go func(s string, out chan *Rna) {
 					seq, _ := NewRna(s)
 					out <- seq
 				}(s, ret)
@@ -356,15 +356,15 @@ func TestRnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *Sequence)
+				ret := make(chan *Rna)
 				seq, _ := NewRna(s)
-				go func(seq *Sequence, out chan *Sequence) {
+				go func(seq *Rna, out chan *Rna) {
 					rev, _ := seq.Reverse()
-					out <- rev
+					out <- rev.(*Rna)
 				}(seq, ret)
-				go func(seq *Sequence, out chan *Sequence) {
+				go func(seq *Rna, out chan *Rna) {
 					rev, _ := seq.Reverse()
-					out <- rev
+					out <- rev.(*Rna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
@@ -381,15 +381,15 @@ func TestRnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *Sequence)
+				ret := make(chan *Rna)
 				seq, _ := NewRna(s)
-				go func(seq *Sequence, out chan *Sequence) {
-					rev, _ := seq.Reverse()
-					out <- rev
+				go func(seq *Rna, out chan *Rna) {
+					rev, _ := seq.RevComp()
+					out <- rev.(*Rna)
 				}(seq, ret)
-				go func(seq *Sequence, out chan *Sequence) {
-					rev, _ := seq.Reverse()
-					out <- rev
+				go func(seq *Rna, out chan *Rna) {
+					rev, _ := seq.RevComp()
+					out <- rev.(*Rna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
@@ -406,15 +406,15 @@ func TestRnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *Sequence)
+				ret := make(chan *Rna)
 				seq, _ := NewRna(s)
-				go func(seq *Sequence, out chan *Sequence) {
-					rev, _ := seq.Reverse()
-					out <- rev
+				go func(seq *Rna, out chan *Rna) {
+					rev, _ := seq.Complement()
+					out <- rev.(*Rna)
 				}(seq, ret)
-				go func(seq *Sequence, out chan *Sequence) {
-					rev, _ := seq.Reverse()
-					out <- rev
+				go func(seq *Rna, out chan *Rna) {
+					rev, _ := seq.Complement()
+					out <- rev.(*Rna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
