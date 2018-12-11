@@ -4,6 +4,7 @@ import (
 	"io"
 
 	"bitbucket.org/rhagenson/bio/sequence"
+	"bitbucket.org/rhagenson/bio/sequence/persistent"
 )
 
 var _ Interface = new(Dna)
@@ -16,7 +17,7 @@ type Dna struct {
 // ReadDna reads in a FASTA file that should contain only valid DNA letters
 func ReadDna(r io.Reader) (Dna, error) {
 	s, err := Read(r, func(s string) (sequence.Interface, error) {
-		return sequence.NewDna(s)
+		return persistent.NewDna(s)
 	})
 	return Dna{s.(*Struct)}, err
 }
