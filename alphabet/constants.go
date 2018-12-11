@@ -4,6 +4,7 @@ package alphabet
 var (
 	// Dna is the four letter standard encoding
 	Dna = New(DnaLetters, 1)
+
 	// DnaIupac is the sixteen letter IUPAC encoding
 	DnaIupac = New(DnaIupacLetters, 1)
 
