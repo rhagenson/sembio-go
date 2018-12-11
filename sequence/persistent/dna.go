@@ -11,7 +11,7 @@ var _ sequence.RevComper = new(Dna)
 var _ sequence.Complementer = new(Dna)
 var _ Wither = new(Dna)
 
-// Dna is a sequence witch validates aginst the Dna alphabet
+// Dna is a sequence witch validates against the Dna alphabet
 // and knows how to reverse, complement, and revcomp itself
 type Dna struct {
 	*Struct

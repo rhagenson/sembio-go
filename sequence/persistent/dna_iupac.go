@@ -11,7 +11,7 @@ var _ sequence.RevComper = new(DnaIupac)
 var _ sequence.Complementer = new(DnaIupac)
 var _ Wither = new(DnaIupac)
 
-// DnaIupac is a sequence witch validates aginst the DnaIupac alphabet
+// DnaIupac is a sequence witch validates against the DnaIupac alphabet
 // and knows how to reverse, complement, and revcomp itself
 type DnaIupac struct {
 	*Struct

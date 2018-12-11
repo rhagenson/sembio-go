@@ -11,7 +11,7 @@ var _ sequence.RevComper = new(Rna)
 var _ sequence.Complementer = new(Rna)
 var _ Wither = new(Rna)
 
-// Rna is a sequence witch validates aginst the Rna alphabet
+// Rna is a sequence witch validates against the Rna alphabet
 // and knows how to reverse, complement, and revcomp itself
 type Rna struct {
 	*Struct
