@@ -39,7 +39,7 @@ func (x *Dna) RevComp() (Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l/2; i++ {
-		t[i], t[l-1-i] = complement.Atgc(t[l-1-i]), complement.Atgc(t[i])
+		t[i], t[l-1-i] = complement.Dna(t[l-1-i]), complement.Dna(t[i])
 	}
 	return NewDna(string(t))
 }
@@ -49,7 +49,7 @@ func (x *Dna) Complement() (Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l; i++ {
-		t[i] = complement.Atgc(byte(x.seq[i]))
+		t[i] = complement.Dna(byte(x.seq[i]))
 	}
 	return NewDna(string(t))
 }

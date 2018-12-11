@@ -39,7 +39,7 @@ func (x *Rna) RevComp() (Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l/2; i++ {
-		t[i], t[l-1-i] = complement.Augc(t[l-1-i]), complement.Augc(t[i])
+		t[i], t[l-1-i] = complement.Rna(t[l-1-i]), complement.Rna(t[i])
 	}
 	return NewRna(string(t))
 }
@@ -49,7 +49,7 @@ func (x *Rna) Complement() (Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l; i++ {
-		t[i] = complement.Augc(byte(x.seq[i]))
+		t[i] = complement.Rna(byte(x.seq[i]))
 	}
 	return NewRna(string(t))
 }
