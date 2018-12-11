@@ -1,6 +1,6 @@
 package complement
 
-// Rna is the usual way to complement standard AUGC
+// Rna complements standard AUGC
 func Rna(c byte) byte {
 	switch c {
 	case 'A':

@@ -1,6 +1,6 @@
 package complement
 
-// Dna is the usual way to complement standard ATGC
+// Dna complements standard ATGC
 func Dna(c byte) byte {
 	switch c {
 	case 'A':

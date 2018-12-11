@@ -1,7 +1,6 @@
 package complement
 
-// Iupac is the usual way to
-// complement IUPAC ambiguous codes
+// Iupac complements IUPAC ambiguous codes
 func Iupac(c byte) byte {
 	switch c {
 	case 'S', 'W', 'N', '-':
@@ -32,7 +31,7 @@ func Iupac(c byte) byte {
 	}
 }
 
-// DnaIupac is the usual way to complement IUPAC DNA
+// DnaIupac complements IUPAC DNA
 func DnaIupac(c byte) byte {
 	if d := Dna(c); d != 'X' {
 		return d
@@ -40,7 +39,7 @@ func DnaIupac(c byte) byte {
 	return Iupac(c)
 }
 
-// RnaIupac is the usual way to complement IUPAC RNA
+// RnaIupac complements IUPAC RNA
 func RnaIupac(c byte) byte {
 	if d := Rna(c); d != 'X' {
 		return d
