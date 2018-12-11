@@ -1,8 +1,8 @@
 package complement
 
-// IupacPairs is the usual way to
-// complement IUPAC ambiguous codes via switch
-func IupacPairs(c byte) byte {
+// Iupac is the usual way to
+// complement IUPAC ambiguous codes
+func Iupac(c byte) byte {
 	switch c {
 	case 'S', 'W', 'N', '-':
 		return c
@@ -32,18 +32,18 @@ func IupacPairs(c byte) byte {
 	}
 }
 
-// DnaIupac is the usual way to complement IUPAC DNA via switch
+// DnaIupac is the usual way to complement IUPAC DNA
 func DnaIupac(c byte) byte {
-	if d := AtgcPairs(c); d != 'X' {
+	if d := Dna(c); d != 'X' {
 		return d
 	}
-	return IupacPairs(c)
+	return Iupac(c)
 }
 
-// RnaIupac is the usual way to complement IUPAC RNA via switch
+// RnaIupac is the usual way to complement IUPAC RNA
 func RnaIupac(c byte) byte {
-	if d := AugcPairs(c); d != 'X' {
+	if d := Rna(c); d != 'X' {
 		return d
 	}
-	return IupacPairs(c)
+	return Iupac(c)
 }
