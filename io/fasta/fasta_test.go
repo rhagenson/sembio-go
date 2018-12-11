@@ -6,7 +6,6 @@ import (
 
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
-
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
@@ -15,13 +14,13 @@ import (
 var _ Interface = new(Fasta)
 
 func TestDna(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("ReadDna removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
-				r := RandomFasta(
+				r := TestGenFasta(
 					bio.TestSeed,
 					n,
 					alphabet.Dna,
@@ -40,13 +39,13 @@ func TestDna(t *testing.T) {
 }
 
 func TestDnaIupac(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("ReadDnaIupac removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
-				r := RandomFasta(
+				r := TestGenFasta(
 					bio.TestSeed,
 					n,
 					alphabet.DnaIupac,
@@ -65,13 +64,13 @@ func TestDnaIupac(t *testing.T) {
 }
 
 func TestRna(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("ReadRna removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
-				r := RandomFasta(
+				r := TestGenFasta(
 					bio.TestSeed,
 					n,
 					alphabet.Rna,
@@ -90,13 +89,13 @@ func TestRna(t *testing.T) {
 }
 
 func TestRnaIupac(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("ReadRnaIupa removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
-				r := RandomFasta(
+				r := TestGenFasta(
 					bio.TestSeed,
 					n,
 					alphabet.RnaIupac,

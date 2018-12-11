@@ -39,7 +39,7 @@ func TestRnaIupacHasMethods(t *testing.T) {
 }
 
 func TestRnaIupacCreation(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("RnaIupac is same length as input",
@@ -112,7 +112,7 @@ func TestRnaIupacCreation(t *testing.T) {
 }
 
 func TestRnaIupacPersistence(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("WithPosition does not mutate in-place",
@@ -214,7 +214,7 @@ func TestRnaIupacPersistence(t *testing.T) {
 }
 
 func TestRnaIupacMethodComplements(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Reverse().Reverse() is original",
@@ -269,7 +269,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 }
 
 func TestRnaIupacErrors(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Giving invalid input adds an error",
@@ -321,7 +321,7 @@ func TestRnaIupacErrors(t *testing.T) {
 }
 
 func TestRnaIupacParallelOperations(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("NewRnaIupac(s) == NewRnaIupac(s)",

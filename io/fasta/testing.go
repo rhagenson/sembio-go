@@ -8,11 +8,11 @@ import (
 	"bitbucket.org/rhagenson/bio/alphabet"
 )
 
-// RandomFasta generates a random valid FASTA input
+// TestGenFasta generates a random valid FASTA input
 // This generator is based on the very broad definition of FASTA being
 // a two-line format with header and body line(s). It generates n 80-length
 // lines using the letters from alphabet.Interface
-func RandomFasta(seed int64, n uint, a alphabet.Interface) io.Reader {
+func TestGenFasta(seed int64, n uint, a alphabet.Interface) io.Reader {
 	rand.Seed(seed)
 	valid := a.String()
 	linelen := func() uint {

@@ -39,7 +39,7 @@ func TestDnaHasMethods(t *testing.T) {
 }
 
 func TestDnaCreation(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Dna is same length as input",
@@ -112,7 +112,7 @@ func TestDnaCreation(t *testing.T) {
 }
 
 func TestDnaPersistence(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("WithPosition does not mutate in-place",
@@ -214,7 +214,7 @@ func TestDnaPersistence(t *testing.T) {
 }
 
 func TestDnaMethodComplements(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Reverse().Reverse() is original",
@@ -269,7 +269,7 @@ func TestDnaMethodComplements(t *testing.T) {
 }
 
 func TestDnaErrors(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Giving invalid input adds an error",
@@ -321,7 +321,7 @@ func TestDnaErrors(t *testing.T) {
 }
 
 func TestDnaParallelOperations(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("NewDna(s) == NewDna(s)",

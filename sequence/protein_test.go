@@ -29,7 +29,7 @@ func TestProteinHasMethods(t *testing.T) {
 }
 
 func TestProteinCreation(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Protein is same length as input",
@@ -102,7 +102,7 @@ func TestProteinCreation(t *testing.T) {
 }
 
 func TestProteinPersistence(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("WithPosition does not mutate in-place",
@@ -170,7 +170,7 @@ func TestProteinPersistence(t *testing.T) {
 }
 
 func TestProteinMethodComplements(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Reverse().Reverse() is original",
@@ -193,7 +193,7 @@ func TestProteinMethodComplements(t *testing.T) {
 }
 
 func TestProteinErrors(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Giving invalid input adds an error",
@@ -245,7 +245,7 @@ func TestProteinErrors(t *testing.T) {
 }
 
 func TestProteinParallelOperations(t *testing.T) {
-	parameters := gopter.DefaultTestParameters()
+	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("NewProtein(s) == NewProtein(s)",
