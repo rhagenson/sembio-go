@@ -12,12 +12,12 @@ var _ Complementer = new(RnaIupac)
 // RnaIupac is a sequence witch validates aginst the RnaIupac alphabet
 // and knows how to reverse, complement, and revcomp itself
 type RnaIupac struct {
-	*backer
+	*Struct
 }
 
 // NewRnaIupac generates a New sequence that validates against the RnaIupac alphabet
 func NewRnaIupac(s string) (*RnaIupac, error) {
-	n := newBacker(
+	n := NewStruct(
 		s,
 		AlphabetIs(alphabet.RnaIupac),
 	)

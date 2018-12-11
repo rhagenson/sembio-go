@@ -1,5 +1,5 @@
 package sequence
 
-var _ Interface = new(backer)
-var _ Wither = new(backer)
-var _ Validator = new(backer)
+var _ Interface = new(Struct)
+var _ Wither = new(Struct)
+var _ Validator = new(Struct)
