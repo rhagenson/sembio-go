@@ -1,4 +1,4 @@
-package persistent
+package persistent_test
 
 import (
 	"strings"
@@ -7,20 +7,21 @@ import (
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
+	"bitbucket.org/rhagenson/bio/sequence/persistent"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
 func TestInitializedRna(t *testing.T) {
-	s, _ := NewRna("")
+	s, _ := persistent.NewRna("")
 	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
 	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
 	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
 }
 
 func TestRnaHasMethods(t *testing.T) {
-	s, _ := NewRna("")
+	s, _ := persistent.NewRna("")
 
 	t.Run("Has Reverse method", func(t *testing.T) {
 		if _, err := s.Reverse(); err != nil {
@@ -51,7 +52,7 @@ func TestRnaCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				seq, _ := NewRna(s)
+				seq, _ := persistent.NewRna(s)
 				return seq.Length() == n
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -65,7 +66,7 @@ func TestRnaCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				seq, _ := NewRna(s)
+				seq, _ := persistent.NewRna(s)
 				got, _ := seq.Range(0, n)
 				return got == s
 			},
@@ -80,7 +81,7 @@ func TestRnaCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				seq, _ := NewRna(s)
+				seq, _ := persistent.NewRna(s)
 				onefourth := n * (1 / 4)
 				threefourths := n * (3 / 4)
 				got, _ := seq.Range(onefourth, threefourths)
@@ -97,7 +98,7 @@ func TestRnaCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				seq, _ := NewRna(s)
+				seq, _ := persistent.NewRna(s)
 				onefourth := n * (1 / 4)
 				threefourth := n * (3 / 4)
 				gotoneforth, _ := seq.Position(onefourth)
@@ -129,11 +130,11 @@ func TestRnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				original, _ := NewRna(s)
-				clone := new(Rna)
+				original, _ := persistent.NewRna(s)
+				clone := new(persistent.Rna)
 				*clone = *original
-				original.With(PositionAs(n*(1/2), t))
-				return original.seq == clone.seq
+				original.With(persistent.PositionAs(n*(1/2), t))
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -151,11 +152,11 @@ func TestRnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				original, _ := NewRna(s)
-				clone := new(Rna)
+				original, _ := persistent.NewRna(s)
+				clone := new(persistent.Rna)
 				*clone = *original
-				original.With(RangeAs(n*(1/4), n*(3/4), t))
-				return original.seq == clone.seq
+				original.With(persistent.RangeAs(n*(1/4), n*(3/4), t))
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -168,11 +169,11 @@ func TestRnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				original, _ := NewRna(s)
-				clone := new(Rna)
+				original, _ := persistent.NewRna(s)
+				clone := new(persistent.Rna)
 				*clone = *original
 				original.Reverse()
-				return original.seq == clone.seq
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -185,11 +186,11 @@ func TestRnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				original, _ := NewRna(s)
-				clone := new(Rna)
+				original, _ := persistent.NewRna(s)
+				clone := new(persistent.Rna)
 				*clone = *original
 				original.Complement()
-				return original.seq == clone.seq
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -202,11 +203,11 @@ func TestRnaPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				original, _ := NewRna(s)
-				clone := new(Rna)
+				original, _ := persistent.NewRna(s)
+				clone := new(persistent.Rna)
 				*clone = *original
 				original.RevComp()
-				return original.seq == clone.seq
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -226,10 +227,10 @@ func TestRnaMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				want, _ := NewRna(s)
+				want, _ := persistent.NewRna(s)
 				rev, _ := want.Reverse()
-				got, _ := rev.(*Rna).Reverse()
-				return want.seq == got.(*Rna).seq
+				got, _ := rev.(*persistent.Rna).Reverse()
+				return want.String() == got.(*persistent.Rna).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -242,10 +243,10 @@ func TestRnaMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				want, _ := NewRna(s)
+				want, _ := persistent.NewRna(s)
 				rev, _ := want.Complement()
-				got, _ := rev.(*Rna).Complement()
-				return want.seq == got.(*Rna).seq
+				got, _ := rev.(*persistent.Rna).Complement()
+				return want.String() == got.(*persistent.Rna).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -258,10 +259,10 @@ func TestRnaMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				want, _ := NewRna(s)
+				want, _ := persistent.NewRna(s)
 				rev, _ := want.RevComp()
-				got, _ := rev.(*Rna).RevComp()
-				return want.seq == got.(*Rna).seq
+				got, _ := rev.(*persistent.Rna).RevComp()
+				return want.String() == got.(*persistent.Rna).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -281,7 +282,7 @@ func TestRnaErrors(t *testing.T) {
 					n,
 					[]rune("XNQZ"),
 				)
-				if _, err := NewRna(s); err != nil {
+				if _, err := persistent.NewRna(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
 						t.Errorf("Rna creation error should mention not in alphabet")
 						return false
@@ -303,7 +304,7 @@ func TestRnaErrors(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				seq, _ := NewRna(s)
+				seq, _ := persistent.NewRna(s)
 				_, err := seq.Range(n, 0)
 				if err == nil {
 					t.Errorf("Rna should accumulate an err during Range() when start > stop")
@@ -325,7 +326,7 @@ func TestRnaParallelOperations(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("NewRna(s) == NewRna(s)",
+	properties.Property("persistent.NewRna(s) == persistent.NewRna(s)",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
@@ -333,18 +334,18 @@ func TestRnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *Rna)
-				go func(s string, out chan *Rna) {
-					seq, _ := NewRna(s)
+				ret := make(chan *persistent.Rna)
+				go func(s string, out chan *persistent.Rna) {
+					seq, _ := persistent.NewRna(s)
 					out <- seq
 				}(s, ret)
-				go func(s string, out chan *Rna) {
-					seq, _ := NewRna(s)
+				go func(s string, out chan *persistent.Rna) {
+					seq, _ := persistent.NewRna(s)
 					out <- seq
 				}(s, ret)
 				first := <-ret
 				second := <-ret
-				return first.seq == second.seq
+				return first.String() == second.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -357,19 +358,19 @@ func TestRnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *Rna)
-				seq, _ := NewRna(s)
-				go func(seq *Rna, out chan *Rna) {
+				ret := make(chan *persistent.Rna)
+				seq, _ := persistent.NewRna(s)
+				go func(seq *persistent.Rna, out chan *persistent.Rna) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*Rna)
+					out <- rev.(*persistent.Rna)
 				}(seq, ret)
-				go func(seq *Rna, out chan *Rna) {
+				go func(seq *persistent.Rna, out chan *persistent.Rna) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*Rna)
+					out <- rev.(*persistent.Rna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
-				return first.seq == second.seq
+				return first.String() == second.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -382,19 +383,19 @@ func TestRnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *Rna)
-				seq, _ := NewRna(s)
-				go func(seq *Rna, out chan *Rna) {
+				ret := make(chan *persistent.Rna)
+				seq, _ := persistent.NewRna(s)
+				go func(seq *persistent.Rna, out chan *persistent.Rna) {
 					rev, _ := seq.RevComp()
-					out <- rev.(*Rna)
+					out <- rev.(*persistent.Rna)
 				}(seq, ret)
-				go func(seq *Rna, out chan *Rna) {
+				go func(seq *persistent.Rna, out chan *persistent.Rna) {
 					rev, _ := seq.RevComp()
-					out <- rev.(*Rna)
+					out <- rev.(*persistent.Rna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
-				return first.seq == second.seq
+				return first.String() == second.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -407,19 +408,19 @@ func TestRnaParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *Rna)
-				seq, _ := NewRna(s)
-				go func(seq *Rna, out chan *Rna) {
+				ret := make(chan *persistent.Rna)
+				seq, _ := persistent.NewRna(s)
+				go func(seq *persistent.Rna, out chan *persistent.Rna) {
 					rev, _ := seq.Complement()
-					out <- rev.(*Rna)
+					out <- rev.(*persistent.Rna)
 				}(seq, ret)
-				go func(seq *Rna, out chan *Rna) {
+				go func(seq *persistent.Rna, out chan *persistent.Rna) {
 					rev, _ := seq.Complement()
-					out <- rev.(*Rna)
+					out <- rev.(*persistent.Rna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
-				return first.seq == second.seq
+				return first.String() == second.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),

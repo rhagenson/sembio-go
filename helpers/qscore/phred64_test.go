@@ -1,14 +1,16 @@
-package qscore
+package qscore_test
 
 import (
 	"math"
 	"testing"
+
+	"bitbucket.org/rhagenson/bio/helpers/qscore"
 )
 
 func TestIllumina64V13(t *testing.T) {
 	want := int8(0)
-	for c := minIllumina64V13; c <= maxIllumina64V13; c++ {
-		got, _ := Illumina64V13(c)
+	for c := qscore.MinIllumina64V13; c <= qscore.MaxIllumina64V13; c++ {
+		got, _ := qscore.Illumina64V13(c)
 		if got != want {
 			t.Errorf("Illumina64V13(%v) got %v; want: %v", c, got, want)
 		}
@@ -18,8 +20,8 @@ func TestIllumina64V13(t *testing.T) {
 
 func TestIllumina64V13Errors(t *testing.T) {
 	t.Run("Below minimum errors out", func(t *testing.T) {
-		for c := byte(0); c < minIllumina64V13; c++ {
-			got, err := Illumina64V13(c)
+		for c := byte(0); c < qscore.MinIllumina64V13; c++ {
+			got, err := qscore.Illumina64V13(c)
 			if err == nil {
 				t.Errorf("Illumina64V13(%v) should fail, got nil error", c)
 			}
@@ -29,8 +31,8 @@ func TestIllumina64V13Errors(t *testing.T) {
 		}
 	})
 	t.Run("Above maximum errors out", func(t *testing.T) {
-		for c := byte(maxIllumina64V13 + 1); c < byte(math.MaxUint8)/2; c++ {
-			got, err := Illumina64V13(c)
+		for c := byte(qscore.MaxIllumina64V13 + 1); c < byte(math.MaxUint8)/2; c++ {
+			got, err := qscore.Illumina64V13(c)
 			if err == nil {
 				t.Errorf("Illumina64V13(%v) should fail, got nil error", c)
 			}
@@ -43,8 +45,8 @@ func TestIllumina64V13Errors(t *testing.T) {
 
 func TestIllumina64V15(t *testing.T) {
 	want := int8(2)
-	for c := minIllumina64V15; c <= maxIllumina64V15; c++ {
-		got, _ := Illumina64V15(c)
+	for c := qscore.MinIllumina64V15; c <= qscore.MaxIllumina64V15; c++ {
+		got, _ := qscore.Illumina64V15(c)
 		if got != want {
 			t.Errorf("Illumina64V15(%v) got %v; want: %v", c, got, want)
 		}
@@ -54,8 +56,8 @@ func TestIllumina64V15(t *testing.T) {
 
 func TestIllumina64V15Errors(t *testing.T) {
 	t.Run("Below minimum errors out", func(t *testing.T) {
-		for c := byte(0); c < minIllumina64V15; c++ {
-			got, err := Illumina64V15(c)
+		for c := byte(0); c < qscore.MinIllumina64V15; c++ {
+			got, err := qscore.Illumina64V15(c)
 			if err == nil {
 				t.Errorf("Illumina64V15(%v) should fail, got nil error", c)
 			}
@@ -65,8 +67,8 @@ func TestIllumina64V15Errors(t *testing.T) {
 		}
 	})
 	t.Run("Above maximum errors out", func(t *testing.T) {
-		for c := byte(maxIllumina64V15 + 1); c < byte(math.MaxUint8)/2; c++ {
-			got, err := Illumina64V15(c)
+		for c := byte(qscore.MaxIllumina64V15 + 1); c < byte(math.MaxUint8)/2; c++ {
+			got, err := qscore.Illumina64V15(c)
 			if err == nil {
 				t.Errorf("Illumina64V15(%v) should fail, got nil error", c)
 			}

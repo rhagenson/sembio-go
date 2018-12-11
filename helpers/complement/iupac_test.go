@@ -1,14 +1,16 @@
-package complement
+package complement_test
 
 import (
 	"fmt"
 	"testing"
+
+	"bitbucket.org/rhagenson/bio/helpers/complement"
 )
 
 // TestIupacReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
 func TestIupacReturnsX(t *testing.T) {
 	for _, c := range "XQZ" {
-		usual := Iupac(byte(c))
+		usual := complement.Iupac(byte(c))
 		if usual != 'X' {
 			t.Errorf(
 				"Want: %q, Got: %q",
@@ -24,8 +26,8 @@ func TestIupacReturnsX(t *testing.T) {
 func TestIupacIsReversible(t *testing.T) {
 	t.Run("IUPAC is reversible", func(t *testing.T) {
 		for _, c := range "RYSWKMBDHVN" {
-			comp := Iupac(byte(c))
-			if Iupac(comp) != byte(c) {
+			comp := complement.Iupac(byte(c))
+			if complement.Iupac(comp) != byte(c) {
 				t.Errorf("Want: %q; Got: %q", byte(c), comp)
 			}
 		}
@@ -37,7 +39,7 @@ func BenchmarkCompIupac(b *testing.B) {
 	for _, c := range "RYSWKMBDHVN" {
 		b.Run(fmt.Sprintf("Complement %q", c), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				Iupac(byte(c))
+				complement.Iupac(byte(c))
 			}
 		})
 	}
@@ -46,7 +48,7 @@ func BenchmarkCompIupac(b *testing.B) {
 // TestDnaIupacReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
 func TestDnaIupacReturnsX(t *testing.T) {
 	for _, c := range "XQZ" {
-		usual := DnaIupac(byte(c))
+		usual := complement.DnaIupac(byte(c))
 		if usual != 'X' {
 			t.Errorf(
 				"Want: %q, Got: %q",
@@ -62,8 +64,8 @@ func TestDnaIupacReturnsX(t *testing.T) {
 func TestDnaIupacIsReversible(t *testing.T) {
 	t.Run("DNA-IUPAC is reversible", func(t *testing.T) {
 		for _, c := range "ATGC" + "RYSWKMBDHVN" {
-			comp := DnaIupac(byte(c))
-			if DnaIupac(comp) != byte(c) {
+			comp := complement.DnaIupac(byte(c))
+			if complement.DnaIupac(comp) != byte(c) {
 				t.Errorf("Want: %q; Got: %q", byte(c), comp)
 			}
 		}
@@ -75,7 +77,7 @@ func BenchmarkCompDnaIupac(b *testing.B) {
 	for _, c := range "ATGC" + "RYSWKMBDHVN" {
 		b.Run(fmt.Sprintf("Complement %q", c), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				DnaIupac(byte(c))
+				complement.DnaIupac(byte(c))
 			}
 		})
 	}
@@ -84,7 +86,7 @@ func BenchmarkCompDnaIupac(b *testing.B) {
 // TestRnaIupacReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
 func TestRnaIupacReturnsX(t *testing.T) {
 	for _, c := range "XQZ" {
-		usual := RnaIupac(byte(c))
+		usual := complement.RnaIupac(byte(c))
 		if usual != 'X' {
 			t.Errorf(
 				"Want: %q, Got: %q",
@@ -100,8 +102,8 @@ func TestRnaIupacReturnsX(t *testing.T) {
 func TestRnaIupacIsReversible(t *testing.T) {
 	t.Run("RNA-IUPAC is reversible", func(t *testing.T) {
 		for _, c := range "AUGC" + "RYSWKMBDHVN" {
-			comp := RnaIupac(byte(c))
-			if RnaIupac(comp) != byte(c) {
+			comp := complement.RnaIupac(byte(c))
+			if complement.RnaIupac(comp) != byte(c) {
 				t.Errorf("Want: %q; Got: %q", byte(c), comp)
 			}
 		}
@@ -113,7 +115,7 @@ func BenchmarkCompRnaIupac(b *testing.B) {
 	for _, c := range "AUGC" + "RYSWKMBDHVN" {
 		b.Run(fmt.Sprintf("Complement %q", c), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				RnaIupac(byte(c))
+				complement.RnaIupac(byte(c))
 			}
 		})
 	}

@@ -1,13 +1,15 @@
-package complement
+package complement_test
 
 import (
 	"testing"
+
+	"bitbucket.org/rhagenson/bio/helpers/complement"
 )
 
 // TestDNAReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
 func TestDNAReturnsX(t *testing.T) {
 	for _, c := range "XNQZ" {
-		usual := Dna(byte(c))
+		usual := complement.Dna(byte(c))
 		if usual != 'X' {
 			t.Errorf(
 				"Want: %q, Got: %q",
@@ -23,8 +25,8 @@ func TestDNAReturnsX(t *testing.T) {
 func TestDnaIsReversible(t *testing.T) {
 	t.Run("DNA is reversible", func(t *testing.T) {
 		for _, c := range "ATGC" {
-			comp := Dna(byte(c))
-			if Dna(comp) != byte(c) {
+			comp := complement.Dna(byte(c))
+			if complement.Dna(comp) != byte(c) {
 				t.Errorf("Want: %q; Got: %q", byte(c), comp)
 			}
 		}
@@ -34,22 +36,22 @@ func TestDnaIsReversible(t *testing.T) {
 func BenchmarkDNA(b *testing.B) {
 	b.Run("Complement A", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			Dna(byte('A'))
+			complement.Dna(byte('A'))
 		}
 	})
 	b.Run("Complement T", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			Dna(byte('T'))
+			complement.Dna(byte('T'))
 		}
 	})
 	b.Run("Complement G", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			Dna(byte('G'))
+			complement.Dna(byte('G'))
 		}
 	})
 	b.Run("Complement C", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			Dna(byte('C'))
+			complement.Dna(byte('C'))
 		}
 	})
 }

@@ -12,19 +12,19 @@ import (
 	"github.com/leanovate/gopter/prop"
 )
 
-func TestRnaIupac(t *testing.T) {
+func TestProteinGapped(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadRnaIupac removes newline characters in body",
+	properties.Property("ReadProteinGapped removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenFasta(
 					bio.TestSeed,
 					n,
-					alphabet.RnaIupac,
+					alphabet.ProteinGapped,
 				)
-				f, err := fasta.ReadRnaIupac(r)
+				f, err := fasta.ReadProteinGapped(r)
 				if strings.Count(f.Body(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false

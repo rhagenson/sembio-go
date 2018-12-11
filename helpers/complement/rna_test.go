@@ -1,13 +1,15 @@
-package complement
+package complement_test
 
 import (
 	"testing"
+
+	"bitbucket.org/rhagenson/bio/helpers/complement"
 )
 
 // TestRnaReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
 func TestRnaReturnsX(t *testing.T) {
 	for _, c := range "XNQZ" {
-		usual := Rna(byte(c))
+		usual := complement.Rna(byte(c))
 		if usual != 'X' {
 			t.Errorf(
 				"Want: %q, Got: %q",
@@ -23,8 +25,8 @@ func TestRnaReturnsX(t *testing.T) {
 func TestRnaIsReversible(t *testing.T) {
 	t.Run("RNA is reversible", func(t *testing.T) {
 		for _, c := range "AUGC" {
-			comp := Rna(byte(c))
-			if Rna(comp) != byte(c) {
+			comp := complement.Rna(byte(c))
+			if complement.Rna(comp) != byte(c) {
 				t.Errorf("Want: %q; Got: %q", byte(c), comp)
 			}
 		}
@@ -34,22 +36,22 @@ func TestRnaIsReversible(t *testing.T) {
 func BenchmarkRNA(b *testing.B) {
 	b.Run("Complement A", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			Rna(byte('A'))
+			complement.Rna(byte('A'))
 		}
 	})
 	b.Run("Complement U", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			Rna(byte('U'))
+			complement.Rna(byte('U'))
 		}
 	})
 	b.Run("Complement G", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			Rna(byte('G'))
+			complement.Rna(byte('G'))
 		}
 	})
 	b.Run("Complement C", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			Rna(byte('C'))
+			complement.Rna(byte('C'))
 		}
 	})
 }

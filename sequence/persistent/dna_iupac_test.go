@@ -1,4 +1,4 @@
-package persistent
+package persistent_test
 
 import (
 	"strings"
@@ -7,20 +7,21 @@ import (
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
+	"bitbucket.org/rhagenson/bio/sequence/persistent"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
 func TestInitializedDnaIupac(t *testing.T) {
-	s, _ := NewDnaIupac("")
+	s, _ := persistent.NewDnaIupac("")
 	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
 	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
 	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
 }
 
 func TestDnaIupacHasMethods(t *testing.T) {
-	s, _ := NewDnaIupac("")
+	s, _ := persistent.NewDnaIupac("")
 
 	t.Run("Has Reverse method", func(t *testing.T) {
 		if _, err := s.Reverse(); err != nil {
@@ -51,7 +52,7 @@ func TestDnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				seq, _ := NewDnaIupac(s)
+				seq, _ := persistent.NewDnaIupac(s)
 				return seq.Length() == n
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -65,7 +66,7 @@ func TestDnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				seq, _ := NewDnaIupac(s)
+				seq, _ := persistent.NewDnaIupac(s)
 				got, _ := seq.Range(0, n)
 				return got == s
 			},
@@ -80,7 +81,7 @@ func TestDnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				seq, _ := NewDnaIupac(s)
+				seq, _ := persistent.NewDnaIupac(s)
 				onefourth := n * (1 / 4)
 				threefourths := n * (3 / 4)
 				got, _ := seq.Range(onefourth, threefourths)
@@ -97,7 +98,7 @@ func TestDnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				seq, _ := NewDnaIupac(s)
+				seq, _ := persistent.NewDnaIupac(s)
 				onefourth := n * (1 / 4)
 				threefourth := n * (3 / 4)
 				gotoneforth, _ := seq.Position(onefourth)
@@ -129,11 +130,11 @@ func TestDnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				original, _ := NewDnaIupac(s)
-				clone := new(DnaIupac)
+				original, _ := persistent.NewDnaIupac(s)
+				clone := new(persistent.DnaIupac)
 				*clone = *original
-				original.With(PositionAs(n*(1/2), t))
-				return original.seq == clone.seq
+				original.With(persistent.PositionAs(n*(1/2), t))
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -151,11 +152,11 @@ func TestDnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				original, _ := NewDnaIupac(s)
-				clone := new(DnaIupac)
+				original, _ := persistent.NewDnaIupac(s)
+				clone := new(persistent.DnaIupac)
 				*clone = *original
-				original.With(RangeAs(n*(1/4), n*(3/4), t))
-				return original.seq == clone.seq
+				original.With(persistent.RangeAs(n*(1/4), n*(3/4), t))
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -168,11 +169,11 @@ func TestDnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				original, _ := NewDnaIupac(s)
-				clone := new(DnaIupac)
+				original, _ := persistent.NewDnaIupac(s)
+				clone := new(persistent.DnaIupac)
 				*clone = *original
 				original.Reverse()
-				return original.seq == clone.seq
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -185,11 +186,11 @@ func TestDnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				original, _ := NewDnaIupac(s)
-				clone := new(DnaIupac)
+				original, _ := persistent.NewDnaIupac(s)
+				clone := new(persistent.DnaIupac)
 				*clone = *original
 				original.Complement()
-				return original.seq == clone.seq
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -202,11 +203,11 @@ func TestDnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				original, _ := NewDnaIupac(s)
-				clone := new(DnaIupac)
+				original, _ := persistent.NewDnaIupac(s)
+				clone := new(persistent.DnaIupac)
 				*clone = *original
 				original.RevComp()
-				return original.seq == clone.seq
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -226,10 +227,10 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				want, _ := NewDnaIupac(s)
+				want, _ := persistent.NewDnaIupac(s)
 				rev, _ := want.Reverse()
-				got, _ := rev.(*DnaIupac).Reverse()
-				return want.seq == got.(*DnaIupac).seq
+				got, _ := rev.(*persistent.DnaIupac).Reverse()
+				return want.String() == got.(*persistent.DnaIupac).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -242,10 +243,10 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				want, _ := NewDnaIupac(s)
+				want, _ := persistent.NewDnaIupac(s)
 				rev, _ := want.Complement()
-				got, _ := rev.(*DnaIupac).Complement()
-				return want.seq == got.(*DnaIupac).seq
+				got, _ := rev.(*persistent.DnaIupac).Complement()
+				return want.String() == got.(*persistent.DnaIupac).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -258,10 +259,10 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				want, _ := NewDnaIupac(s)
+				want, _ := persistent.NewDnaIupac(s)
 				rev, _ := want.RevComp()
-				got, _ := rev.(*DnaIupac).RevComp()
-				return want.seq == got.(*DnaIupac).seq
+				got, _ := rev.(*persistent.DnaIupac).RevComp()
+				return want.String() == got.(*persistent.DnaIupac).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -281,7 +282,7 @@ func TestDnaIupacErrors(t *testing.T) {
 					n,
 					[]rune("XNQZ"),
 				)
-				if _, err := NewDnaIupac(s); err != nil {
+				if _, err := persistent.NewDnaIupac(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
 						t.Errorf("DnaIupac creation error should mention not in alphabet")
 						return false
@@ -303,7 +304,7 @@ func TestDnaIupacErrors(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				seq, _ := NewDnaIupac(s)
+				seq, _ := persistent.NewDnaIupac(s)
 				_, err := seq.Range(n, 0)
 				if err == nil {
 					t.Errorf("DnaIupac should accumulate an err during Range() when start > stop")
@@ -333,18 +334,18 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				ret := make(chan *DnaIupac)
-				go func(s string, out chan *DnaIupac) {
-					seq, _ := NewDnaIupac(s)
+				ret := make(chan *persistent.DnaIupac)
+				go func(s string, out chan *persistent.DnaIupac) {
+					seq, _ := persistent.NewDnaIupac(s)
 					out <- seq
 				}(s, ret)
-				go func(s string, out chan *DnaIupac) {
-					seq, _ := NewDnaIupac(s)
+				go func(s string, out chan *persistent.DnaIupac) {
+					seq, _ := persistent.NewDnaIupac(s)
 					out <- seq
 				}(s, ret)
 				first := <-ret
 				second := <-ret
-				return first.seq == second.seq
+				return first.String() == second.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -357,19 +358,19 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				ret := make(chan *DnaIupac)
-				seq, _ := NewDnaIupac(s)
-				go func(seq *DnaIupac, out chan *DnaIupac) {
+				ret := make(chan *persistent.DnaIupac)
+				seq, _ := persistent.NewDnaIupac(s)
+				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*DnaIupac)
+					out <- rev.(*persistent.DnaIupac)
 				}(seq, ret)
-				go func(seq *DnaIupac, out chan *DnaIupac) {
+				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*DnaIupac)
+					out <- rev.(*persistent.DnaIupac)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
-				return first.seq == second.seq
+				return first.String() == second.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -382,19 +383,19 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				ret := make(chan *DnaIupac)
-				seq, _ := NewDnaIupac(s)
-				go func(seq *DnaIupac, out chan *DnaIupac) {
+				ret := make(chan *persistent.DnaIupac)
+				seq, _ := persistent.NewDnaIupac(s)
+				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*DnaIupac)
+					out <- rev.(*persistent.DnaIupac)
 				}(seq, ret)
-				go func(seq *DnaIupac, out chan *DnaIupac) {
+				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*DnaIupac)
+					out <- rev.(*persistent.DnaIupac)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
-				return first.seq == second.seq
+				return first.String() == second.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -407,19 +408,19 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
-				ret := make(chan *DnaIupac)
-				seq, _ := NewDnaIupac(s)
-				go func(seq *DnaIupac, out chan *DnaIupac) {
+				ret := make(chan *persistent.DnaIupac)
+				seq, _ := persistent.NewDnaIupac(s)
+				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*DnaIupac)
+					out <- rev.(*persistent.DnaIupac)
 				}(seq, ret)
-				go func(seq *DnaIupac, out chan *DnaIupac) {
+				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*DnaIupac)
+					out <- rev.(*persistent.DnaIupac)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
-				return first.seq == second.seq
+				return first.String() == second.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),

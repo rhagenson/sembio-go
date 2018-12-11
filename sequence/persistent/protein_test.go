@@ -1,4 +1,4 @@
-package persistent
+package persistent_test
 
 import (
 	"strings"
@@ -7,20 +7,21 @@ import (
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
+	"bitbucket.org/rhagenson/bio/sequence/persistent"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
 func TestInitializedProtein(t *testing.T) {
-	s, _ := NewProtein("")
+	s, _ := persistent.NewProtein("")
 	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
 	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
 	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
 }
 
 func TestProteinHasMethods(t *testing.T) {
-	s, _ := NewProtein("")
+	s, _ := persistent.NewProtein("")
 
 	t.Run("Has Reverse method", func(t *testing.T) {
 		if _, err := s.Reverse(); err != nil {
@@ -41,7 +42,7 @@ func TestProteinCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				seq, _ := NewProtein(s)
+				seq, _ := persistent.NewProtein(s)
 				return seq.Length() == n
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -55,7 +56,7 @@ func TestProteinCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				seq, _ := NewProtein(s)
+				seq, _ := persistent.NewProtein(s)
 				got, _ := seq.Range(0, n)
 				return got == s
 			},
@@ -70,7 +71,7 @@ func TestProteinCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				seq, _ := NewProtein(s)
+				seq, _ := persistent.NewProtein(s)
 				onefourth := n * (1 / 4)
 				threefourths := n * (3 / 4)
 				got, _ := seq.Range(onefourth, threefourths)
@@ -87,7 +88,7 @@ func TestProteinCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				seq, _ := NewProtein(s)
+				seq, _ := persistent.NewProtein(s)
 				onefourth := n * (1 / 4)
 				threefourth := n * (3 / 4)
 				gotoneforth, _ := seq.Position(onefourth)
@@ -119,11 +120,11 @@ func TestProteinPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				original, _ := NewProtein(s)
-				clone := new(Protein)
+				original, _ := persistent.NewProtein(s)
+				clone := new(persistent.Protein)
 				*clone = *original
-				original.With(PositionAs(n*(1/2), t))
-				return original.seq == clone.seq
+				original.With(persistent.PositionAs(n*(1/2), t))
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -141,11 +142,11 @@ func TestProteinPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				original, _ := NewProtein(s)
-				clone := new(Protein)
+				original, _ := persistent.NewProtein(s)
+				clone := new(persistent.Protein)
 				*clone = *original
-				original.With(RangeAs(n*(1/4), n*(3/4), t))
-				return original.seq == clone.seq
+				original.With(persistent.RangeAs(n*(1/4), n*(3/4), t))
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -158,11 +159,11 @@ func TestProteinPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				original, _ := NewProtein(s)
-				clone := new(Protein)
+				original, _ := persistent.NewProtein(s)
+				clone := new(persistent.Protein)
 				*clone = *original
 				original.Reverse()
-				return original.seq == clone.seq
+				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -182,10 +183,10 @@ func TestProteinMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				want, _ := NewProtein(s)
+				want, _ := persistent.NewProtein(s)
 				rev, _ := want.Reverse()
-				got, _ := rev.(*Protein).Reverse()
-				return want.seq == got.(*Protein).seq
+				got, _ := rev.(*persistent.Protein).Reverse()
+				return want.String() == got.(*persistent.Protein).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -205,7 +206,7 @@ func TestProteinErrors(t *testing.T) {
 					n,
 					[]rune("XNQZ"),
 				)
-				if _, err := NewProtein(s); err != nil {
+				if _, err := persistent.NewProtein(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
 						t.Errorf("Protein creation error should mention not in alphabet")
 						return false
@@ -227,7 +228,7 @@ func TestProteinErrors(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				seq, _ := NewProtein(s)
+				seq, _ := persistent.NewProtein(s)
 				_, err := seq.Range(n, 0)
 				if err == nil {
 					t.Errorf("Protein should accumulate an err during Range() when start > stop")
@@ -249,7 +250,7 @@ func TestProteinParallelOperations(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("NewProtein(s) == NewProtein(s)",
+	properties.Property("persistent.NewProtein(s) == persistent.NewProtein(s)",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
@@ -257,23 +258,23 @@ func TestProteinParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				ret := make(chan *Protein)
-				go func(s string, out chan *Protein) {
-					seq, _ := NewProtein(s)
+				ret := make(chan *persistent.Protein)
+				go func(s string, out chan *persistent.Protein) {
+					seq, _ := persistent.NewProtein(s)
 					out <- seq
 				}(s, ret)
-				go func(s string, out chan *Protein) {
-					seq, _ := NewProtein(s)
+				go func(s string, out chan *persistent.Protein) {
+					seq, _ := persistent.NewProtein(s)
 					out <- seq
 				}(s, ret)
 				first := <-ret
 				second := <-ret
-				return first.seq == second.seq
+				return first.String() == second.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
-	properties.Property("seq.(*Protein).Reverse() == seq.(*Protein).Reverse()",
+	properties.Property("seq.(*persistent.Protein).Reverse() == seq.(*persistent.Protein).Reverse()",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
@@ -281,19 +282,19 @@ func TestProteinParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				ret := make(chan *Protein)
-				seq, _ := NewProtein(s)
-				go func(seq *Protein, out chan *Protein) {
+				ret := make(chan *persistent.Protein)
+				seq, _ := persistent.NewProtein(s)
+				go func(seq *persistent.Protein, out chan *persistent.Protein) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*Protein)
+					out <- rev.(*persistent.Protein)
 				}(seq, ret)
-				go func(seq *Protein, out chan *Protein) {
+				go func(seq *persistent.Protein, out chan *persistent.Protein) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*Protein)
+					out <- rev.(*persistent.Protein)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
-				return first.seq == second.seq
+				return first.String() == second.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),

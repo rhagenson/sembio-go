@@ -1,4 +1,4 @@
-package fasta
+package fasta_test
 
 import (
 	"strings"
@@ -6,6 +6,7 @@ import (
 
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
+	"bitbucket.org/rhagenson/bio/io/fasta"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
@@ -18,12 +19,12 @@ func TestDna(t *testing.T) {
 	properties.Property("ReadDna removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
-				r := TestGenFasta(
+				r := fasta.TestGenFasta(
 					bio.TestSeed,
 					n,
 					alphabet.Dna,
 				)
-				f, err := ReadDna(r)
+				f, err := fasta.ReadDna(r)
 				if strings.Count(f.Body(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false
