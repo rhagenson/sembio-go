@@ -10,6 +10,12 @@ type Alphabet struct {
 
 // New is an Alphabet generator
 func New(letters string, width uint) *Alphabet {
+	if width < 1 {
+		return &Alphabet{
+			letters: letters,
+			width:   1,
+		}
+	}
 	return &Alphabet{
 		letters: letters,
 		width:   width,
@@ -39,8 +45,5 @@ func (a Alphabet) String() string {
 
 // Width is the byte width of the Alphabet
 func (a Alphabet) Width() uint {
-	if a.width == 0 {
-		return 1
-	}
 	return a.width
 }
