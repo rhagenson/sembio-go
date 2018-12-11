@@ -35,3 +35,11 @@ func ReadRnaIupac(r io.Reader) (Interface, error) {
 		return sequence.NewRnaIupac(s)
 	})
 }
+
+// ReadProtein reads in a FASTA file that should contain
+// only valid Protein letters
+func ReadProtein(r io.Reader) (Interface, error) {
+	return Read(r, func(s string) (sequence.Interface, error) {
+		return sequence.NewProtein(s)
+	})
+}
