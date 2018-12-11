@@ -43,3 +43,11 @@ func ReadProtein(r io.Reader) (Interface, error) {
 		return sequence.NewProtein(s)
 	})
 }
+
+// ReadProteinGapped reads in a FASTA file that should contain
+// only valid ProteinGapped letters
+func ReadProteinGapped(r io.Reader) (Interface, error) {
+	return Read(r, func(s string) (sequence.Interface, error) {
+		return sequence.NewProteinGapped(s)
+	})
+}
