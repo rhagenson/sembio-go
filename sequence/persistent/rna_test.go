@@ -1,4 +1,4 @@
-package sequence
+package persistent
 
 import (
 	"strings"
@@ -6,6 +6,7 @@ import (
 
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
+	"bitbucket.org/rhagenson/bio/sequence"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
@@ -13,9 +14,9 @@ import (
 
 func TestInitializedRna(t *testing.T) {
 	s, _ := NewRna("")
-	t.Run("Length is zero", TestLengthIs(s, 0))
-	t.Run("Position is empty", TestPositionIs(s, 0, ""))
-	t.Run("Range is empty", TestRangeIs(s, 0, 1, ""))
+	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
+	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
+	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
 }
 
 func TestRnaHasMethods(t *testing.T) {
@@ -53,7 +54,7 @@ func TestRnaCreation(t *testing.T) {
 				seq, _ := NewRna(s)
 				return seq.Length() == n
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Rna has same positions as input",
@@ -68,7 +69,7 @@ func TestRnaCreation(t *testing.T) {
 				got, _ := seq.Range(0, n)
 				return got == s
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Rna has same internal range as input",
@@ -85,7 +86,7 @@ func TestRnaCreation(t *testing.T) {
 				got, _ := seq.Range(onefourth, threefourths)
 				return got == s[onefourth:threefourths]
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Rna has same internal postions as input",
@@ -105,7 +106,7 @@ func TestRnaCreation(t *testing.T) {
 				wantthreeforth := string(s[threefourth])
 				return gotoneforth == wantoneforth && gotthreeforth == wantthreeforth
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
@@ -134,7 +135,7 @@ func TestRnaPersistence(t *testing.T) {
 				original.With(PositionAs(n*(1/2), t))
 				return original.seq == clone.seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("WithRange does not mutate in-place",
@@ -156,7 +157,7 @@ func TestRnaPersistence(t *testing.T) {
 				original.With(RangeAs(n*(1/4), n*(3/4), t))
 				return original.seq == clone.seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Reverse does not mutate in-place",
@@ -173,7 +174,7 @@ func TestRnaPersistence(t *testing.T) {
 				original.Reverse()
 				return original.seq == clone.seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Complement does not mutate in-place",
@@ -190,7 +191,7 @@ func TestRnaPersistence(t *testing.T) {
 				original.Complement()
 				return original.seq == clone.seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("RevComp does not mutate in-place",
@@ -207,7 +208,7 @@ func TestRnaPersistence(t *testing.T) {
 				original.RevComp()
 				return original.seq == clone.seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
@@ -230,7 +231,7 @@ func TestRnaMethodComplements(t *testing.T) {
 				got, _ := rev.(*Rna).Reverse()
 				return want.seq == got.(*Rna).seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("Complement().Complement() is original",
@@ -246,7 +247,7 @@ func TestRnaMethodComplements(t *testing.T) {
 				got, _ := rev.(*Rna).Complement()
 				return want.seq == got.(*Rna).seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("RevComp().RevComp() is original",
@@ -262,7 +263,7 @@ func TestRnaMethodComplements(t *testing.T) {
 				got, _ := rev.(*Rna).RevComp()
 				return want.seq == got.(*Rna).seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
@@ -291,7 +292,7 @@ func TestRnaErrors(t *testing.T) {
 				}
 				return true
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("start > stop errors",
@@ -314,7 +315,7 @@ func TestRnaErrors(t *testing.T) {
 				}
 				return true
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)
@@ -345,7 +346,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				second := <-ret
 				return first.seq == second.seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("seq.Reverse() == seq.Reverse()",
@@ -370,7 +371,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				second := <-ret
 				return first.seq == second.seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("seq.RevComp() == seq.RevComp()",
@@ -395,7 +396,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				second := <-ret
 				return first.seq == second.seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.Property("seq.Complement() == seq.Complement()",
@@ -420,7 +421,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				second := <-ret
 				return first.seq == second.seq
 			},
-			gen.UIntRange(1, TestableLength),
+			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
 	properties.TestingRun(t)

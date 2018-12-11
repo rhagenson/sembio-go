@@ -1,13 +1,14 @@
-package sequence
+package persistent
 
 import (
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/helpers/complement"
+	"bitbucket.org/rhagenson/bio/sequence"
 )
 
-var _ Reverser = new(Dna)
-var _ RevComper = new(Dna)
-var _ Complementer = new(Dna)
+var _ sequence.Reverser = new(Dna)
+var _ sequence.RevComper = new(Dna)
+var _ sequence.Complementer = new(Dna)
 var _ Wither = new(Dna)
 
 // Dna is a sequence witch validates aginst the Dna alphabet
@@ -26,7 +27,7 @@ func NewDna(s string) (*Dna, error) {
 }
 
 // Reverse is the same Dna with the sequence reversed
-func (x *Dna) Reverse() (Interface, error) {
+func (x *Dna) Reverse() (sequence.Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l/2; i++ {
@@ -36,7 +37,7 @@ func (x *Dna) Reverse() (Interface, error) {
 }
 
 // RevComp is the same Dna with the sequence reversed and complemented
-func (x *Dna) RevComp() (Interface, error) {
+func (x *Dna) RevComp() (sequence.Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l/2; i++ {
@@ -46,7 +47,7 @@ func (x *Dna) RevComp() (Interface, error) {
 }
 
 // Complement is the same DnaIupac with the sequence complemented
-func (x *Dna) Complement() (Interface, error) {
+func (x *Dna) Complement() (sequence.Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l; i++ {

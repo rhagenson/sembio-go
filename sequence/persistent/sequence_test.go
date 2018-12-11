@@ -1,4 +1,4 @@
-package sequence
+package persistent
 
 var _ Interface = new(Struct)
 var _ Wither = new(Struct)

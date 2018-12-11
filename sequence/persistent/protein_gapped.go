@@ -1,10 +1,11 @@
-package sequence
+package persistent
 
 import (
 	"bitbucket.org/rhagenson/bio/alphabet"
+	"bitbucket.org/rhagenson/bio/sequence"
 )
 
-var _ Reverser = new(ProteinGapped)
+var _ sequence.Reverser = new(ProteinGapped)
 var _ Wither = new(ProteinGapped)
 
 // ProteinGapped is a sequence witch validates against the ProteinGapped alphabet
@@ -23,7 +24,7 @@ func NewProteinGapped(s string) (*ProteinGapped, error) {
 }
 
 // Reverse is the same ProteinGapped with the sequence reversed
-func (x *ProteinGapped) Reverse() (Interface, error) {
+func (x *ProteinGapped) Reverse() (sequence.Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l/2; i++ {

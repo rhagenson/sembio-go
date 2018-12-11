@@ -1,13 +1,14 @@
-package sequence
+package persistent
 
 import (
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/helpers/complement"
+	"bitbucket.org/rhagenson/bio/sequence"
 )
 
-var _ Reverser = new(DnaIupac)
-var _ RevComper = new(DnaIupac)
-var _ Complementer = new(DnaIupac)
+var _ sequence.Reverser = new(DnaIupac)
+var _ sequence.RevComper = new(DnaIupac)
+var _ sequence.Complementer = new(DnaIupac)
 var _ Wither = new(DnaIupac)
 
 // DnaIupac is a sequence witch validates aginst the DnaIupac alphabet
@@ -26,7 +27,7 @@ func NewDnaIupac(s string) (*DnaIupac, error) {
 }
 
 // Reverse is the same DnaIupac with the sequence reversed
-func (x *DnaIupac) Reverse() (Interface, error) {
+func (x *DnaIupac) Reverse() (sequence.Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l/2; i++ {
@@ -36,7 +37,7 @@ func (x *DnaIupac) Reverse() (Interface, error) {
 }
 
 // RevComp is the same DnaIupac with the sequence reversed and complemented
-func (x *DnaIupac) RevComp() (Interface, error) {
+func (x *DnaIupac) RevComp() (sequence.Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l/2; i++ {
@@ -46,7 +47,7 @@ func (x *DnaIupac) RevComp() (Interface, error) {
 }
 
 // Complement is the same DnaIupac with the sequence complemented
-func (x *DnaIupac) Complement() (Interface, error) {
+func (x *DnaIupac) Complement() (sequence.Interface, error) {
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l; i++ {
