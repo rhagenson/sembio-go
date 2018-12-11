@@ -39,8 +39,8 @@ func RandomStringFromRunes(seed int64, n uint, valid []rune) string {
 	return string(b)
 }
 
-// RandomWeightedString generates a random weighted string of length n
-// If n < sum(weights) the an approximation for proper weighting is used
+// RandomWeightedString generates a random weighted string of length n.
+// If n < sum(weights), an approximation for proper weighting is used
 func RandomWeightedString(seed int64, n uint, weights map[rune]uint) string {
 	tot := uint(0)
 	for _, w := range weights {
