@@ -9,7 +9,7 @@ import (
 	"bitbucket.org/rhagenson/bio/sequence"
 )
 
-// Read parses a FASTA file at r, using the genrator f to validate the body
+// Read parses a FASTA file at r, using the generator f to validate the body
 func Read(r io.Reader, f sequence.Generator) (Interface, error) {
 	br := bufio.NewScanner(r)
 	br.Split(bufio.ScanLines)
