@@ -9,11 +9,12 @@ import (
 	"testing"
 )
 
-// TestSeed is a chosen value that should be used to seed pseudorandom number
-// generators
+// TestSeed is a chosen value that should be used to
+// seed pseudorandom number generators
 const TestSeed int64 = 1234
 
 // DeepClone does a deep copy from one src to one dest
+// Note: DeepClone copies only the public parts of a struct
 func DeepClone(src, dest interface{}) {
 	var buff bytes.Buffer
 	enc := gob.NewEncoder(&buff)
@@ -40,7 +41,7 @@ func RandomStringFromRunes(seed int64, n uint, valid []rune) string {
 }
 
 // RandomWeightedString generates a random weighted string of length n.
-// If n < sum(weights), an approximation for proper weighting is used
+// If n < sum(weights), an approximation is used
 func RandomWeightedString(seed int64, n uint, weights map[rune]uint) string {
 	tot := uint(0)
 	for _, w := range weights {
@@ -77,11 +78,6 @@ func gcdPair(a, b uint) uint {
 }
 
 // TestForMethodNamed is a test helper that wraps a check for method by name
-// Ideally I would use interfaces to test this property, but interfaces
-// match by function signature, not by interface so:
-//    `sequence.Interface != *Dna`
-//     even if
-//    `var _ sequence.Interface = NewDna("")`
 func TestForMethodNamed(s interface{}, m string) func(t *testing.T) {
 	return func(t *testing.T) {
 		if !reflect.ValueOf(s).MethodByName(m).IsValid() {
@@ -90,11 +86,11 @@ func TestForMethodNamed(s interface{}, m string) func(t *testing.T) {
 	}
 }
 
-// TestMethodReturnsType checks that s.m(c...) returns type r
-func TestMethodReturnsType(s, r interface{}, m string, c []interface{}) func(t *testing.T) {
-	cl := make([]reflect.Value, len(c))
+// TestMethodReturnsType checks that s.m(args...) returns type r
+func TestMethodReturnsType(s, r interface{}, m string, args []interface{}) func(t *testing.T) {
+	cl := make([]reflect.Value, len(args))
 	for i := range cl {
-		cl[i] = reflect.ValueOf(c[i])
+		cl[i] = reflect.ValueOf(args[i])
 	}
 	return func(t *testing.T) {
 		want := reflect.TypeOf(r).String()
@@ -110,7 +106,7 @@ func TestMethodReturnsType(s, r interface{}, m string, c []interface{}) func(t *
 	}
 }
 
-// TestMethodReturnsSelfType checks that calling s.m(c...) return type s
-func TestMethodReturnsSelfType(s interface{}, m string, c []interface{}) func(t *testing.T) {
-	return TestMethodReturnsType(s, s, m, c)
+// TestMethodReturnsSelfType checks that calling s.m(args...) return type s
+func TestMethodReturnsSelfType(s interface{}, m string, args []interface{}) func(t *testing.T) {
+	return TestMethodReturnsType(s, s, m, args)
 }
