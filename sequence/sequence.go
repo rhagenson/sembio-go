@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+var _ Wither = new(Struct)
+
 // Struct stores a linear sequence and has optional validators
 type Struct struct {
 	seq        string

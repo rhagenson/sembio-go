@@ -5,6 +5,7 @@ import (
 )
 
 var _ Reverser = new(Protein)
+var _ Wither = new(Protein)
 
 // Protein is a sequence witch validates against the Protein alphabet
 // and knows how to reverse itself

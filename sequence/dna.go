@@ -8,6 +8,7 @@ import (
 var _ Reverser = new(Dna)
 var _ RevComper = new(Dna)
 var _ Complementer = new(Dna)
+var _ Wither = new(Dna)
 
 // Dna is a sequence witch validates aginst the Dna alphabet
 // and knows how to reverse, complement, and revcomp itself

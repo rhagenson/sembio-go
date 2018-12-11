@@ -8,6 +8,7 @@ import (
 var _ Reverser = new(RnaIupac)
 var _ RevComper = new(RnaIupac)
 var _ Complementer = new(RnaIupac)
+var _ Wither = new(RnaIupac)
 
 // RnaIupac is a sequence witch validates aginst the RnaIupac alphabet
 // and knows how to reverse, complement, and revcomp itself

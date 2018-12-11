@@ -8,6 +8,7 @@ import (
 var _ Reverser = new(Rna)
 var _ RevComper = new(Rna)
 var _ Complementer = new(Rna)
+var _ Wither = new(Rna)
 
 // Rna is a sequence witch validates aginst the Rna alphabet
 // and knows how to reverse, complement, and revcomp itself

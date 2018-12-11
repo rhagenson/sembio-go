@@ -5,6 +5,7 @@ import (
 )
 
 var _ Reverser = new(ProteinGapped)
+var _ Wither = new(ProteinGapped)
 
 // ProteinGapped is a sequence witch validates against the ProteinGapped alphabet
 // and knows how to reverse itself
