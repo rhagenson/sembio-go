@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	"bitbucket.org/rhagenson/bigr/sequence"
+	"bitbucket.org/rhagenson/bio/sequence"
 )
 
 // Read parses a FASTA file at r, using the genrator f to validate the body

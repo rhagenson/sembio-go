@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"bitbucket.org/rhagenson/bigr"
-	"bitbucket.org/rhagenson/bigr/alphabet"
+	"bitbucket.org/rhagenson/bio"
+	"bitbucket.org/rhagenson/bio/alphabet"
 
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
@@ -22,7 +22,7 @@ func TestDna(t *testing.T) {
 		prop.ForAll(
 			func(n uint) bool {
 				r := RandomFasta(
-					bigr.TestSeed,
+					bio.TestSeed,
 					n,
 					alphabet.Dna,
 				)
@@ -47,7 +47,7 @@ func TestDnaIupac(t *testing.T) {
 		prop.ForAll(
 			func(n uint) bool {
 				r := RandomFasta(
-					bigr.TestSeed,
+					bio.TestSeed,
 					n,
 					alphabet.DnaIupac,
 				)
@@ -72,7 +72,7 @@ func TestRna(t *testing.T) {
 		prop.ForAll(
 			func(n uint) bool {
 				r := RandomFasta(
-					bigr.TestSeed,
+					bio.TestSeed,
 					n,
 					alphabet.Rna,
 				)
@@ -97,7 +97,7 @@ func TestRnaIupac(t *testing.T) {
 		prop.ForAll(
 			func(n uint) bool {
 				r := RandomFasta(
-					bigr.TestSeed,
+					bio.TestSeed,
 					n,
 					alphabet.RnaIupac,
 				)

@@ -3,7 +3,7 @@ package fasta
 import (
 	"io"
 
-	"bitbucket.org/rhagenson/bigr/sequence"
+	"bitbucket.org/rhagenson/bio/sequence"
 )
 
 // ReadDna reads in a FASTA file that should contain only valid DNA letters

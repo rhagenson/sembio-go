@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"bitbucket.org/rhagenson/bigr"
-	"bitbucket.org/rhagenson/bigr/alphabet"
+	"bitbucket.org/rhagenson/bio"
+	"bitbucket.org/rhagenson/bio/alphabet"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
@@ -45,8 +45,8 @@ func TestRnaIupacCreation(t *testing.T) {
 	properties.Property("RnaIupac is same length as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -59,8 +59,8 @@ func TestRnaIupacCreation(t *testing.T) {
 	properties.Property("RnaIupac has same positions as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -74,8 +74,8 @@ func TestRnaIupacCreation(t *testing.T) {
 	properties.Property("RnaIupac has same internal range as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -91,8 +91,8 @@ func TestRnaIupacCreation(t *testing.T) {
 	properties.Property("RnaIupac has same internal postions as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -118,13 +118,13 @@ func TestRnaIupacPersistence(t *testing.T) {
 	properties.Property("WithPosition does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				t := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				t := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -140,13 +140,13 @@ func TestRnaIupacPersistence(t *testing.T) {
 	properties.Property("WithRange does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				t := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				t := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -162,8 +162,8 @@ func TestRnaIupacPersistence(t *testing.T) {
 	properties.Property("Reverse does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -179,8 +179,8 @@ func TestRnaIupacPersistence(t *testing.T) {
 	properties.Property("Complement does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -196,8 +196,8 @@ func TestRnaIupacPersistence(t *testing.T) {
 	properties.Property("RevComp does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -220,8 +220,8 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 	properties.Property("Reverse().Reverse() is original",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -236,8 +236,8 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 	properties.Property("Complement().Complement() is original",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -252,8 +252,8 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 	properties.Property("RevComp().RevComp() is original",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -275,8 +275,8 @@ func TestRnaIupacErrors(t *testing.T) {
 	properties.Property("Giving invalid input adds an error",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune("XNQZ"),
 				)
@@ -297,8 +297,8 @@ func TestRnaIupacErrors(t *testing.T) {
 	properties.Property("start > stop errors",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -327,8 +327,8 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 	properties.Property("NewRnaIupac(s) == NewRnaIupac(s)",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -351,8 +351,8 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 	properties.Property("seq.Reverse() == seq.Reverse()",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -376,8 +376,8 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 	properties.Property("seq.RevComp() == seq.RevComp()",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
@@ -401,8 +401,8 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 	properties.Property("seq.Complement() == seq.Complement()",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bigr.RandomStringFromRunes(
-					bigr.TestSeed,
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)

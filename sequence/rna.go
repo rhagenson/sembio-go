@@ -1,8 +1,8 @@
 package sequence
 
 import (
-	"bitbucket.org/rhagenson/bigr/alphabet"
-	"bitbucket.org/rhagenson/bigr/helpers/complement"
+	"bitbucket.org/rhagenson/bio/alphabet"
+	"bitbucket.org/rhagenson/bio/helpers/complement"
 )
 
 var _ Reverser = new(Rna)

@@ -1,7 +1,7 @@
 package fasta
 
 import (
-	"bitbucket.org/rhagenson/bigr/sequence"
+	"bitbucket.org/rhagenson/bio/sequence"
 )
 
 // Fasta is the generalization of two-line FASTA format

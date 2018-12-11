@@ -5,7 +5,7 @@ import (
 	"io"
 	"math/rand"
 
-	"bitbucket.org/rhagenson/bigr/alphabet"
+	"bitbucket.org/rhagenson/bio/alphabet"
 )
 
 // RandomFasta generates a random valid FASTA input

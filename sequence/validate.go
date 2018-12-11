@@ -3,7 +3,7 @@ package sequence
 import (
 	"fmt"
 
-	"bitbucket.org/rhagenson/bigr/alphabet"
+	"bitbucket.org/rhagenson/bio/alphabet"
 )
 
 // ValFunc is a function that validates a sequence

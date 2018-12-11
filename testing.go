@@ -1,4 +1,4 @@
-package bigr
+package bio
 
 import (
 	"bytes"
