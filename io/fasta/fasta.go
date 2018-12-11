@@ -4,6 +4,8 @@ import (
 	"bitbucket.org/rhagenson/bio/sequence"
 )
 
+var _ Interface = new(Struct)
+
 // Struct is the generalization of two-line FASTA format
 type Struct struct {
 	header string
