@@ -34,7 +34,7 @@ func Read(r io.Reader, f sequence.Generator) (Interface, error) {
 
 	seq, err := f(body)
 
-	return &Fasta{
+	return &Struct{
 		header: header,
 		body:   seq,
 	}, err

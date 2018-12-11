@@ -11,7 +11,7 @@ import (
 	"github.com/leanovate/gopter/prop"
 )
 
-var _ Interface = new(Fasta)
+var _ Interface = new(Struct)
 
 func TestDna(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
