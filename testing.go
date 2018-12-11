@@ -58,6 +58,7 @@ func RandomWeightedString(seed int64, n uint, weights map[rune]uint) string {
 	return RandomStringFromRunes(seed, n, valid)
 }
 
+// TODO: Broken, this does not find the greatest common denominator of the array
 func gcd(ns []uint) uint {
 	res := uint(0)
 	for i := 0; i < len(ns)-1; i++ {
