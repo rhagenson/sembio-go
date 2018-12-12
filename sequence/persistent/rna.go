@@ -2,8 +2,8 @@ package persistent
 
 import (
 	"bitbucket.org/rhagenson/bio/alphabet"
-	"bitbucket.org/rhagenson/bio/helpers/complement"
 	"bitbucket.org/rhagenson/bio/sequence"
+	"bitbucket.org/rhagenson/bio/utils/complement"
 )
 
 var _ sequence.Interface = new(Rna)
