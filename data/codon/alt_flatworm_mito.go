@@ -4,15 +4,20 @@ import (
 	"fmt"
 )
 
-var _ fmt.Stringer = new(AltFlatwormMitrochondrial)
-var _ Translater = new(AltFlatwormMitrochondrial)
-var _ AltNamer = new(AltFlatwormMitrochondrial)
-var _ StartCodoner = new(AltFlatwormMitrochondrial)
-var _ StopCodoner = new(AltFlatwormMitrochondrial)
+var _ fmt.Stringer = new(AltFlatwormMt)
+var _ Translater = new(AltFlatwormMt)
+var _ AltNamer = new(AltFlatwormMt)
+var _ IDer = new(AltFlatwormMt)
+var _ StartCodoner = new(AltFlatwormMt)
+var _ StopCodoner = new(AltFlatwormMt)
 
-type AltFlatwormMitrochondrial struct{}
+type (
+	// AltFlatwormMt is the NCBI mtDNA to protein translation table for flatworm
+	AltFlatwormMt struct{}
+)
 
-func (s AltFlatwormMitrochondrial) Translate(c string) (byte, bool) {
+// Translate converts a codon into its amino acid equivalent
+func (s AltFlatwormMt) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
 		"TCT": 'S', "TCC": 'S', "TCA": 'S', "TCG": 'S',
@@ -34,18 +39,27 @@ func (s AltFlatwormMitrochondrial) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
-func (s AltFlatwormMitrochondrial) String() string {
-	return "Alternative Flatworm Mitrochondrial Codon Library"
+// String provides a human-readable indication of usage
+func (s AltFlatwormMt) String() string {
+	return "Alternative Flatworm Mt Codon Library"
 }
 
-func (s AltFlatwormMitrochondrial) AltName() string {
+// AltName provides the alternative name used by NCBI
+func (s AltFlatwormMt) AltName() string {
 	return ""
 }
 
-func (s AltFlatwormMitrochondrial) StartCodons() []string {
+// ID provides the alternative identifier used by NCBI
+func (s AltFlatwormMt) ID() uint {
+	return 14
+}
+
+// StartCodons lists the codons which start a transcript
+func (s AltFlatwormMt) StartCodons() []string {
 	return []string{"ATG"}
 }
 
-func (s AltFlatwormMitrochondrial) StopCodons() []string {
+// StopCodons lists the codons which end a transcript
+func (s AltFlatwormMt) StopCodons() []string {
 	return []string{"TAG"}
 }

@@ -4,15 +4,20 @@ import (
 	"fmt"
 )
 
-var _ fmt.Stringer = new(TrematodeMitochondrial)
-var _ Translater = new(TrematodeMitochondrial)
-var _ AltNamer = new(TrematodeMitochondrial)
-var _ StartCodoner = new(TrematodeMitochondrial)
-var _ StopCodoner = new(TrematodeMitochondrial)
+var _ fmt.Stringer = new(TrematodeMt)
+var _ Translater = new(TrematodeMt)
+var _ AltNamer = new(TrematodeMt)
+var _ IDer = new(TrematodeMt)
+var _ StartCodoner = new(TrematodeMt)
+var _ StopCodoner = new(TrematodeMt)
 
-type TrematodeMitochondrial struct{}
+type (
+	// TrematodeMt is the trematode mtDNA to protein translation table
+	TrematodeMt struct{}
+)
 
-func (s TrematodeMitochondrial) Translate(c string) (byte, bool) {
+// Translate converts a codon into its amino acid equivalent
+func (s TrematodeMt) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
 		"TCT": 'S', "TCC": 'S', "TCA": 'S', "TCG": 'S',
@@ -34,18 +39,27 @@ func (s TrematodeMitochondrial) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
-func (s TrematodeMitochondrial) String() string {
+// String provides a human-readable indication of usage
+func (s TrematodeMt) String() string {
 	return "Trematode Mitochondrial Codon Library"
 }
 
-func (s TrematodeMitochondrial) AltName() string {
+// AltName provides the alternative name used by NCB
+func (s TrematodeMt) AltName() string {
 	return ""
 }
 
-func (s TrematodeMitochondrial) StartCodons() []string {
+// ID provides the alternative identifier used by NCBI
+func (s TrematodeMt) ID() uint {
+	return 21
+}
+
+// StartCodons lists the codons which start a transcript
+func (s TrematodeMt) StartCodons() []string {
 	return []string{"ATG", "GTG"}
 }
 
-func (s TrematodeMitochondrial) StopCodons() []string {
+// StopCodons lists the codons which end a transcript
+func (s TrematodeMt) StopCodons() []string {
 	return []string{"TAA", "TAG"}
 }

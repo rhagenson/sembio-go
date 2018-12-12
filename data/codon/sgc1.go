@@ -7,12 +7,19 @@ import (
 var _ fmt.Stringer = new(SGC1)
 var _ Translater = new(SGC1)
 var _ AltNamer = new(SGC1)
+var _ IDer = new(SGC1)
 var _ StartCodoner = new(SGC1)
 var _ StopCodoner = new(SGC1)
 
-type SGC1 struct{}
-type VertebrateMitochondrial SGC1
+type (
+	// SGC1 is the NCBI mtDNA to protein translation table
+	SGC1 struct{}
 
+	// VertebrateMt is the mtDNA to protein translation table
+	VertebrateMt SGC1
+)
+
+// Translate converts a codon into its amino acid equivalent
 func (s SGC1) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -34,22 +41,32 @@ func (s SGC1) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usage
 func (s SGC1) String() string {
 	return "SGC1 Codon Library"
 }
 
-func (s VertebrateMitochondrial) String() string {
+// String provides a human-readable indication of usage
+func (s VertebrateMt) String() string {
 	return "Vertebrate Mitochondrial Codon Library"
 }
 
+// AltName provides the alternative name used by NCBI
 func (s SGC1) AltName() string {
 	return "SGC1"
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s SGC1) ID() uint {
+	return 2
+}
+
+// StartCodons lists the codons which start a transcript
 func (s SGC1) StartCodons() []string {
 	return []string{"ATT", "ATC", "ATA", "ATG", "GTG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s SGC1) StopCodons() []string {
 	return []string{"TAA", "TAG", "AGA", "AGG"}
 }

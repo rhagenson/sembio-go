@@ -4,15 +4,20 @@ import (
 	"fmt"
 )
 
-var _ fmt.Stringer = new(ChlorophyceanMitochondrial)
-var _ Translater = new(ChlorophyceanMitochondrial)
-var _ AltNamer = new(ChlorophyceanMitochondrial)
-var _ StartCodoner = new(ChlorophyceanMitochondrial)
-var _ StopCodoner = new(ChlorophyceanMitochondrial)
+var _ fmt.Stringer = new(ChlorophyceanMt)
+var _ Translater = new(ChlorophyceanMt)
+var _ AltNamer = new(ChlorophyceanMt)
+var _ IDer = new(ChlorophyceanMt)
+var _ StartCodoner = new(ChlorophyceanMt)
+var _ StopCodoner = new(ChlorophyceanMt)
 
-type ChlorophyceanMitochondrial struct{}
+type (
+	// ChlorophyceanMt is the chlorophycean mtDNA to protein translation table
+	ChlorophyceanMt struct{}
+)
 
-func (s ChlorophyceanMitochondrial) Translate(c string) (byte, bool) {
+// Translate converts a codon into its amino acid equivalen
+func (s ChlorophyceanMt) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
 		"TCT": 'S', "TCC": 'S', "TCA": 'S', "TCG": 'S',
@@ -34,18 +39,27 @@ func (s ChlorophyceanMitochondrial) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
-func (s ChlorophyceanMitochondrial) String() string {
+// String provides a human-readable indication of usage
+func (s ChlorophyceanMt) String() string {
 	return "Chlorophycean Mitochondrial Codon Library"
 }
 
-func (s ChlorophyceanMitochondrial) AltName() string {
+// AltName provides the alternative name used by NCBI
+func (s ChlorophyceanMt) AltName() string {
 	return ""
 }
 
-func (s ChlorophyceanMitochondrial) StartCodons() []string {
+// ID provides the alternative identifier used by NCBI
+func (s ChlorophyceanMt) ID() uint {
+	return 16
+}
+
+// StartCodons lists the codons which start a transcrip
+func (s ChlorophyceanMt) StartCodons() []string {
 	return []string{"ATG"}
 }
 
-func (s ChlorophyceanMitochondrial) StopCodons() []string {
+// StopCodons lists the codons which end a transcrip
+func (s ChlorophyceanMt) StopCodons() []string {
 	return []string{"TAA", "TGA"}
 }

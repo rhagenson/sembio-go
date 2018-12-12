@@ -7,11 +7,16 @@ import (
 var _ fmt.Stringer = new(Blastocrithidia)
 var _ Translater = new(Blastocrithidia)
 var _ AltNamer = new(Blastocrithidia)
+var _ IDer = new(Blastocrithidia)
 var _ StartCodoner = new(Blastocrithidia)
 var _ StopCodoner = new(Blastocrithidia)
 
-type Blastocrithidia struct{}
+type (
+	// Blastocrithidia is the blastocrithidia DNA to protein translation table
+	Blastocrithidia struct{}
+)
 
+// Translate converts a codon into its amino acid equivalent
 func (s Blastocrithidia) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -34,18 +39,27 @@ func (s Blastocrithidia) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usage
 func (s Blastocrithidia) String() string {
-	return "Blastocrithidia Nuclear Codon Library"
+	return "Blastocrithidia Codon Library"
 }
 
+// AltName provides the alternative name used by NCBI
 func (s Blastocrithidia) AltName() string {
 	return ""
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s Blastocrithidia) ID() uint {
+	return 31
+}
+
+// StartCodons lists the codons which start a transcript
 func (s Blastocrithidia) StartCodons() []string {
 	return []string{"ATG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s Blastocrithidia) StopCodons() []string {
 	return []string{"TAA", "TAG"}
 }

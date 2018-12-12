@@ -4,15 +4,20 @@ import (
 	"fmt"
 )
 
-var _ fmt.Stringer = new(PterobranchiaMitochondrial)
-var _ Translater = new(PterobranchiaMitochondrial)
-var _ AltNamer = new(PterobranchiaMitochondrial)
-var _ StartCodoner = new(PterobranchiaMitochondrial)
-var _ StopCodoner = new(PterobranchiaMitochondrial)
+var _ fmt.Stringer = new(PterobranchiaMt)
+var _ Translater = new(PterobranchiaMt)
+var _ AltNamer = new(PterobranchiaMt)
+var _ IDer = new(PterobranchiaMt)
+var _ StartCodoner = new(PterobranchiaMt)
+var _ StopCodoner = new(PterobranchiaMt)
 
-type PterobranchiaMitochondrial struct{}
+type (
+	// PterobranchiaMt is the pterobranchia mtDNA to protein translation tabl
+	PterobranchiaMt struct{}
+)
 
-func (s PterobranchiaMitochondrial) Translate(c string) (byte, bool) {
+// Translate converts a codon into its amino acid equivalent
+func (s PterobranchiaMt) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
 		"TCT": 'S', "TCC": 'S', "TCA": 'S', "TCG": 'S',
@@ -34,18 +39,27 @@ func (s PterobranchiaMitochondrial) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
-func (s PterobranchiaMitochondrial) String() string {
+// String provides a human-readable indication of usag
+func (s PterobranchiaMt) String() string {
 	return "Pterobranchia Mitochondrial Codon Library"
 }
 
-func (s PterobranchiaMitochondrial) AltName() string {
+// AltName provides the alternative name used by NCBI
+func (s PterobranchiaMt) AltName() string {
 	return ""
 }
 
-func (s PterobranchiaMitochondrial) StartCodons() []string {
+// ID provides the alternative identifier used by NCBI
+func (s PterobranchiaMt) ID() uint {
+	return 24
+}
+
+// StartCodons lists the codons which start a transcript
+func (s PterobranchiaMt) StartCodons() []string {
 	return []string{"TTG", "CTG", "ATG", "GTG"}
 }
 
-func (s PterobranchiaMitochondrial) StopCodons() []string {
+// StopCodons lists the codons which end a transcript
+func (s PterobranchiaMt) StopCodons() []string {
 	return []string{"TAA", "TAG"}
 }

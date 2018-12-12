@@ -4,15 +4,20 @@ import (
 	"fmt"
 )
 
-var _ fmt.Stringer = new(AlternativeYeastNuclear)
-var _ Translater = new(AlternativeYeastNuclear)
-var _ AltNamer = new(AlternativeYeastNuclear)
-var _ StartCodoner = new(AlternativeYeastNuclear)
-var _ StopCodoner = new(AlternativeYeastNuclear)
+var _ fmt.Stringer = new(AltYeast)
+var _ Translater = new(AltYeast)
+var _ AltNamer = new(AltYeast)
+var _ IDer = new(AltYeast)
+var _ StartCodoner = new(AltYeast)
+var _ StopCodoner = new(AltYeast)
 
-type AlternativeYeastNuclear struct{}
+type (
+	// AltYeast is the alternative yeast DNA to protein translation table
+	AltYeast struct{}
+)
 
-func (s AlternativeYeastNuclear) Translate(c string) (byte, bool) {
+// Translate converts a codon into its amino acid equivalent
+func (s AltYeast) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
 		"TCT": 'S', "TCC": 'S', "TCA": 'S', "TCG": 'S',
@@ -34,18 +39,27 @@ func (s AlternativeYeastNuclear) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
-func (s AlternativeYeastNuclear) String() string {
-	return "Alternative Yeast Nuclear Codon Library"
+// String provides a human-readable indication of usage
+func (s AltYeast) String() string {
+	return "Alternative Yeast Codon Library"
 }
 
-func (s AlternativeYeastNuclear) AltName() string {
+// AltName provides the alternative name used by NCBI
+func (s AltYeast) AltName() string {
 	return ""
 }
 
-func (s AlternativeYeastNuclear) StartCodons() []string {
+// ID provides the alternative identifier used by NCBI
+func (s AltYeast) ID() uint {
+	return 12
+}
+
+// StartCodons lists the codons which start a transcript
+func (s AltYeast) StartCodons() []string {
 	return []string{"CTG", "ATG"}
 }
 
-func (s AlternativeYeastNuclear) StopCodons() []string {
+// StopCodons lists the codons which end a transcript
+func (s AltYeast) StopCodons() []string {
 	return []string{"TAA", "TAG", "TGA"}
 }

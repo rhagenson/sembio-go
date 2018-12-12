@@ -7,11 +7,16 @@ import (
 var _ fmt.Stringer = new(Peritrich)
 var _ Translater = new(Peritrich)
 var _ AltNamer = new(Peritrich)
+var _ IDer = new(Peritrich)
 var _ StartCodoner = new(Peritrich)
 var _ StopCodoner = new(Peritrich)
 
-type Peritrich struct{}
+type (
+	// Peritrich is the peritrich DNA to protein translation table
+	Peritrich struct{}
+)
 
+// Translate converts a codon into its amino acid equivalent
 func (s Peritrich) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -34,18 +39,27 @@ func (s Peritrich) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usage
 func (s Peritrich) String() string {
-	return "Peritrich Nuclear Codon Library"
+	return "Peritrich Codon Library"
 }
 
+// AltName provides the alternative name used by NCBI
 func (s Peritrich) AltName() string {
 	return ""
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s Peritrich) ID() uint {
+	return 30
+}
+
+// StartCodons lists the codons which start a transcript
 func (s Peritrich) StartCodons() []string {
 	return []string{"ATG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s Peritrich) StopCodons() []string {
 	return []string{"TGA"}
 }

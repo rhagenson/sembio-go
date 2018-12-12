@@ -4,15 +4,20 @@ import (
 	"fmt"
 )
 
-var _ fmt.Stringer = new(ScenedesmusObliquusMitochondrial)
-var _ Translater = new(ScenedesmusObliquusMitochondrial)
-var _ AltNamer = new(ScenedesmusObliquusMitochondrial)
-var _ StartCodoner = new(ScenedesmusObliquusMitochondrial)
-var _ StopCodoner = new(ScenedesmusObliquusMitochondrial)
+var _ fmt.Stringer = new(ScenedesmusObliquusMt)
+var _ Translater = new(ScenedesmusObliquusMt)
+var _ AltNamer = new(ScenedesmusObliquusMt)
+var _ IDer = new(ScenedesmusObliquusMt)
+var _ StartCodoner = new(ScenedesmusObliquusMt)
+var _ StopCodoner = new(ScenedesmusObliquusMt)
 
-type ScenedesmusObliquusMitochondrial struct{}
+type (
+	// ScenedesmusObliquusMt is the Scenedesmus obliquus mtDNA to protein translation tabl
+	ScenedesmusObliquusMt struct{}
+)
 
-func (s ScenedesmusObliquusMitochondrial) Translate(c string) (byte, bool) {
+// Translate converts a codon into its amino acid equivalent
+func (s ScenedesmusObliquusMt) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
 		"TCT": 'S', "TCC": 'S', "TCG": 'S', "TAT": 'Y',
@@ -34,18 +39,27 @@ func (s ScenedesmusObliquusMitochondrial) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
-func (s ScenedesmusObliquusMitochondrial) String() string {
+// String provides a human-readable indication of usage
+func (s ScenedesmusObliquusMt) String() string {
 	return "Scenedesmus obliquus Mitochondrial Codon Library"
 }
 
-func (s ScenedesmusObliquusMitochondrial) AltName() string {
+// AltName provides the alternative name used by NCBI
+func (s ScenedesmusObliquusMt) AltName() string {
 	return ""
 }
 
-func (s ScenedesmusObliquusMitochondrial) StartCodons() []string {
+// ID provides the alternative identifier used by NCBI
+func (s ScenedesmusObliquusMt) ID() uint {
+	return 22
+}
+
+// StartCodons lists the codons which start a transcript
+func (s ScenedesmusObliquusMt) StartCodons() []string {
 	return []string{"ATG"}
 }
 
-func (s ScenedesmusObliquusMitochondrial) StopCodons() []string {
+// StopCodons lists the codons which end a transcript
+func (s ScenedesmusObliquusMt) StopCodons() []string {
 	return []string{"TCA", "TAA", "TGA"}
 }

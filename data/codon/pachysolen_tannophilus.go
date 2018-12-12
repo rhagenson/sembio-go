@@ -7,11 +7,17 @@ import (
 var _ fmt.Stringer = new(PachysolenTannophilus)
 var _ Translater = new(PachysolenTannophilus)
 var _ AltNamer = new(PachysolenTannophilus)
+var _ IDer = new(PachysolenTannophilus)
 var _ StartCodoner = new(PachysolenTannophilus)
 var _ StopCodoner = new(PachysolenTannophilus)
 
-type PachysolenTannophilus struct{}
+type (
+	// Gracilibacteria is the NCBI DNA to protein translation table
+	// for Pachysolen tannophilus
+	PachysolenTannophilus struct{}
+)
 
+// Translate converts a codon into its amino acid equivalent
 func (s PachysolenTannophilus) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -34,17 +40,27 @@ func (s PachysolenTannophilus) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usage
 func (s PachysolenTannophilus) String() string {
-	return "Pachysolen tannophilus Nuclear Codon Library"
+	return "Pachysolen tannophilus Codon Library"
 }
+
+// AltName provides the alternative name used by NCBI
 func (s PachysolenTannophilus) AltName() string {
 	return ""
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s PachysolenTannophilus) ID() uint {
+	return 26
+}
+
+// StartCodons lists the codons which start a transcript
 func (s PachysolenTannophilus) StartCodons() []string {
 	return []string{"CTG", "ATG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s PachysolenTannophilus) StopCodons() []string {
 	return []string{"TAA", "TAG", "TGA"}
 }

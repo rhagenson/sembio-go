@@ -7,13 +7,23 @@ import (
 var _ fmt.Stringer = new(SGC8)
 var _ Translater = new(SGC8)
 var _ AltNamer = new(SGC8)
+var _ IDer = new(SGC8)
 var _ StartCodoner = new(SGC8)
 var _ StopCodoner = new(SGC8)
 
-type SGC8 struct{}
-type EchinodermMitochondrial SGC8
-type FlatwormMitochondrial SGC8
+type (
+	// SGC8 is the NCBI mtDNA to protein translation table for
+	// Echinoderm and Flatworm
+	SGC8 struct{}
 
+	// EchinodermMt is the echinoderm mtDNA to protein translation table
+	EchinodermMt SGC8
+
+	// FlatwormMt is the flatworm mtDNA to protein translation table
+	FlatwormMt SGC8
+)
+
+// Translate converts a codon into its amino acid equivalent
 func (s SGC8) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -36,26 +46,37 @@ func (s SGC8) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usage
 func (s SGC8) String() string {
 	return "SGC8 Codon Library"
 }
 
-func (s EchinodermMitochondrial) String() string {
+// String provides a human-readable indication of usage
+func (s EchinodermMt) String() string {
 	return "Echinoderm Mitochondrial Codon Library"
 }
 
-func (s FlatwormMitochondrial) String() string {
+// String provides a human-readable indication of usage
+func (s FlatwormMt) String() string {
 	return "Flatworm Mitochondrial Codon Library"
 }
 
+// AltName provides the alternative name used by NCBI
 func (s SGC8) AltName() string {
 	return "SGC8"
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s SGC8) ID() uint {
+	return 9
+}
+
+// StartCodons lists the codons which start a transcript
 func (s SGC8) StartCodons() []string {
 	return []string{"ATG", "GTG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s SGC8) StopCodons() []string {
 	return []string{"TAA", "TAG"}
 }

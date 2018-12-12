@@ -7,11 +7,16 @@ import (
 var _ fmt.Stringer = new(Mesodinium)
 var _ Translater = new(Mesodinium)
 var _ AltNamer = new(Mesodinium)
+var _ IDer = new(Mesodinium)
 var _ StartCodoner = new(Mesodinium)
 var _ StopCodoner = new(Mesodinium)
 
-type Mesodinium struct{}
+type (
+	// Mesodinium is the mesodinium DNA to protein translation table
+	Mesodinium struct{}
+)
 
+// Translate converts a codon into its amino acid equivalent
 func (s Mesodinium) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -34,18 +39,27 @@ func (s Mesodinium) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usage
 func (s Mesodinium) String() string {
-	return "Mesodinium Nuclear Codon Library"
+	return "Mesodinium Codon Library"
 }
 
+// AltName provides the alternative name used by NCBI
 func (s Mesodinium) AltName() string {
 	return ""
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s Mesodinium) ID() uint {
+	return 29
+}
+
+// StartCodons lists the codons which start a transcript
 func (s Mesodinium) StartCodons() []string {
 	return []string{"ATG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s Mesodinium) StopCodons() []string {
 	return []string{"TGA"}
 }

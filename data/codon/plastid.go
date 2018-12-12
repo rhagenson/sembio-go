@@ -7,14 +7,27 @@ import (
 var _ fmt.Stringer = new(BacterialArchaelPlantPlastid)
 var _ Translater = new(BacterialArchaelPlantPlastid)
 var _ AltNamer = new(BacterialArchaelPlantPlastid)
+var _ IDer = new(BacterialArchaelPlantPlastid)
 var _ StartCodoner = new(BacterialArchaelPlantPlastid)
 var _ StopCodoner = new(BacterialArchaelPlantPlastid)
 
-type BacterialArchaelPlantPlastid struct{}
-type BacterialPlastid BacterialArchaelPlantPlastid
-type ArchaelPlastid BacterialArchaelPlantPlastid
-type PlantPlastid BacterialArchaelPlantPlastid
+type (
+	// BacterialArchaelPlantPlastid is the NCBI DNA to protein
+	// translation table for
+	// bacterial, archael, and plant plastid
+	BacterialArchaelPlantPlastid struct{}
 
+	// BacterialPlastid is the bacterial plastid DNA to protein translation table
+	BacterialPlastid BacterialArchaelPlantPlastid
+
+	// ArchaelPlastid is the archael plastid DNA to protein translation table
+	ArchaelPlastid BacterialArchaelPlantPlastid
+
+	// PlantPlastid is the plant plastid DNA to protein translation table
+	PlantPlastid BacterialArchaelPlantPlastid
+)
+
+// Translate converts a codon into its amino acid equivalent
 func (s BacterialArchaelPlantPlastid) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -37,29 +50,38 @@ func (s BacterialArchaelPlantPlastid) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usage
 func (s BacterialArchaelPlantPlastid) String() string {
 	return "Bacterial, Archael, and Plant Plastid Codon Library"
 }
 
+// String provides a human-readable indication of usage
 func (s BacterialPlastid) String() string {
 	return "Bacterial Plastid Codon Library"
 }
 
+// String provides a human-readable indication of usage
 func (s ArchaelPlastid) String() string {
 	return "Archael Plastid Codon Library"
 }
 
+// String provides a human-readable indication of usage
 func (s PlantPlastid) String() string {
 	return "Plant Plastid Codon Library"
 }
 
+// AltName provides the alternative name used by NCBI
 func (s BacterialArchaelPlantPlastid) AltName() string {
 	return ""
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s BacterialArchaelPlantPlastid) ID() uint {
+	return 11
+}
+
 func (s BacterialArchaelPlantPlastid) StartCodons() []string {
-	return []string{"TTG", "CTG", "ATT",
-		"ATC", "ATA", "ATG", "GTG"}
+	return []string{"TTG", "CTG", "ATT", "ATC", "ATA", "ATG", "GTG"}
 }
 
 func (s BacterialArchaelPlantPlastid) StopCodons() []string {

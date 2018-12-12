@@ -7,11 +7,16 @@ import (
 var _ fmt.Stringer = new(BlepharismaMacronuclear)
 var _ Translater = new(BlepharismaMacronuclear)
 var _ AltNamer = new(BlepharismaMacronuclear)
+var _ IDer = new(BlepharismaMacronuclear)
 var _ StartCodoner = new(BlepharismaMacronuclear)
 var _ StopCodoner = new(BlepharismaMacronuclear)
 
-type BlepharismaMacronuclear struct{}
+type (
+	// BlepharismaMacronuclear is the DNA to protein translation table
+	BlepharismaMacronuclear struct{}
+)
 
+// Translate converts a codon into its amino acid equivalent
 func (s BlepharismaMacronuclear) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -34,18 +39,27 @@ func (s BlepharismaMacronuclear) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usage
 func (s BlepharismaMacronuclear) String() string {
 	return "Blepharisma Macronuclear Codon Library"
 }
 
+// AltName provides the alternative name used by NCBI
 func (s BlepharismaMacronuclear) AltName() string {
 	return ""
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s BlepharismaMacronuclear) ID() uint {
+	return 15
+}
+
+// StartCodons lists the codons which start a transcript
 func (s BlepharismaMacronuclear) StartCodons() []string {
 	return []string{"ATG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s BlepharismaMacronuclear) StopCodons() []string {
 	return []string{"TAA", "TGA"}
 }

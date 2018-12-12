@@ -7,12 +7,21 @@ import (
 var _ fmt.Stringer = new(Gracilibacteria)
 var _ Translater = new(Gracilibacteria)
 var _ AltNamer = new(Gracilibacteria)
+var _ IDer = new(Gracilibacteria)
 var _ StartCodoner = new(Gracilibacteria)
 var _ StopCodoner = new(Gracilibacteria)
 
-type Gracilibacteria struct{}
-type CandidateDivisionSR1 Gracilibacteria
+type (
+	// Gracilibacteria is the NCBI DNA to protein translation table
+	// for gracilibacteria
+	Gracilibacteria struct{}
 
+	// CandidateDivisionSR1 is the mtDNA to protein translation table
+	// for Candidate Division SR1
+	CandidateDivisionSR1 Gracilibacteria
+)
+
+// Translate converts a codon into its amino acid equivalent
 func (s Gracilibacteria) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -35,22 +44,32 @@ func (s Gracilibacteria) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usag
 func (s Gracilibacteria) String() string {
 	return "Gracilibacteria Codon Library"
 }
 
+// String provides a human-readable indication of usag
 func (s CandidateDivisionSR1) String() string {
 	return "Candidate Division SR1 Codon Library"
 }
 
+// AltName provides the alternative name used by NCBI
 func (s Gracilibacteria) AltName() string {
 	return ""
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s Gracilibacteria) ID() uint {
+	return 25
+}
+
+// StartCodons lists the codons which start a transcript
 func (s Gracilibacteria) StartCodons() []string {
 	return []string{"TTG", "ATG", "GTG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s Gracilibacteria) StopCodons() []string {
 	return []string{"TAA", "TAG"}
 }

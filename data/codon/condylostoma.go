@@ -7,11 +7,16 @@ import (
 var _ fmt.Stringer = new(Condylostoma)
 var _ Translater = new(Condylostoma)
 var _ AltNamer = new(Condylostoma)
+var _ IDer = new(Condylostoma)
 var _ StartCodoner = new(Condylostoma)
 var _ StopCodoner = new(Condylostoma)
 
-type Condylostoma struct{}
+type (
+	// Condylostoma is the condylostoma DNA to protein translation table
+	Condylostoma struct{}
+)
 
+// Translate converts a codon into its amino acid equivalent
 func (s Condylostoma) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -34,18 +39,27 @@ func (s Condylostoma) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usage
 func (s Condylostoma) String() string {
-	return "Condylostoma Nuclear Codon Library"
+	return "Condylostoma Codon Library"
 }
 
+// AltName provides the alternative name used by NCB
 func (s Condylostoma) AltName() string {
 	return ""
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s Condylostoma) ID() uint {
+	return 28
+}
+
+// StartCodons lists the codons which start a transcript
 func (s Condylostoma) StartCodons() []string {
 	return []string{"ATG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s Condylostoma) StopCodons() []string {
 	return []string{"TAA", "TAG", "TGA"}
 }

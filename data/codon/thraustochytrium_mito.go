@@ -4,15 +4,20 @@ import (
 	"fmt"
 )
 
-var _ fmt.Stringer = new(ThraustochytriumMitochondrial)
-var _ Translater = new(ThraustochytriumMitochondrial)
-var _ AltNamer = new(ThraustochytriumMitochondrial)
-var _ StartCodoner = new(ThraustochytriumMitochondrial)
-var _ StopCodoner = new(ThraustochytriumMitochondrial)
+var _ fmt.Stringer = new(ThraustochytriumMt)
+var _ Translater = new(ThraustochytriumMt)
+var _ AltNamer = new(ThraustochytriumMt)
+var _ IDer = new(ThraustochytriumMt)
+var _ StartCodoner = new(ThraustochytriumMt)
+var _ StopCodoner = new(ThraustochytriumMt)
 
-type ThraustochytriumMitochondrial struct{}
+type (
+	// ThraustochytriumMt is the thraustochytrium mtDNA to protein translation table
+	ThraustochytriumMt struct{}
+)
 
-func (s ThraustochytriumMitochondrial) Translate(c string) (byte, bool) {
+// Translate converts a codon into its amino acid equivalent
+func (s ThraustochytriumMt) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTG": 'L', "TCT": 'S',
 		"TCC": 'S', "TCA": 'S', "TCG": 'S', "TAT": 'Y',
@@ -33,18 +38,27 @@ func (s ThraustochytriumMitochondrial) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
-func (s ThraustochytriumMitochondrial) String() string {
+// String provides a human-readable indication of usage
+func (s ThraustochytriumMt) String() string {
 	return "Thraustochytrium Mitochondrial Codon Library"
 }
 
-func (s ThraustochytriumMitochondrial) AltName() string {
+// AltName provides the alternative name used by NCBI
+func (s ThraustochytriumMt) AltName() string {
 	return ""
 }
 
-func (s ThraustochytriumMitochondrial) StartCodons() []string {
+// ID provides the alternative identifier used by NCBI
+func (s ThraustochytriumMt) ID() uint {
+	return 23
+}
+
+// StartCodons lists the codons which start a transcript
+func (s ThraustochytriumMt) StartCodons() []string {
 	return []string{"ATT", "ATG", "GTG"}
 }
 
-func (s ThraustochytriumMitochondrial) StopCodons() []string {
+// StopCodons lists the codons which end a transcript
+func (s ThraustochytriumMt) StopCodons() []string {
 	return []string{"TTA", "TAA", "TAG", "TGA"}
 }

@@ -4,15 +4,20 @@ import (
 	"fmt"
 )
 
-var _ fmt.Stringer = new(AscidianMitochondrial)
-var _ Translater = new(AscidianMitochondrial)
-var _ AltNamer = new(AscidianMitochondrial)
-var _ StartCodoner = new(AscidianMitochondrial)
-var _ StopCodoner = new(AscidianMitochondrial)
+var _ fmt.Stringer = new(AscidianMt)
+var _ Translater = new(AscidianMt)
+var _ AltNamer = new(AscidianMt)
+var _ IDer = new(AscidianMt)
+var _ StartCodoner = new(AscidianMt)
+var _ StopCodoner = new(AscidianMt)
 
-type AscidianMitochondrial struct{}
+type (
+	// AscidianMt is the ascidian mtDNA to protein translation table
+	AscidianMt struct{}
+)
 
-func (s AscidianMitochondrial) Translate(c string) (byte, bool) {
+// Translate converts a codon into its amino acid equivalent
+func (s AscidianMt) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
 		"TCT": 'S', "TCC": 'S', "TCA": 'S', "TCG": 'S',
@@ -34,18 +39,27 @@ func (s AscidianMitochondrial) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
-func (s AscidianMitochondrial) String() string {
+// String provides a human-readable indication of usage
+func (s AscidianMt) String() string {
 	return "Ascidian Mitochondrial Codon Library"
 }
 
-func (s AscidianMitochondrial) AltName() string {
+// AltName provides the alternative name used by NCBI
+func (s AscidianMt) AltName() string {
 	return ""
 }
 
-func (s AscidianMitochondrial) StartCodons() []string {
+// ID provides the alternative identifier used by NCBI
+func (s AscidianMt) ID() uint {
+	return 13
+}
+
+// StartCodons lists the codons which start a transcript
+func (s AscidianMt) StartCodons() []string {
 	return []string{"TTG", "ATA", "ATG", "GTG"}
 }
 
-func (s AscidianMitochondrial) StopCodons() []string {
+// StopCodons lists the codons which end a transcript
+func (s AscidianMt) StopCodons() []string {
 	return []string{"TAA", "TAG"}
 }

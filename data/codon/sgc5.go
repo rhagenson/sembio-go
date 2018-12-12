@@ -7,14 +7,26 @@ import (
 var _ fmt.Stringer = new(SGC5)
 var _ Translater = new(SGC5)
 var _ AltNamer = new(SGC5)
+var _ IDer = new(SGC5)
 var _ StartCodoner = new(SGC5)
 var _ StopCodoner = new(SGC5)
 
-type SGC5 struct{}
-type CiliateNuclear SGC5
-type DasycladaceanNuclear SGC5
-type HexamitaNuclear SGC5
+type (
+	// SGC5 is the NCBI DNA to protein translation table for
+	// Ciliate, Dasycladacean, and Hexamita
+	SGC5 struct{}
 
+	// Ciliate is the DNA to protein translation table
+	Ciliate SGC5
+
+	// Dasycladacean is the DNA to protein translation table
+	Dasycladacean SGC5
+
+	// Hexamita is the DNA to protein translation table
+	Hexamita SGC5
+)
+
+// Translate converts a codon into its amino acid equivalent
 func (s SGC5) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -37,30 +49,42 @@ func (s SGC5) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usag
 func (s SGC5) String() string {
 	return "SGC5 Codon Library"
 }
 
-func (s CiliateNuclear) String() string {
-	return "Ciliate Nuclear Codon Library"
+// String provides a human-readable indication of usag
+func (s Ciliate) String() string {
+	return "Ciliate Codon Library"
 }
 
-func (s DasycladaceanNuclear) String() string {
-	return "Dasycladacean Nuclear Codon Library"
+// String provides a human-readable indication of usag
+func (s Dasycladacean) String() string {
+	return "Dasycladacean Codon Library"
 }
 
-func (s HexamitaNuclear) String() string {
-	return "Hexamita Nuclear Codon Library"
+// String provides a human-readable indication of usag
+func (s Hexamita) String() string {
+	return "Hexamita Codon Library"
 }
 
+// AltName provides the alternative name used by NCBI
 func (s SGC5) AltName() string {
 	return "SGC5"
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s SGC5) ID() uint {
+	return 6
+}
+
+// StartCodons lists the codons which start a transcript
 func (s SGC5) StartCodons() []string {
 	return []string{"ATG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s SGC5) StopCodons() []string {
 	return []string{"TGA"}
 }

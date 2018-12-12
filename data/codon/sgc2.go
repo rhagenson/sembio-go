@@ -7,12 +7,19 @@ import (
 var _ fmt.Stringer = new(SGC2)
 var _ Translater = new(SGC2)
 var _ AltNamer = new(SGC2)
+var _ IDer = new(SGC2)
 var _ StartCodoner = new(SGC2)
 var _ StopCodoner = new(SGC2)
 
-type SGC2 struct{}
-type YeastMitochondrial SGC2
+type (
+	// SGC2 is the NCBI yeast mtDNA to protein translation table
+	SGC2 struct{}
 
+	// YeastMt is the yeast mtDNA to protein translation table
+	YeastMt SGC2
+)
+
+// Translate converts a codon into its amino acid equivalent
 func (s SGC2) Translate(c string) (byte, bool) {
 	aa, ok := map[string]byte{
 		"TTT": 'F', "TTC": 'F', "TTA": 'L', "TTG": 'L',
@@ -35,22 +42,32 @@ func (s SGC2) Translate(c string) (byte, bool) {
 	return aa, ok
 }
 
+// String provides a human-readable indication of usage
 func (s SGC2) String() string {
 	return "SGC2 Codon Library"
 }
 
-func (s YeastMitochondrial) String() string {
-	return "Yeast Mitrochondrial Codon Library"
+// String provides a human-readable indication of usage
+func (s YeastMt) String() string {
+	return "Yeast Mitochondrial Codon Library"
 }
 
+// AltName provides the alternative name used by NCBI
 func (s SGC2) AltName() string {
 	return "SGC2"
 }
 
+// ID provides the alternative identifier used by NCBI
+func (s SGC2) ID() uint {
+	return 3
+}
+
+// StartCodons lists the codons which start a transcript
 func (s SGC2) StartCodons() []string {
 	return []string{"ATA", "ATG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s SGC2) StopCodons() []string {
 	return []string{"TAA", "TAG"}
 }
