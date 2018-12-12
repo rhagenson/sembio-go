@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"bitbucket.org/rhagenson/bio/helpers/qscore"
+	"bitbucket.org/rhagenson/bio/utils/qscore"
 )
 
 func TestIllumina64V13(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"bitbucket.org/rhagenson/bio/helpers/qscore"
+	"bitbucket.org/rhagenson/bio/utils/qscore"
 )
 
 func TestSolexa64(t *testing.T) {

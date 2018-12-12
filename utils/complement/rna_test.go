@@ -3,7 +3,7 @@ package complement_test
 import (
 	"testing"
 
-	"bitbucket.org/rhagenson/bio/helpers/complement"
+	"bitbucket.org/rhagenson/bio/utils/complement"
 )
 
 // TestRnaReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder

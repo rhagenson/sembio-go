@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"bitbucket.org/rhagenson/bio/helpers/complement"
+	"bitbucket.org/rhagenson/bio/utils/complement"
 )
 
 // TestIupacReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
