@@ -46,14 +46,8 @@ func (x *Dna) Reverse() (sequence.Interface, error) {
 func (x *Dna) RevComp() (sequence.Interface, error) {
 	t := []byte(x.String())
 	l := len(t)
-	sem := make(chan struct{}, l)
 	for i := 0; i < l/2; i++ {
-		go func(i int) {
 		t[i], t[l-1-i] = complement.Dna(t[l-1-i]), complement.Dna(t[i])
-		}(i)
-	}
-	for i := 0; i < l; i++ {
-		<-sem
 	}
 	return NewDna(string(t))
 }
@@ -61,17 +55,10 @@ func (x *Dna) RevComp() (sequence.Interface, error) {
 // Complement is the same DnaIupac with the sequence complemented
 func (x *Dna) Complement() (sequence.Interface, error) {
 	t := []byte(x.String())
-	l := len(t)
-	sem := make(chan struct{}, l)
 	for i := range t {
-		go func(i int) {
 		t[i] = complement.Dna(t[i])
-			sem <- struct{}{}
-		}(i)
 	}
-	for i := 0; i < l; i++ {
-		<-sem
-	}
+
 	return NewDna(string(t))
 }
 
@@ -85,17 +72,18 @@ func (x *Dna) Transcribe() (sequence.Interface, error) {
 	return NewRna(string(t))
 }
 
-func (x *Dna) Translate(l codon.Translater) (sequence.Interface, error) {
+func (x *Dna) Translate(table codon.Translater) (sequence.Interface, error) {
 	seq := x.String()
 	t := make([]byte, len(seq)/3)
 
 	var ok bool
 	for i := range t {
 		cdn := seq[i*3 : i*3+3]
-		t[i], ok = l.Translate(cdn)
+		t[i], ok = table.Translate(cdn)
 		if !ok {
-			return nil, fmt.Errorf("failed to translate codon: %q when using %s", cdn, l)
+			return nil, fmt.Errorf("failed to translate codon: %q when using %s", cdn, table)
 		}
 	}
+
 	return NewProtein(string(t))
 }
