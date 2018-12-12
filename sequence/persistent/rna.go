@@ -6,6 +6,7 @@ import (
 	"bitbucket.org/rhagenson/bio/sequence"
 )
 
+var _ sequence.Interface = new(Rna)
 var _ sequence.Reverser = new(Rna)
 var _ sequence.RevComper = new(Rna)
 var _ sequence.Complementer = new(Rna)

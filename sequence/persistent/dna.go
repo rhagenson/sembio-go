@@ -9,6 +9,7 @@ import (
 	"bitbucket.org/rhagenson/bio/sequence"
 )
 
+var _ sequence.Interface = new(Dna)
 var _ sequence.Reverser = new(Dna)
 var _ sequence.RevComper = new(Dna)
 var _ sequence.Complementer = new(Dna)
