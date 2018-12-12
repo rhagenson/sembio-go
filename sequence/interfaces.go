@@ -1,5 +1,9 @@
 package sequence
 
+import (
+	"bitbucket.org/rhagenson/bio/data/codon"
+)
+
 // Interface is the basic functionality of any biological sequence
 // (DNA, RNA, Protein, or other)
 type Interface interface {
@@ -30,7 +34,7 @@ type RevComper interface {
 
 // Translater can translate the sequence
 type Translater interface {
-	Translate() (Interface, error)
+	Translate(codon.Translater) (Interface, error)
 }
 
 // Transcriber can transcribe the sequence
