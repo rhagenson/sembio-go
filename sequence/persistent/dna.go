@@ -34,9 +34,9 @@ func NewDna(s string) (*Dna, error) {
 
 // Reverse is the same Dna with the sequence reversed
 func (x *Dna) Reverse() (sequence.Interface, error) {
-	l := x.Length()
 	t := []byte(x.String())
-	for i := uint(0); i < l/2; i++ {
+	l := len(t)
+	for i := 0; i < l/2; i++ {
 		t[i], t[l-1-i] = t[l-1-i], t[i]
 	}
 	return NewDna(string(t))
@@ -44,10 +44,16 @@ func (x *Dna) Reverse() (sequence.Interface, error) {
 
 // RevComp is the same Dna with the sequence reversed and complemented
 func (x *Dna) RevComp() (sequence.Interface, error) {
-	l := x.Length()
 	t := []byte(x.String())
-	for i := uint(0); i < l/2; i++ {
+	l := len(t)
+	sem := make(chan struct{}, l)
+	for i := 0; i < l/2; i++ {
+		go func(i int) {
 		t[i], t[l-1-i] = complement.Dna(t[l-1-i]), complement.Dna(t[i])
+		}(i)
+	}
+	for i := 0; i < l; i++ {
+		<-sem
 	}
 	return NewDna(string(t))
 }
@@ -55,8 +61,16 @@ func (x *Dna) RevComp() (sequence.Interface, error) {
 // Complement is the same DnaIupac with the sequence complemented
 func (x *Dna) Complement() (sequence.Interface, error) {
 	t := []byte(x.String())
+	l := len(t)
+	sem := make(chan struct{}, l)
 	for i := range t {
+		go func(i int) {
 		t[i] = complement.Dna(t[i])
+			sem <- struct{}{}
+		}(i)
+	}
+	for i := 0; i < l; i++ {
+		<-sem
 	}
 	return NewDna(string(t))
 }
