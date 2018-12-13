@@ -17,7 +17,9 @@ type (
 	SGC9 struct{}
 
 	// Euplotid is the euplotid DNA to protein translation table
-	Euplotid SGC9
+	Euplotid struct {
+		SGC9
+	}
 )
 
 // Translate converts a codon into its amino acid equivalent

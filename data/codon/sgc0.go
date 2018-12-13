@@ -16,7 +16,9 @@ type (
 	SGC0 struct{}
 
 	// Standard is the standard DNA to Protein translation table
-	Standard SGC0
+	Standard struct {
+		SGC0
+	}
 )
 
 // Translate converts a codon into its amino acid equivalent

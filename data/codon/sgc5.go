@@ -17,13 +17,19 @@ type (
 	SGC5 struct{}
 
 	// Ciliate is the DNA to protein translation table
-	Ciliate SGC5
+	Ciliate struct {
+		SGC5
+	}
 
 	// Dasycladacean is the DNA to protein translation table
-	Dasycladacean SGC5
+	Dasycladacean struct {
+		SGC5
+	}
 
 	// Hexamita is the DNA to protein translation table
-	Hexamita SGC5
+	Hexamita struct {
+		SGC5
+	}
 )
 
 // Translate converts a codon into its amino acid equivalent

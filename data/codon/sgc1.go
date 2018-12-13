@@ -16,7 +16,9 @@ type (
 	SGC1 struct{}
 
 	// VertebrateMt is the mtDNA to protein translation table
-	VertebrateMt SGC1
+	VertebrateMt struct {
+		SGC1
+	}
 )
 
 // Translate converts a codon into its amino acid equivalent

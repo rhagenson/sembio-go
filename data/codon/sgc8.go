@@ -17,10 +17,14 @@ type (
 	SGC8 struct{}
 
 	// EchinodermMt is the echinoderm mtDNA to protein translation table
-	EchinodermMt SGC8
+	EchinodermMt struct {
+		SGC8
+	}
 
 	// FlatwormMt is the flatworm mtDNA to protein translation table
-	FlatwormMt SGC8
+	FlatwormMt struct {
+		SGC8
+	}
 )
 
 // Translate converts a codon into its amino acid equivalent

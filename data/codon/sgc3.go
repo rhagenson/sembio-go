@@ -18,19 +18,29 @@ type (
 	SGC3 struct{}
 
 	// MoldMt is the mold mtDNA to protein translation table
-	MoldMt SGC3
+	MoldMt struct {
+		SGC3
+	}
 
 	// ProtozoanMt is the protozoan mtDNA to protein translation table
-	ProtozoanMt SGC3
+	ProtozoanMt struct {
+		SGC3
+	}
 
 	// CoelenterateMt is the coelenterate mtDNA to protein translation table
-	CoelenterateMt SGC3
+	CoelenterateMt struct {
+		SGC3
+	}
 
 	// Mycoplasma is the mycoplasma DNA to protein translation table
-	Mycoplasma SGC3
+	Mycoplasma struct {
+		SGC3
+	}
 
 	// Spiroplasma is the spiroplasma DNA to protein translation table
-	Spiroplasma SGC3
+	Spiroplasma struct {
+		SGC3
+	}
 )
 
 // Translate converts a codon into its amino acid equivalent

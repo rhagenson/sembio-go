@@ -18,13 +18,19 @@ type (
 	BacterialArchaelPlantPlastid struct{}
 
 	// BacterialPlastid is the bacterial plastid DNA to protein translation table
-	BacterialPlastid BacterialArchaelPlantPlastid
+	BacterialPlastid struct {
+		BacterialArchaelPlantPlastid
+	}
 
 	// ArchaelPlastid is the archael plastid DNA to protein translation table
-	ArchaelPlastid BacterialArchaelPlantPlastid
+	ArchaelPlastid struct {
+		BacterialArchaelPlantPlastid
+	}
 
 	// PlantPlastid is the plant plastid DNA to protein translation table
-	PlantPlastid BacterialArchaelPlantPlastid
+	PlantPlastid struct {
+		BacterialArchaelPlantPlastid
+	}
 )
 
 // Translate converts a codon into its amino acid equivalent

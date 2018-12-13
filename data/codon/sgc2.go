@@ -16,7 +16,9 @@ type (
 	SGC2 struct{}
 
 	// YeastMt is the yeast mtDNA to protein translation table
-	YeastMt SGC2
+	YeastMt struct {
+		SGC2
+	}
 )
 
 // Translate converts a codon into its amino acid equivalent

@@ -16,7 +16,9 @@ type (
 	SGC4 struct{}
 
 	// InvertebrateMt is the invertebrate mtDNA to protein translation table
-	InvertebrateMt SGC4
+	InvertebrateMt struct {
+		SGC4
+	}
 )
 
 // Translate converts a codon into its amino acid equivalent

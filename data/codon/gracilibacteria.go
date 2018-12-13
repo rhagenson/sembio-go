@@ -18,7 +18,9 @@ type (
 
 	// CandidateDivisionSR1 is the mtDNA to protein translation table
 	// for Candidate Division SR1
-	CandidateDivisionSR1 Gracilibacteria
+	CandidateDivisionSR1 struct {
+		Gracilibacteria
+	}
 )
 
 // Translate converts a codon into its amino acid equivalent
