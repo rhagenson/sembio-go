@@ -77,6 +77,11 @@ func (x *Dna) Transcribe() (sequence.Interface, error) {
 	return NewRna(string(t))
 }
 
+// Translate returns a translated genetic product made from using a codon table
+// The stop argument determines which character to use for indicating a stop codon
+// If any stop codon is found and the stop argument is not a valid character in the
+// Protein alphabet, an error will result stating as such. Therefore, if a stop
+// codon is expected, checking the error message for the quoted character should be done.
 func (x *Dna) Translate(table codon.Interface, stop byte) (sequence.Interface, error) {
 	seq := x.String()
 	t := make([]byte, len(seq)/3)
