@@ -1,4 +1,4 @@
-package persistent
+package immutable
 
 import (
 	"bitbucket.org/rhagenson/bio/alphabet"

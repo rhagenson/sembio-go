@@ -1,4 +1,4 @@
-package persistent_test
+package immutable_test
 
 import (
 	"strings"
@@ -7,21 +7,21 @@ import (
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
-	"bitbucket.org/rhagenson/bio/sequence/persistent"
+	"bitbucket.org/rhagenson/bio/sequence/immutable"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
-func TestInitializedDnaIupac(t *testing.T) {
-	s, _ := persistent.NewDnaIupac("")
+func TestInitializedRna(t *testing.T) {
+	s, _ := immutable.NewRna("")
 	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
 	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
 	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
 }
 
-func TestDnaIupacHasMethods(t *testing.T) {
-	s, _ := persistent.NewDnaIupac("")
+func TestRnaHasMethods(t *testing.T) {
+	s, _ := immutable.NewRna("")
 
 	t.Run("Has Reverse method", func(t *testing.T) {
 		if _, err := s.Reverse(); err != nil {
@@ -40,48 +40,48 @@ func TestDnaIupacHasMethods(t *testing.T) {
 	})
 }
 
-func TestDnaIupacCreation(t *testing.T) {
+func TestRnaCreation(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("DnaIupac is same length as input",
+	properties.Property("Rna is same length as input",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				seq, _ := persistent.NewDnaIupac(s)
+				seq, _ := immutable.NewRna(s)
 				return seq.Length() == n
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
-	properties.Property("DnaIupac has same positions as input",
+	properties.Property("Rna has same positions as input",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				seq, _ := persistent.NewDnaIupac(s)
+				seq, _ := immutable.NewRna(s)
 				got, _ := seq.Range(0, n)
 				return got == s
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
-	properties.Property("DnaIupac has same internal range as input",
+	properties.Property("Rna has same internal range as input",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				seq, _ := persistent.NewDnaIupac(s)
+				seq, _ := immutable.NewRna(s)
 				onefourth := n / 4
 				threefourths := n * 3 / 4
 				got, _ := seq.Range(onefourth, threefourths)
@@ -90,15 +90,15 @@ func TestDnaIupacCreation(t *testing.T) {
 			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
-	properties.Property("DnaIupac has same internal postions as input",
+	properties.Property("Rna has same internal postions as input",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				seq, _ := persistent.NewDnaIupac(s)
+				seq, _ := immutable.NewRna(s)
 				onefourth := n / 4
 				threefourth := n * (3 / 4)
 				gotoneforth, _ := seq.Position(onefourth)
@@ -113,7 +113,7 @@ func TestDnaIupacCreation(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestDnaIupacPersistence(t *testing.T) {
+func TestRnaPersistence(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
@@ -123,17 +123,17 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
 				t := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				original, _ := persistent.NewDnaIupac(s)
-				clone := new(persistent.DnaIupac)
+				original, _ := immutable.NewRna(s)
+				clone := new(immutable.Rna)
 				*clone = *original
-				original.With(persistent.PositionAs(n*(1/2), t))
+				original.With(immutable.PositionAs(n*(1/2), t))
 				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -145,17 +145,17 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
 				t := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				original, _ := persistent.NewDnaIupac(s)
-				clone := new(persistent.DnaIupac)
+				original, _ := immutable.NewRna(s)
+				clone := new(immutable.Rna)
 				*clone = *original
-				original.With(persistent.RangeAs(n*(1/4), n*(3/4), t))
+				original.With(immutable.RangeAs(n*(1/4), n*(3/4), t))
 				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -167,10 +167,10 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				original, _ := persistent.NewDnaIupac(s)
-				clone := new(persistent.DnaIupac)
+				original, _ := immutable.NewRna(s)
+				clone := new(immutable.Rna)
 				*clone = *original
 				original.Reverse()
 				return original.String() == clone.String()
@@ -184,10 +184,10 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				original, _ := persistent.NewDnaIupac(s)
-				clone := new(persistent.DnaIupac)
+				original, _ := immutable.NewRna(s)
+				clone := new(immutable.Rna)
 				*clone = *original
 				original.Complement()
 				return original.String() == clone.String()
@@ -201,10 +201,10 @@ func TestDnaIupacPersistence(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				original, _ := persistent.NewDnaIupac(s)
-				clone := new(persistent.DnaIupac)
+				original, _ := immutable.NewRna(s)
+				clone := new(immutable.Rna)
 				*clone = *original
 				original.RevComp()
 				return original.String() == clone.String()
@@ -215,7 +215,7 @@ func TestDnaIupacPersistence(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestDnaIupacMethodComplements(t *testing.T) {
+func TestRnaMethodComplements(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
@@ -225,12 +225,12 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				want, _ := persistent.NewDnaIupac(s)
+				want, _ := immutable.NewRna(s)
 				rev, _ := want.Reverse()
-				got, _ := rev.(*persistent.DnaIupac).Reverse()
-				return want.String() == got.(*persistent.DnaIupac).String()
+				got, _ := rev.(*immutable.Rna).Reverse()
+				return want.String() == got.(*immutable.Rna).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -241,12 +241,12 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				want, _ := persistent.NewDnaIupac(s)
+				want, _ := immutable.NewRna(s)
 				rev, _ := want.Complement()
-				got, _ := rev.(*persistent.DnaIupac).Complement()
-				return want.String() == got.(*persistent.DnaIupac).String()
+				got, _ := rev.(*immutable.Rna).Complement()
+				return want.String() == got.(*immutable.Rna).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -257,12 +257,12 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				want, _ := persistent.NewDnaIupac(s)
+				want, _ := immutable.NewRna(s)
 				rev, _ := want.RevComp()
-				got, _ := rev.(*persistent.DnaIupac).RevComp()
-				return want.String() == got.(*persistent.DnaIupac).String()
+				got, _ := rev.(*immutable.Rna).RevComp()
+				return want.String() == got.(*immutable.Rna).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -270,7 +270,7 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestDnaIupacErrors(t *testing.T) {
+func TestRnaErrors(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
@@ -282,13 +282,13 @@ func TestDnaIupacErrors(t *testing.T) {
 					n,
 					[]rune("XNQZ"),
 				)
-				if _, err := persistent.NewDnaIupac(s); err != nil {
+				if _, err := immutable.NewRna(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
-						t.Errorf("DnaIupac creation error should mention not in alphabet")
+						t.Errorf("Rna creation error should mention not in alphabet")
 						return false
 					}
 				} else {
-					t.Errorf("DnaIupac should error when using invalid characters")
+					t.Errorf("Rna should error when using invalid characters")
 					return false
 				}
 				return true
@@ -302,16 +302,16 @@ func TestDnaIupacErrors(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				seq, _ := persistent.NewDnaIupac(s)
+				seq, _ := immutable.NewRna(s)
 				_, err := seq.Range(n, 0)
 				if err == nil {
-					t.Errorf("DnaIupac should accumulate an err during Range() when start > stop")
+					t.Errorf("Rna should accumulate an err during Range() when start > stop")
 					return false
 				}
 				if !strings.Contains(err.Error(), "impossible range") {
-					t.Errorf("DnaIupac Range error should mention impossible range")
+					t.Errorf("Rna Range error should mention impossible range")
 					return false
 				}
 				return true
@@ -322,25 +322,25 @@ func TestDnaIupacErrors(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestDnaIupacParallelOperations(t *testing.T) {
+func TestRnaParallelOperations(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("NewDnaIupac(s) == NewDnaIupac(s)",
+	properties.Property("immutable.NewRna(s) == immutable.NewRna(s)",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *persistent.DnaIupac)
-				go func(s string, out chan *persistent.DnaIupac) {
-					seq, _ := persistent.NewDnaIupac(s)
+				ret := make(chan *immutable.Rna)
+				go func(s string, out chan *immutable.Rna) {
+					seq, _ := immutable.NewRna(s)
 					out <- seq
 				}(s, ret)
-				go func(s string, out chan *persistent.DnaIupac) {
-					seq, _ := persistent.NewDnaIupac(s)
+				go func(s string, out chan *immutable.Rna) {
+					seq, _ := immutable.NewRna(s)
 					out <- seq
 				}(s, ret)
 				first := <-ret
@@ -356,17 +356,17 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *persistent.DnaIupac)
-				seq, _ := persistent.NewDnaIupac(s)
-				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
+				ret := make(chan *immutable.Rna)
+				seq, _ := immutable.NewRna(s)
+				go func(seq *immutable.Rna, out chan *immutable.Rna) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*persistent.DnaIupac)
+					out <- rev.(*immutable.Rna)
 				}(seq, ret)
-				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
+				go func(seq *immutable.Rna, out chan *immutable.Rna) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*persistent.DnaIupac)
+					out <- rev.(*immutable.Rna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
@@ -381,17 +381,17 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *persistent.DnaIupac)
-				seq, _ := persistent.NewDnaIupac(s)
-				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
-					rev, _ := seq.Reverse()
-					out <- rev.(*persistent.DnaIupac)
+				ret := make(chan *immutable.Rna)
+				seq, _ := immutable.NewRna(s)
+				go func(seq *immutable.Rna, out chan *immutable.Rna) {
+					rev, _ := seq.RevComp()
+					out <- rev.(*immutable.Rna)
 				}(seq, ret)
-				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
-					rev, _ := seq.Reverse()
-					out <- rev.(*persistent.DnaIupac)
+				go func(seq *immutable.Rna, out chan *immutable.Rna) {
+					rev, _ := seq.RevComp()
+					out <- rev.(*immutable.Rna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
@@ -406,17 +406,17 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := bio.RandomStringFromRunes(
 					bio.TestSeed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.Rna.String()),
 				)
-				ret := make(chan *persistent.DnaIupac)
-				seq, _ := persistent.NewDnaIupac(s)
-				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
-					rev, _ := seq.Reverse()
-					out <- rev.(*persistent.DnaIupac)
+				ret := make(chan *immutable.Rna)
+				seq, _ := immutable.NewRna(s)
+				go func(seq *immutable.Rna, out chan *immutable.Rna) {
+					rev, _ := seq.Complement()
+					out <- rev.(*immutable.Rna)
 				}(seq, ret)
-				go func(seq *persistent.DnaIupac, out chan *persistent.DnaIupac) {
-					rev, _ := seq.Reverse()
-					out <- rev.(*persistent.DnaIupac)
+				go func(seq *immutable.Rna, out chan *immutable.Rna) {
+					rev, _ := seq.Complement()
+					out <- rev.(*immutable.Rna)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret

@@ -1,4 +1,4 @@
-package persistent
+package immutable
 
 // WithFunc is a transformative function that can be chained
 type WithFunc func(*Struct) *Struct

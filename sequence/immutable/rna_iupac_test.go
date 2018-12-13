@@ -1,4 +1,4 @@
-package persistent_test
+package immutable_test
 
 import (
 	"strings"
@@ -7,21 +7,21 @@ import (
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
-	"bitbucket.org/rhagenson/bio/sequence/persistent"
+	"bitbucket.org/rhagenson/bio/sequence/immutable"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
 func TestInitializedRnaIupac(t *testing.T) {
-	s, _ := persistent.NewRnaIupac("")
+	s, _ := immutable.NewRnaIupac("")
 	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
 	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
 	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
 }
 
 func TestRnaIupacHasMethods(t *testing.T) {
-	s, _ := persistent.NewRnaIupac("")
+	s, _ := immutable.NewRnaIupac("")
 
 	t.Run("Has Reverse method", func(t *testing.T) {
 		if _, err := s.Reverse(); err != nil {
@@ -52,7 +52,7 @@ func TestRnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				seq, _ := persistent.NewRnaIupac(s)
+				seq, _ := immutable.NewRnaIupac(s)
 				return seq.Length() == n
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -66,7 +66,7 @@ func TestRnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				seq, _ := persistent.NewRnaIupac(s)
+				seq, _ := immutable.NewRnaIupac(s)
 				got, _ := seq.Range(0, n)
 				return got == s
 			},
@@ -81,7 +81,7 @@ func TestRnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				seq, _ := persistent.NewRnaIupac(s)
+				seq, _ := immutable.NewRnaIupac(s)
 				onefourth := n / 4
 				threefourths := n * 3 / 4
 				got, _ := seq.Range(onefourth, threefourths)
@@ -98,7 +98,7 @@ func TestRnaIupacCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				seq, _ := persistent.NewRnaIupac(s)
+				seq, _ := immutable.NewRnaIupac(s)
 				onefourth := n / 4
 				threefourth := n * (3 / 4)
 				gotoneforth, _ := seq.Position(onefourth)
@@ -130,10 +130,10 @@ func TestRnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				original, _ := persistent.NewRnaIupac(s)
-				clone := new(persistent.RnaIupac)
+				original, _ := immutable.NewRnaIupac(s)
+				clone := new(immutable.RnaIupac)
 				*clone = *original
-				original.With(persistent.PositionAs(n*(1/2), t))
+				original.With(immutable.PositionAs(n*(1/2), t))
 				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -152,10 +152,10 @@ func TestRnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				original, _ := persistent.NewRnaIupac(s)
-				clone := new(persistent.RnaIupac)
+				original, _ := immutable.NewRnaIupac(s)
+				clone := new(immutable.RnaIupac)
 				*clone = *original
-				original.With(persistent.RangeAs(n*(1/4), n*(3/4), t))
+				original.With(immutable.RangeAs(n*(1/4), n*(3/4), t))
 				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -169,8 +169,8 @@ func TestRnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				original, _ := persistent.NewRnaIupac(s)
-				clone := new(persistent.RnaIupac)
+				original, _ := immutable.NewRnaIupac(s)
+				clone := new(immutable.RnaIupac)
 				*clone = *original
 				original.Reverse()
 				return original.String() == clone.String()
@@ -186,8 +186,8 @@ func TestRnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				original, _ := persistent.NewRnaIupac(s)
-				clone := new(persistent.RnaIupac)
+				original, _ := immutable.NewRnaIupac(s)
+				clone := new(immutable.RnaIupac)
 				*clone = *original
 				original.Complement()
 				return original.String() == clone.String()
@@ -203,8 +203,8 @@ func TestRnaIupacPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				original, _ := persistent.NewRnaIupac(s)
-				clone := new(persistent.RnaIupac)
+				original, _ := immutable.NewRnaIupac(s)
+				clone := new(immutable.RnaIupac)
 				*clone = *original
 				original.RevComp()
 				return original.String() == clone.String()
@@ -227,10 +227,10 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				want, _ := persistent.NewRnaIupac(s)
+				want, _ := immutable.NewRnaIupac(s)
 				rev, _ := want.Reverse()
-				got, _ := rev.(*persistent.RnaIupac).Reverse()
-				return want.String() == got.(*persistent.RnaIupac).String()
+				got, _ := rev.(*immutable.RnaIupac).Reverse()
+				return want.String() == got.(*immutable.RnaIupac).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -243,10 +243,10 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				want, _ := persistent.NewRnaIupac(s)
+				want, _ := immutable.NewRnaIupac(s)
 				rev, _ := want.Complement()
-				got, _ := rev.(*persistent.RnaIupac).Complement()
-				return want.String() == got.(*persistent.RnaIupac).String()
+				got, _ := rev.(*immutable.RnaIupac).Complement()
+				return want.String() == got.(*immutable.RnaIupac).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -259,10 +259,10 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				want, _ := persistent.NewRnaIupac(s)
+				want, _ := immutable.NewRnaIupac(s)
 				rev, _ := want.RevComp()
-				got, _ := rev.(*persistent.RnaIupac).RevComp()
-				return want.String() == got.(*persistent.RnaIupac).String()
+				got, _ := rev.(*immutable.RnaIupac).RevComp()
+				return want.String() == got.(*immutable.RnaIupac).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -282,7 +282,7 @@ func TestRnaIupacErrors(t *testing.T) {
 					n,
 					[]rune("XNQZ"),
 				)
-				if _, err := persistent.NewRnaIupac(s); err != nil {
+				if _, err := immutable.NewRnaIupac(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
 						t.Errorf("RnaIupac creation error should mention not in alphabet")
 						return false
@@ -304,7 +304,7 @@ func TestRnaIupacErrors(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				seq, _ := persistent.NewRnaIupac(s)
+				seq, _ := immutable.NewRnaIupac(s)
 				_, err := seq.Range(n, 0)
 				if err == nil {
 					t.Errorf("RnaIupac should accumulate an err during Range() when start > stop")
@@ -326,7 +326,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("persistent.NewRnaIupac(s) == persistent.NewRnaIupac(s)",
+	properties.Property("immutable.NewRnaIupac(s) == immutable.NewRnaIupac(s)",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
@@ -334,13 +334,13 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				ret := make(chan *persistent.RnaIupac)
-				go func(s string, out chan *persistent.RnaIupac) {
-					seq, _ := persistent.NewRnaIupac(s)
+				ret := make(chan *immutable.RnaIupac)
+				go func(s string, out chan *immutable.RnaIupac) {
+					seq, _ := immutable.NewRnaIupac(s)
 					out <- seq
 				}(s, ret)
-				go func(s string, out chan *persistent.RnaIupac) {
-					seq, _ := persistent.NewRnaIupac(s)
+				go func(s string, out chan *immutable.RnaIupac) {
+					seq, _ := immutable.NewRnaIupac(s)
 					out <- seq
 				}(s, ret)
 				first := <-ret
@@ -358,15 +358,15 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				ret := make(chan *persistent.RnaIupac)
-				seq, _ := persistent.NewRnaIupac(s)
-				go func(seq *persistent.RnaIupac, out chan *persistent.RnaIupac) {
+				ret := make(chan *immutable.RnaIupac)
+				seq, _ := immutable.NewRnaIupac(s)
+				go func(seq *immutable.RnaIupac, out chan *immutable.RnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*persistent.RnaIupac)
+					out <- rev.(*immutable.RnaIupac)
 				}(seq, ret)
-				go func(seq *persistent.RnaIupac, out chan *persistent.RnaIupac) {
+				go func(seq *immutable.RnaIupac, out chan *immutable.RnaIupac) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*persistent.RnaIupac)
+					out <- rev.(*immutable.RnaIupac)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
@@ -383,15 +383,15 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				ret := make(chan *persistent.RnaIupac)
-				seq, _ := persistent.NewRnaIupac(s)
-				go func(seq *persistent.RnaIupac, out chan *persistent.RnaIupac) {
+				ret := make(chan *immutable.RnaIupac)
+				seq, _ := immutable.NewRnaIupac(s)
+				go func(seq *immutable.RnaIupac, out chan *immutable.RnaIupac) {
 					rev, _ := seq.RevComp()
-					out <- rev.(*persistent.RnaIupac)
+					out <- rev.(*immutable.RnaIupac)
 				}(seq, ret)
-				go func(seq *persistent.RnaIupac, out chan *persistent.RnaIupac) {
+				go func(seq *immutable.RnaIupac, out chan *immutable.RnaIupac) {
 					rev, _ := seq.RevComp()
-					out <- rev.(*persistent.RnaIupac)
+					out <- rev.(*immutable.RnaIupac)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
@@ -408,15 +408,15 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.RnaIupac.String()),
 				)
-				ret := make(chan *persistent.RnaIupac)
-				seq, _ := persistent.NewRnaIupac(s)
-				go func(seq *persistent.RnaIupac, out chan *persistent.RnaIupac) {
+				ret := make(chan *immutable.RnaIupac)
+				seq, _ := immutable.NewRnaIupac(s)
+				go func(seq *immutable.RnaIupac, out chan *immutable.RnaIupac) {
 					rev, _ := seq.Complement()
-					out <- rev.(*persistent.RnaIupac)
+					out <- rev.(*immutable.RnaIupac)
 				}(seq, ret)
-				go func(seq *persistent.RnaIupac, out chan *persistent.RnaIupac) {
+				go func(seq *immutable.RnaIupac, out chan *immutable.RnaIupac) {
 					rev, _ := seq.Complement()
-					out <- rev.(*persistent.RnaIupac)
+					out <- rev.(*immutable.RnaIupac)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret

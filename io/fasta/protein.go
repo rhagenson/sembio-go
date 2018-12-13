@@ -4,7 +4,7 @@ import (
 	"io"
 
 	"bitbucket.org/rhagenson/bio/sequence"
-	"bitbucket.org/rhagenson/bio/sequence/persistent"
+	"bitbucket.org/rhagenson/bio/sequence/immutable"
 )
 
 var _ Interface = new(Protein)
@@ -17,7 +17,7 @@ type Protein struct {
 // ReadProtein reads in a FASTA file that should contain only valid Protein letters
 func ReadProtein(r io.Reader) (Protein, error) {
 	s, err := Read(r, func(s string) (sequence.Interface, error) {
-		return persistent.NewProtein(s)
+		return immutable.NewProtein(s)
 	})
 	return Protein{s.(*Struct)}, err
 }

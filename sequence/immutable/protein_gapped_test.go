@@ -1,4 +1,4 @@
-package persistent_test
+package immutable_test
 
 import (
 	"strings"
@@ -7,21 +7,21 @@ import (
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
-	"bitbucket.org/rhagenson/bio/sequence/persistent"
+	"bitbucket.org/rhagenson/bio/sequence/immutable"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
 func TestInitializedProteinGapped(t *testing.T) {
-	s, _ := persistent.NewProteinGapped("")
+	s, _ := immutable.NewProteinGapped("")
 	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
 	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
 	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
 }
 
 func TestProteinGappedHasMethods(t *testing.T) {
-	s, _ := persistent.NewProteinGapped("")
+	s, _ := immutable.NewProteinGapped("")
 
 	t.Run("Has Reverse method", func(t *testing.T) {
 		if _, err := s.Reverse(); err != nil {
@@ -42,7 +42,7 @@ func TestProteinGappedCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				seq, _ := persistent.NewProteinGapped(s)
+				seq, _ := immutable.NewProteinGapped(s)
 				return seq.Length() == n
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -56,7 +56,7 @@ func TestProteinGappedCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				seq, _ := persistent.NewProteinGapped(s)
+				seq, _ := immutable.NewProteinGapped(s)
 				got, _ := seq.Range(0, n)
 				return got == s
 			},
@@ -71,7 +71,7 @@ func TestProteinGappedCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				seq, _ := persistent.NewProteinGapped(s)
+				seq, _ := immutable.NewProteinGapped(s)
 				onefourth := n / 4
 				threefourths := n * 3 / 4
 				got, _ := seq.Range(onefourth, threefourths)
@@ -88,7 +88,7 @@ func TestProteinGappedCreation(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				seq, _ := persistent.NewProteinGapped(s)
+				seq, _ := immutable.NewProteinGapped(s)
 				onefourth := n / 4
 				threefourth := n * (3 / 4)
 				gotoneforth, _ := seq.Position(onefourth)
@@ -120,10 +120,10 @@ func TestProteinGappedPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				original, _ := persistent.NewProteinGapped(s)
-				clone := new(persistent.ProteinGapped)
+				original, _ := immutable.NewProteinGapped(s)
+				clone := new(immutable.ProteinGapped)
 				*clone = *original
-				original.With(persistent.PositionAs(n*(1/2), t))
+				original.With(immutable.PositionAs(n*(1/2), t))
 				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -142,10 +142,10 @@ func TestProteinGappedPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				original, _ := persistent.NewProteinGapped(s)
-				clone := new(persistent.ProteinGapped)
+				original, _ := immutable.NewProteinGapped(s)
+				clone := new(immutable.ProteinGapped)
 				*clone = *original
-				original.With(persistent.RangeAs(n*(1/4), n*(3/4), t))
+				original.With(immutable.RangeAs(n*(1/4), n*(3/4), t))
 				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -159,8 +159,8 @@ func TestProteinGappedPersistence(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				original, _ := persistent.NewProteinGapped(s)
-				clone := new(persistent.ProteinGapped)
+				original, _ := immutable.NewProteinGapped(s)
+				clone := new(immutable.ProteinGapped)
 				*clone = *original
 				original.Reverse()
 				return original.String() == clone.String()
@@ -183,10 +183,10 @@ func TestProteinGappedMethodComplements(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				want, _ := persistent.NewProteinGapped(s)
+				want, _ := immutable.NewProteinGapped(s)
 				rev, _ := want.Reverse()
-				got, _ := rev.(*persistent.ProteinGapped).Reverse()
-				return want.String() == got.(*persistent.ProteinGapped).String()
+				got, _ := rev.(*immutable.ProteinGapped).Reverse()
+				return want.String() == got.(*immutable.ProteinGapped).String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
@@ -206,7 +206,7 @@ func TestProteinGappedErrors(t *testing.T) {
 					n,
 					[]rune("XNQZ"),
 				)
-				if _, err := persistent.NewProteinGapped(s); err != nil {
+				if _, err := immutable.NewProteinGapped(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
 						t.Errorf("ProteinGapped creation error should mention not in alphabet")
 						return false
@@ -228,7 +228,7 @@ func TestProteinGappedErrors(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				seq, _ := persistent.NewProteinGapped(s)
+				seq, _ := immutable.NewProteinGapped(s)
 				_, err := seq.Range(n, 0)
 				if err == nil {
 					t.Errorf("ProteinGapped should accumulate an err during Range() when start > stop")
@@ -250,7 +250,7 @@ func TestProteinGappedParallelOperations(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("persistent.NewProteinGapped(s) == persistent.NewProteinGapped(s)",
+	properties.Property("immutable.NewProteinGapped(s) == immutable.NewProteinGapped(s)",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
@@ -258,13 +258,13 @@ func TestProteinGappedParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				ret := make(chan *persistent.ProteinGapped)
-				go func(s string, out chan *persistent.ProteinGapped) {
-					seq, _ := persistent.NewProteinGapped(s)
+				ret := make(chan *immutable.ProteinGapped)
+				go func(s string, out chan *immutable.ProteinGapped) {
+					seq, _ := immutable.NewProteinGapped(s)
 					out <- seq
 				}(s, ret)
-				go func(s string, out chan *persistent.ProteinGapped) {
-					seq, _ := persistent.NewProteinGapped(s)
+				go func(s string, out chan *immutable.ProteinGapped) {
+					seq, _ := immutable.NewProteinGapped(s)
 					out <- seq
 				}(s, ret)
 				first := <-ret
@@ -274,7 +274,7 @@ func TestProteinGappedParallelOperations(t *testing.T) {
 			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
-	properties.Property("seq.(*persistent.ProteinGapped).Reverse() == seq.(*persistent.ProteinGapped).Reverse()",
+	properties.Property("seq.(*immutable.ProteinGapped).Reverse() == seq.(*immutable.ProteinGapped).Reverse()",
 		prop.ForAll(
 			func(n uint) bool {
 				s := bio.RandomStringFromRunes(
@@ -282,15 +282,15 @@ func TestProteinGappedParallelOperations(t *testing.T) {
 					n,
 					[]rune(alphabet.ProteinGapped.String()),
 				)
-				ret := make(chan *persistent.ProteinGapped)
-				seq, _ := persistent.NewProteinGapped(s)
-				go func(seq *persistent.ProteinGapped, out chan *persistent.ProteinGapped) {
+				ret := make(chan *immutable.ProteinGapped)
+				seq, _ := immutable.NewProteinGapped(s)
+				go func(seq *immutable.ProteinGapped, out chan *immutable.ProteinGapped) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*persistent.ProteinGapped)
+					out <- rev.(*immutable.ProteinGapped)
 				}(seq, ret)
-				go func(seq *persistent.ProteinGapped, out chan *persistent.ProteinGapped) {
+				go func(seq *immutable.ProteinGapped, out chan *immutable.ProteinGapped) {
 					rev, _ := seq.Reverse()
-					out <- rev.(*persistent.ProteinGapped)
+					out <- rev.(*immutable.ProteinGapped)
 				}(seq, ret)
 				first := <-ret
 				second := <-ret
