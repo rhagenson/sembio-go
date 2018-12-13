@@ -6,6 +6,7 @@ import (
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/data/codon"
 	"bitbucket.org/rhagenson/bio/sequence"
+	"bitbucket.org/rhagenson/bio/utils"
 	"bitbucket.org/rhagenson/bio/utils/complement"
 )
 
@@ -73,16 +74,21 @@ func (x *Dna) Transcribe() (sequence.Interface, error) {
 	return NewRna(string(t))
 }
 
-func (x *Dna) Translate(table codon.Translater) (sequence.Interface, error) {
+func (x *Dna) Translate(table codon.Interface, stop byte) (sequence.Interface, error) {
 	seq := x.String()
 	t := make([]byte, len(seq)/3)
 
 	var ok bool
 	for i := range t {
 		cdn := seq[i*3 : i*3+3]
-		t[i], ok = table.Translate(cdn)
-		if !ok {
-			return nil, fmt.Errorf("failed to translate codon: %q when using %s", cdn, table)
+
+		if utils.InStrings(cdn, table.StopCodons()) {
+			t[i] = stop
+		} else {
+			t[i], ok = table.Translate(cdn)
+			if !ok {
+				return nil, fmt.Errorf("failed to translate codon: %q when using %s", cdn, table)
+			}
 		}
 	}
 
