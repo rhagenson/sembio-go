@@ -26,7 +26,7 @@ func TestGenFasta(seed int64, n uint, a alphabet.Interface) io.Reader {
 	for i := uint(0); i < tot; i++ {
 		switch {
 		case i == 0:
-			b[i] = fastaHeaderPrefix
+			b[i] = FastaHeaderPrefix
 		case i%linelen == 0:
 			b[i] = '\n'
 		default:

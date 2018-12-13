@@ -1,5 +1,5 @@
 package fasta
 
 const (
-	fastaHeaderPrefix = '>'
+	FastaHeaderPrefix = '>'
 )

@@ -17,14 +17,14 @@ func Read(r io.Reader, f sequence.Generator) (Interface, error) {
 	header := ""
 	body := ""
 	for br.Scan() {
-		if strings.HasPrefix(br.Text(), string(fastaHeaderPrefix)) {
+		if strings.HasPrefix(br.Text(), string(FastaHeaderPrefix)) {
 			if header != "" {
 				return nil, fmt.Errorf("second header line found, only one expected")
 			}
 			header = strings.TrimSpace(
 				strings.TrimLeft(
 					br.Text(),
-					string(fastaHeaderPrefix),
+					string(FastaHeaderPrefix),
 				),
 			)
 		} else {
