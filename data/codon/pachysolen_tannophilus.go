@@ -12,7 +12,7 @@ var _ StartCodoner = new(PachysolenTannophilus)
 var _ StopCodoner = new(PachysolenTannophilus)
 
 type (
-	// Gracilibacteria is the NCBI DNA to protein translation table
+	// PachysolenTannophilus is the NCBI DNA to protein translation table
 	// for Pachysolen tannophilus
 	PachysolenTannophilus struct{}
 )
