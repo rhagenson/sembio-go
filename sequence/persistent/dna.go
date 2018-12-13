@@ -64,11 +64,14 @@ func (x *Dna) Complement() (sequence.Interface, error) {
 	return NewDna(string(t))
 }
 
+// Transcribe returns the DNA->RNA transcription product
 func (x *Dna) Transcribe() (sequence.Interface, error) {
 	t := []byte(x.String())
 	for i, c := range t {
 		if c == 'T' {
 			t[i] = 'U'
+		} else if c == 't' {
+			t[i] = 'u'
 		}
 	}
 	return NewRna(string(t))
