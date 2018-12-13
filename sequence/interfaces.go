@@ -34,7 +34,7 @@ type RevComper interface {
 
 // Translater can translate the sequence
 type Translater interface {
-	Translate(codon.Translater) (Interface, error)
+	Translate(codon.Interface, byte) (Interface, error)
 }
 
 // Transcriber can transcribe the sequence
