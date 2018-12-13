@@ -82,8 +82,8 @@ func TestRnaIupacCreation(t *testing.T) {
 					[]rune(alphabet.RnaIupac.String()),
 				)
 				seq, _ := persistent.NewRnaIupac(s)
-				onefourth := n * (1 / 4)
-				threefourths := n * (3 / 4)
+				onefourth := n / 4
+				threefourths := n * 3 / 4
 				got, _ := seq.Range(onefourth, threefourths)
 				return got == s[onefourth:threefourths]
 			},
@@ -99,7 +99,7 @@ func TestRnaIupacCreation(t *testing.T) {
 					[]rune(alphabet.RnaIupac.String()),
 				)
 				seq, _ := persistent.NewRnaIupac(s)
-				onefourth := n * (1 / 4)
+				onefourth := n / 4
 				threefourth := n * (3 / 4)
 				gotoneforth, _ := seq.Position(onefourth)
 				wantoneforth := string(s[onefourth])
