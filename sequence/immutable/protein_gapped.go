@@ -42,7 +42,7 @@ func (x *ProteinGapped) Alphabet() alphabet.Interface {
 	return alphabet.ProteinGapped
 }
 
-// LetterCounts reveals the number of occurrences for each letter in a sequence
+// LetterCount reveals the number of occurrences for each letter in a sequence
 func (x *ProteinGapped) LetterCount() map[string]uint {
 	return utils.LetterCount(x)
 }
