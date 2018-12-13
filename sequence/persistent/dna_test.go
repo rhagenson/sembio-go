@@ -4,10 +4,9 @@ import (
 	"strings"
 	"testing"
 
-	"bitbucket.org/rhagenson/bio/data/codon"
-
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
+	"bitbucket.org/rhagenson/bio/data/codon"
 	"bitbucket.org/rhagenson/bio/sequence"
 	"bitbucket.org/rhagenson/bio/sequence/persistent"
 	"github.com/leanovate/gopter"
