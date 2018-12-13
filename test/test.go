@@ -106,7 +106,7 @@ func MethodReturnsType(s, r interface{}, m string, args []interface{}) func(t *t
 	}
 }
 
-// TestMethodReturnsSelfType checks that calling s.m(args...) return type s
+// MethodReturnsSelfType checks that calling s.m(args...) return type s
 func MethodReturnsSelfType(s interface{}, m string, args []interface{}) func(t *testing.T) {
 	return MethodReturnsType(s, s, m, args)
 }
