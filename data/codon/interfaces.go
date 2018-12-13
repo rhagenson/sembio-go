@@ -1,5 +1,14 @@
 package codon
 
+// Interface is a full featured codon lookup table
+type Interface interface {
+	Translater
+	AltNamer
+	IDer
+	StartCodoner
+	StopCodoner
+}
+
 // Translater converts a codon into its amino acid equivalent
 type Translater interface {
 	Translate(string) (byte, bool)
