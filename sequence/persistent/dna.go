@@ -54,7 +54,7 @@ func (x *Dna) RevComp() (sequence.Interface, error) {
 	return NewDna(string(t))
 }
 
-// Complement is the same DnaIupac with the sequence complemented
+// Complement is the same Dna with the sequence complemented
 func (x *Dna) Complement() (sequence.Interface, error) {
 	t := []byte(x.String())
 	for i := range t {
