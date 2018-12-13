@@ -71,5 +71,5 @@ func (s SGC0) StartCodons() []string {
 
 // StopCodons lists the codons which end a transcript
 func (s SGC0) StopCodons() []string {
-	return []string{"TTA", "TAG", "TGA"}
+	return []string{"TAA", "TAG", "TGA"}
 }
