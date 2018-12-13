@@ -5,8 +5,8 @@ import (
 	"math/rand"
 	"testing"
 
-	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
+	"bitbucket.org/rhagenson/bio/test"
 	"bitbucket.org/rhagenson/bio/utils/complement"
 )
 
@@ -41,7 +41,7 @@ func TestIupacIsReversible(t *testing.T) {
 func BenchmarkCompIupac(b *testing.B) {
 	b.Run(fmt.Sprintf("Complement %q", alphabet.IupacLetters),
 		func(b *testing.B) {
-			rand.Seed(bio.TestSeed)
+			rand.Seed(test.Seed)
 			var d byte
 			for n := 0; n < b.N; n++ {
 				d = alphabet.IupacLetters[rand.Intn(len(alphabet.IupacLetters))]
@@ -82,7 +82,7 @@ func TestDnaIupacIsReversible(t *testing.T) {
 func BenchmarkCompDnaIupac(b *testing.B) {
 	b.Run(fmt.Sprintf("Complement %q", alphabet.DnaIupacLetters),
 		func(b *testing.B) {
-			rand.Seed(bio.TestSeed)
+			rand.Seed(test.Seed)
 			var d byte
 			for n := 0; n < b.N; n++ {
 				d = alphabet.DnaIupacLetters[rand.Intn(len(alphabet.DnaIupacLetters))]
@@ -123,7 +123,7 @@ func TestRnaIupacIsReversible(t *testing.T) {
 func BenchmarkCompRnaIupac(b *testing.B) {
 	b.Run(fmt.Sprintf("Complement %q", alphabet.RnaIupacLetters),
 		func(b *testing.B) {
-			rand.Seed(bio.TestSeed)
+			rand.Seed(test.Seed)
 			var d byte
 			for n := 0; n < b.N; n++ {
 				d = alphabet.RnaIupacLetters[rand.Intn(len(alphabet.RnaIupacLetters))]

@@ -4,11 +4,11 @@ import (
 	"strings"
 	"testing"
 
-	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/data/codon"
 	"bitbucket.org/rhagenson/bio/sequence"
 	"bitbucket.org/rhagenson/bio/sequence/immutable"
+	"bitbucket.org/rhagenson/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
@@ -64,14 +64,14 @@ func TestDnaHasMethods(t *testing.T) {
 }
 
 func TestDnaCreation(t *testing.T) {
-	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Dna is same length as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -84,8 +84,8 @@ func TestDnaCreation(t *testing.T) {
 	properties.Property("Dna has same positions as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -99,8 +99,8 @@ func TestDnaCreation(t *testing.T) {
 	properties.Property("Dna has same internal range as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -116,8 +116,8 @@ func TestDnaCreation(t *testing.T) {
 	properties.Property("Dna has same internal postions as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -136,8 +136,8 @@ func TestDnaCreation(t *testing.T) {
 	properties.Property("Dna is same length as transcription",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -152,8 +152,8 @@ func TestDnaCreation(t *testing.T) {
 	properties.Property("Dna is 3x length as translation",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -169,19 +169,19 @@ func TestDnaCreation(t *testing.T) {
 }
 
 func TestDnaPersistence(t *testing.T) {
-	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("WithPosition does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
-				t := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				t := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -197,13 +197,13 @@ func TestDnaPersistence(t *testing.T) {
 	properties.Property("WithRange does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
-				t := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				t := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -219,8 +219,8 @@ func TestDnaPersistence(t *testing.T) {
 	properties.Property("Reverse does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -236,8 +236,8 @@ func TestDnaPersistence(t *testing.T) {
 	properties.Property("Complement does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -253,8 +253,8 @@ func TestDnaPersistence(t *testing.T) {
 	properties.Property("RevComp does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -271,14 +271,14 @@ func TestDnaPersistence(t *testing.T) {
 }
 
 func TestDnaMethodComplements(t *testing.T) {
-	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Reverse().Reverse() is original",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -293,8 +293,8 @@ func TestDnaMethodComplements(t *testing.T) {
 	properties.Property("Complement().Complement() is original",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -309,8 +309,8 @@ func TestDnaMethodComplements(t *testing.T) {
 	properties.Property("RevComp().RevComp() is original",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -326,14 +326,14 @@ func TestDnaMethodComplements(t *testing.T) {
 }
 
 func TestDnaErrors(t *testing.T) {
-	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Giving invalid input adds an error",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune("XNQZ"),
 				)
@@ -354,8 +354,8 @@ func TestDnaErrors(t *testing.T) {
 	properties.Property("start > stop errors",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -378,14 +378,14 @@ func TestDnaErrors(t *testing.T) {
 }
 
 func TestDnaParallelOperations(t *testing.T) {
-	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("immutable.NewDna(s) == immutable.NewDna(s)",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -408,8 +408,8 @@ func TestDnaParallelOperations(t *testing.T) {
 	properties.Property("seq.(*immutable.Dna).Reverse() == seq.(*immutable.Dna).Reverse()",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -433,8 +433,8 @@ func TestDnaParallelOperations(t *testing.T) {
 	properties.Property("seq.RevComp() == seq.RevComp()",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)
@@ -458,8 +458,8 @@ func TestDnaParallelOperations(t *testing.T) {
 	properties.Property("seq.Complement() == seq.Complement()",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Dna.String()),
 				)

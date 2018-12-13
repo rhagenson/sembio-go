@@ -4,10 +4,10 @@ import (
 	"strings"
 	"testing"
 
-	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
 	"bitbucket.org/rhagenson/bio/sequence/immutable"
+	"bitbucket.org/rhagenson/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
@@ -31,14 +31,14 @@ func TestProteinHasMethods(t *testing.T) {
 }
 
 func TestProteinCreation(t *testing.T) {
-	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Protein is same length as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
@@ -51,8 +51,8 @@ func TestProteinCreation(t *testing.T) {
 	properties.Property("Protein has same positions as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
@@ -66,8 +66,8 @@ func TestProteinCreation(t *testing.T) {
 	properties.Property("Protein has same internal range as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
@@ -83,8 +83,8 @@ func TestProteinCreation(t *testing.T) {
 	properties.Property("Protein has same internal postions as input",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
@@ -104,19 +104,19 @@ func TestProteinCreation(t *testing.T) {
 }
 
 func TestProteinPersistence(t *testing.T) {
-	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("WithPosition does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				t := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				t := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
@@ -132,13 +132,13 @@ func TestProteinPersistence(t *testing.T) {
 	properties.Property("WithRange does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
-				t := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				t := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
@@ -154,8 +154,8 @@ func TestProteinPersistence(t *testing.T) {
 	properties.Property("Reverse does not mutate in-place",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
@@ -172,14 +172,14 @@ func TestProteinPersistence(t *testing.T) {
 }
 
 func TestProteinMethodComplements(t *testing.T) {
-	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Reverse().Reverse() is original",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
@@ -195,14 +195,14 @@ func TestProteinMethodComplements(t *testing.T) {
 }
 
 func TestProteinErrors(t *testing.T) {
-	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("Giving invalid input adds an error",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune("XNQZ"),
 				)
@@ -223,8 +223,8 @@ func TestProteinErrors(t *testing.T) {
 	properties.Property("start > stop errors",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
@@ -247,14 +247,14 @@ func TestProteinErrors(t *testing.T) {
 }
 
 func TestProteinParallelOperations(t *testing.T) {
-	parameters := gopter.DefaultTestParametersWithSeed(bio.TestSeed)
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
 	properties.Property("immutable.NewProtein(s) == immutable.NewProtein(s)",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
@@ -277,8 +277,8 @@ func TestProteinParallelOperations(t *testing.T) {
 	properties.Property("seq.(*immutable.Protein).Reverse() == seq.(*immutable.Protein).Reverse()",
 		prop.ForAll(
 			func(n uint) bool {
-				s := bio.RandomStringFromRunes(
-					bio.TestSeed,
+				s := test.RandomStringFromRunes(
+					test.Seed,
 					n,
 					[]rune(alphabet.Protein.String()),
 				)

@@ -5,8 +5,8 @@ import (
 	"math/rand"
 	"testing"
 
-	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
+	"bitbucket.org/rhagenson/bio/test"
 	"bitbucket.org/rhagenson/bio/utils/complement"
 )
 
@@ -40,7 +40,7 @@ func TestDnaIsReversible(t *testing.T) {
 func BenchmarkDNA(b *testing.B) {
 	b.Run(fmt.Sprintf("Complement %q", alphabet.DnaLetters),
 		func(b *testing.B) {
-			rand.Seed(bio.TestSeed)
+			rand.Seed(test.Seed)
 			var d byte
 			for n := 0; n < b.N; n++ {
 				d = alphabet.DnaLetters[rand.Intn(len(alphabet.DnaLetters))]

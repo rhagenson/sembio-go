@@ -1,4 +1,4 @@
-package bio
+package test
 
 import (
 	"bytes"
@@ -9,9 +9,9 @@ import (
 	"testing"
 )
 
-// TestSeed is a chosen value that should be used to
+// Seed is a chosen value that should be used to
 // seed pseudorandom number generators
-const TestSeed int64 = 1234
+const Seed int64 = 1234
 
 // DeepClone does a deep copy from one src to one dest
 // Note: DeepClone copies only the public parts of a struct
@@ -77,8 +77,8 @@ func gcdPair(a, b uint) uint {
 	return a
 }
 
-// TestForMethodNamed is a test helper that wraps a check for method by name
-func TestForMethodNamed(s interface{}, m string) func(t *testing.T) {
+// ForMethodNamed is a test helper that wraps a check for method by name
+func ForMethodNamed(s interface{}, m string) func(t *testing.T) {
 	return func(t *testing.T) {
 		if !reflect.ValueOf(s).MethodByName(m).IsValid() {
 			t.Errorf("Missing %s method", m)
@@ -86,8 +86,8 @@ func TestForMethodNamed(s interface{}, m string) func(t *testing.T) {
 	}
 }
 
-// TestMethodReturnsType checks that s.m(args...) returns type r
-func TestMethodReturnsType(s, r interface{}, m string, args []interface{}) func(t *testing.T) {
+// MethodReturnsType checks that s.m(args...) returns type r
+func MethodReturnsType(s, r interface{}, m string, args []interface{}) func(t *testing.T) {
 	cl := make([]reflect.Value, len(args))
 	for i := range cl {
 		cl[i] = reflect.ValueOf(args[i])
@@ -107,6 +107,6 @@ func TestMethodReturnsType(s, r interface{}, m string, args []interface{}) func(
 }
 
 // TestMethodReturnsSelfType checks that calling s.m(args...) return type s
-func TestMethodReturnsSelfType(s interface{}, m string, args []interface{}) func(t *testing.T) {
-	return TestMethodReturnsType(s, s, m, args)
+func MethodReturnsSelfType(s interface{}, m string, args []interface{}) func(t *testing.T) {
+	return MethodReturnsType(s, s, m, args)
 }
