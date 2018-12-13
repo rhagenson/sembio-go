@@ -1,8 +1,12 @@
 package complement_test
 
 import (
+	"fmt"
+	"math/rand"
 	"testing"
 
+	"bitbucket.org/rhagenson/bio"
+	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/utils/complement"
 )
 
@@ -34,24 +38,14 @@ func TestRnaIsReversible(t *testing.T) {
 }
 
 func BenchmarkRNA(b *testing.B) {
-	b.Run("Complement A", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			complement.Rna(byte('A'))
-		}
-	})
-	b.Run("Complement U", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			complement.Rna(byte('U'))
-		}
-	})
-	b.Run("Complement G", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			complement.Rna(byte('G'))
-		}
-	})
-	b.Run("Complement C", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			complement.Rna(byte('C'))
-		}
-	})
+	b.Run(fmt.Sprintf("Complement %q", alphabet.RnaLetters),
+		func(b *testing.B) {
+			rand.Seed(bio.TestSeed)
+			var d byte
+			for n := 0; n < b.N; n++ {
+				d = alphabet.RnaLetters[rand.Intn(len(alphabet.RnaLetters))]
+				complement.Rna(d)
+			}
+		},
+	)
 }

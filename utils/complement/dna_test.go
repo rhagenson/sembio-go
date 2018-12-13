@@ -1,8 +1,12 @@
 package complement_test
 
 import (
+	"fmt"
+	"math/rand"
 	"testing"
 
+	"bitbucket.org/rhagenson/bio"
+	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/utils/complement"
 )
 
@@ -24,7 +28,7 @@ func TestDNAReturnsX(t *testing.T) {
 // the original
 func TestDnaIsReversible(t *testing.T) {
 	t.Run("DNA is reversible", func(t *testing.T) {
-		for _, c := range "ATGC" {
+		for _, c := range alphabet.DnaLetters {
 			comp := complement.Dna(byte(c))
 			if complement.Dna(comp) != byte(c) {
 				t.Errorf("Want: %q; Got: %q", byte(c), comp)
@@ -34,24 +38,14 @@ func TestDnaIsReversible(t *testing.T) {
 }
 
 func BenchmarkDNA(b *testing.B) {
-	b.Run("Complement A", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			complement.Dna(byte('A'))
-		}
-	})
-	b.Run("Complement T", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			complement.Dna(byte('T'))
-		}
-	})
-	b.Run("Complement G", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			complement.Dna(byte('G'))
-		}
-	})
-	b.Run("Complement C", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			complement.Dna(byte('C'))
-		}
-	})
+	b.Run(fmt.Sprintf("Complement %q", alphabet.DnaLetters),
+		func(b *testing.B) {
+			rand.Seed(bio.TestSeed)
+			var d byte
+			for n := 0; n < b.N; n++ {
+				d = alphabet.DnaLetters[rand.Intn(len(alphabet.DnaLetters))]
+				complement.Dna(d)
+			}
+		},
+	)
 }
