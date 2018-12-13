@@ -4,6 +4,8 @@ import (
 	"strings"
 	"testing"
 
+	"bitbucket.org/rhagenson/bio/data/codon"
+
 	"bitbucket.org/rhagenson/bio"
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
@@ -18,6 +20,18 @@ func TestInitializedDna(t *testing.T) {
 	t.Run("Length is zero", sequence.TestLengthIs(s, 0))
 	t.Run("Position is empty", sequence.TestPositionIs(s, 0, ""))
 	t.Run("Range is empty", sequence.TestRangeIs(s, 0, 1, ""))
+	t.Run("Transcribe is empty", func(t *testing.T) {
+		r, _ := s.Transcribe()
+		if r.Length() != 0 {
+			t.Errorf("Nucleotides gained in Transcribe()")
+		}
+	})
+	t.Run("Translate is empty", func(t *testing.T) {
+		r, _ := s.Translate(codon.Standard{}, '*')
+		if r.Length() != 0 {
+			t.Errorf("Amino acids gained in Translate()")
+		}
+	})
 }
 
 func TestDnaHasMethods(t *testing.T) {
@@ -36,6 +50,16 @@ func TestDnaHasMethods(t *testing.T) {
 	t.Run("Has RevComp method", func(t *testing.T) {
 		if _, err := s.RevComp(); err != nil {
 			t.Error("RevComp method does not exist")
+		}
+	})
+	t.Run("Has Transcribe method", func(t *testing.T) {
+		if _, err := s.Transcribe(); err != nil {
+			t.Error("Translate method does not exist")
+		}
+	})
+	t.Run("Has Translate method", func(t *testing.T) {
+		if _, err := s.Translate(codon.Standard{}, '*'); err != nil {
+			t.Error("Translate method does not exist")
 		}
 	})
 }
@@ -110,6 +134,38 @@ func TestDnaCreation(t *testing.T) {
 			gen.UIntRange(1, sequence.TestableLength),
 		),
 	)
+	properties.Property("Dna is same length as transcription",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
+					n,
+					[]rune(alphabet.Dna.String()),
+				)
+				seq, _ := persistent.NewDna(s)
+				trans, _ := seq.Transcribe()
+
+				return seq.Length() == trans.Length()
+			},
+			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("Dna is 3x length as translation",
+		prop.ForAll(
+			func(n uint) bool {
+				s := bio.RandomStringFromRunes(
+					bio.TestSeed,
+					n,
+					[]rune(alphabet.Dna.String()),
+				)
+				seq, _ := persistent.NewDna(s)
+				trans, _ := seq.Translate(codon.Standard{}, '*')
+				return seq.Length()/3 == trans.Length()
+			},
+			gen.UIntRange(3, sequence.TestableLength),
+		),
+	)
+
 	properties.TestingRun(t)
 }
 
