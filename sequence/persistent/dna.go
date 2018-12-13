@@ -16,6 +16,7 @@ var _ sequence.Complementer = new(Dna)
 var _ sequence.Transcriber = new(Dna)
 var _ sequence.Translater = new(Dna)
 var _ Wither = new(Dna)
+var _ Validator = new(Dna)
 
 // Dna is a sequence witch validates against the Dna alphabet
 // and knows how to reverse, complement, and revcomp itself
