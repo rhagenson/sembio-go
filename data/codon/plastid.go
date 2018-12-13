@@ -86,10 +86,12 @@ func (s BacterialArchaelPlantPlastid) ID() uint {
 	return 11
 }
 
+// StartCodons lists the codons which start a transcript
 func (s BacterialArchaelPlantPlastid) StartCodons() []string {
 	return []string{"TTG", "CTG", "ATT", "ATC", "ATA", "ATG", "GTG"}
 }
 
+// StopCodons lists the codons which end a transcript
 func (s BacterialArchaelPlantPlastid) StopCodons() []string {
 	return []string{"TAA", "TAG", "TGA"}
 }
