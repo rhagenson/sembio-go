@@ -2,9 +2,13 @@ package persistent
 
 import (
 	"fmt"
+
+	"bitbucket.org/rhagenson/bio/sequence"
 )
 
+var _ sequence.Interface = new(Struct)
 var _ Wither = new(Struct)
+var _ Validator = new(Struct)
 
 // Struct stores a linear sequence and has optional validators
 type Struct struct {
