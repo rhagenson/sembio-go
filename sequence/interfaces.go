@@ -1,6 +1,7 @@
 package sequence
 
 import (
+	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/data/codon"
 )
 
@@ -40,4 +41,14 @@ type Translater interface {
 // Transcriber can transcribe the sequence
 type Transcriber interface {
 	Transcribe() (Interface, error)
+}
+
+// Alphabeter s you what alphabet.Interface it uses
+type Alphabeter interface {
+	Alphabet() alphabet.Interface
+}
+
+// LetterCounter counts the letters observed when reading the sequence
+type LetterCounter interface {
+	LetterCount() map[string]uint
 }

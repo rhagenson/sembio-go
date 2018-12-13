@@ -3,6 +3,7 @@ package immutable
 import (
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
+	"bitbucket.org/rhagenson/bio/utils"
 	"bitbucket.org/rhagenson/bio/utils/complement"
 )
 
@@ -10,7 +11,10 @@ var _ sequence.Interface = new(Rna)
 var _ sequence.Reverser = new(Rna)
 var _ sequence.RevComper = new(Rna)
 var _ sequence.Complementer = new(Rna)
+var _ sequence.Alphabeter = new(Rna)
+var _ sequence.LetterCounter = new(Rna)
 var _ Wither = new(Rna)
+var _ Validator = new(Rna)
 
 // Rna is a sequence witch validates against the Rna alphabet
 // and knows how to reverse, complement, and revcomp itself
@@ -55,4 +59,14 @@ func (x *Rna) Complement() (sequence.Interface, error) {
 		t[i] = complement.Rna(byte(x.seq[i]))
 	}
 	return NewRna(string(t))
+}
+
+// Alphabet reveals the underlying alphabet in use
+func (x *Rna) Alphabet() alphabet.Interface {
+	return alphabet.Rna
+}
+
+// LetterCount reveals the number of occurrences for each letter in a sequence
+func (x *Rna) LetterCount() map[string]uint {
+	return utils.LetterCount(x)
 }

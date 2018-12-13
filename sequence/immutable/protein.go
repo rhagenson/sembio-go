@@ -3,10 +3,14 @@ package immutable
 import (
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
+	"bitbucket.org/rhagenson/bio/utils"
 )
 
 var _ sequence.Reverser = new(Protein)
+var _ sequence.Alphabeter = new(Protein)
+var _ sequence.LetterCounter = new(Protein)
 var _ Wither = new(Protein)
+var _ Validator = new(Protein)
 
 // Protein is a sequence witch validates against the Protein alphabet
 // and knows how to reverse itself
@@ -31,4 +35,14 @@ func (x *Protein) Reverse() (sequence.Interface, error) {
 		t[i], t[l-1-i] = t[l-1-i], t[i]
 	}
 	return NewProtein(string(t))
+}
+
+// Alphabet reveals the underlying alphabet in use
+func (x *Protein) Alphabet() alphabet.Interface {
+	return alphabet.Protein
+}
+
+// LetterCounts reveals the number of occurrences for each letter in a sequence
+func (x *Protein) LetterCount() map[string]uint {
+	return utils.LetterCount(x)
 }

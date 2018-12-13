@@ -16,6 +16,8 @@ var _ sequence.RevComper = new(Dna)
 var _ sequence.Complementer = new(Dna)
 var _ sequence.Transcriber = new(Dna)
 var _ sequence.Translater = new(Dna)
+var _ sequence.Alphabeter = new(Dna)
+var _ sequence.LetterCounter = new(Dna)
 var _ Wither = new(Dna)
 var _ Validator = new(Dna)
 
@@ -101,4 +103,14 @@ func (x *Dna) Translate(table codon.Interface, stop byte) (sequence.Interface, e
 	}
 
 	return NewProtein(string(t))
+}
+
+// Alphabet reveals the underlying alphabet in use
+func (x *Dna) Alphabet() alphabet.Interface {
+	return alphabet.Dna
+}
+
+// LetterCounts reveals the number of occurrences for each letter in a sequence
+func (x *Dna) LetterCount() map[string]uint {
+	return utils.LetterCount(x)
 }
