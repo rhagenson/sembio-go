@@ -7,6 +7,27 @@ import (
 	"bitbucket.org/rhagenson/bio/alphabet"
 )
 
+func TestTesting(t *testing.T) {
+	t.Run("IsExpectedLength", func(t *testing.T) {
+		a := alphabet.New("N", 1)
+		t.Run("Success", alphabet.IsExpectedLength(a, 1))
+		t.Run("Failure", alphabet.IsExpectedLength(a, 2))
+		// Wrapping the failing case in a new *testing.T
+		// and checking for T.Failed() == true is the correct manner
+		// Perhaps needs a new bio/testing.go global FailCase helper?
+		// Perhaps there is a library already checking for test failure
+		// does the assert lib do this?
+	})
+}
+
+func TestAlphabet(t *testing.T) {
+	t.Run("Zero width becomes width of one", func(t *testing.T) {
+		if alphabet.New("", 0).Width() == 0 {
+			t.Error("Width can never be zero")
+		}
+	})
+}
+
 func TestDna(t *testing.T) {
 	var a alphabet.Interface = alphabet.Dna
 	t.Run("Correct length", alphabet.IsExpectedLength(a, 4))
