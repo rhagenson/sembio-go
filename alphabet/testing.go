@@ -7,7 +7,7 @@ import (
 
 /*
 testing.go is a collection of test helpers which should wholly
-be used by people hoping to satisfy a Interface.
+be used by people hoping to satisfy an Interface.
 */
 
 // IsExpectedLength is a test helper to wrap a check for
