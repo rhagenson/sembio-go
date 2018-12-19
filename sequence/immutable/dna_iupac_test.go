@@ -38,6 +38,16 @@ func TestDnaIupacHasMethods(t *testing.T) {
 			t.Error("RevComp method does not exist")
 		}
 	})
+	t.Run("Has Alphabet method", func(t *testing.T) {
+		if a := s.Alphabet(); a == nil {
+			t.Error("Alphabet method does not exist")
+		}
+	})
+	t.Run("Has LetterCount method", func(t *testing.T) {
+		if c := s.LetterCount(); c == nil {
+			t.Error("LetterCount method does not exist")
+		}
+	})
 }
 
 func TestDnaIupacCreation(t *testing.T) {
@@ -108,6 +118,35 @@ func TestDnaIupacCreation(t *testing.T) {
 				return gotoneforth == wantoneforth && gotthreeforth == wantthreeforth
 			},
 			gen.UIntRange(1, sequence.TestableLength),
+		),
+	)
+	properties.Property("DnaIupac has proper letter count",
+		prop.ForAll(
+			func(n uint) bool {
+				w := n / 4
+				s := test.RandomWeightedString(
+					test.Seed,
+					n,
+					map[rune]uint{
+						'A': w,
+						'T': w,
+						'G': w,
+						'C': w,
+					},
+				)
+				seq, _ := immutable.NewDnaIupac(s)
+				cs := seq.LetterCount()
+				for l, c := range cs {
+					if c != w {
+						t.Errorf("Got %d, want %d for %q.\nSeq: %q\nMap: %v",
+							c, w, l, seq, cs)
+						return false
+					}
+				}
+				return true
+			},
+			gen.UIntRange(4, sequence.TestableLength).
+				SuchThat(func(u uint) bool { return u%4 == 0 }),
 		),
 	)
 	properties.TestingRun(t)
