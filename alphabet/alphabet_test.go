@@ -11,12 +11,41 @@ func TestTesting(t *testing.T) {
 	t.Run("IsExpectedLength", func(t *testing.T) {
 		a := alphabet.New("N", 1)
 		t.Run("Success", alphabet.IsExpectedLength(a, 1))
-		t.Run("Failure", alphabet.IsExpectedLength(a, 2))
-		// Wrapping the failing case in a new *testing.T
-		// and checking for T.Failed() == true is the correct manner
-		// Perhaps needs a new bio/testing.go global FailCase helper?
-		// Perhaps there is a library already checking for test failure
-		// does the assert lib do this?
+		t.Run("Failure", func(t *testing.T) {
+			var t2 = new(testing.T)
+			alphabet.IsExpectedLength(a, 2)(t2)
+			if !t2.Failed() {
+				t.Errorf("Failure case incorrectly passed.")
+			}
+		})
+	})
+	t.Run("HasExpectedLetter", func(t *testing.T) {
+		a := alphabet.New("N", 1)
+		t.Run("Success", alphabet.HasExpectedLetter(a, "N"))
+		t.Run("Failure", func(t *testing.T) {
+			var t2 = new(testing.T)
+			alphabet.HasExpectedLetter(a, "X")(t2)
+			if !t2.Failed() {
+				t.Errorf("Failure case incorrectly passed.")
+			}
+		})
+	})
+	t.Run("TestSplitByN", func(t *testing.T) {
+		t.Run("Success", func(t *testing.T) {
+			exp := []string{"A", "T", "G", "C"}
+			got := alphabet.TestSplitByN("ATGC", 1)
+			for i := range exp {
+				if got[i] != exp[i] {
+					t.Errorf("Got %q, expected %q.", got[i], exp[i])
+				}
+			}
+		})
+		t.Run("Failure", func(t *testing.T) {
+			got := alphabet.TestSplitByN("ATGC", 0)
+			if got != nil {
+				t.Errorf("Got %q, expected nil.", got)
+			}
+		})
 	})
 }
 
