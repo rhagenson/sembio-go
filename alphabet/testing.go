@@ -33,8 +33,9 @@ func HasExpectedLetter(a Interface, c string) func(t *testing.T) {
 }
 
 // TestSplitByN splits a string into n sized chunks
+// TODO: Should return an error detailing why a nil was returned
 func TestSplitByN(s string, n int) []string {
-	if len(s)%n != 0 {
+	if n == 0 || len(s)%n != 0 {
 		return nil
 	}
 	subs := make([]string, len(s)/n)
