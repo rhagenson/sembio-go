@@ -60,22 +60,23 @@ func RandomWeightedString(seed int64, n uint, weights map[rune]uint) string {
 	return RandomStringFromRunes(seed, n, valid)
 }
 
-// TODO: Broken, this does not find the greatest common denominator of the array
-func gcd(ns []uint) uint {
-	res := uint(0)
-	for i := 0; i < len(ns)-1; i++ {
-		res = gcdPair(ns[i], ns[i+1])
+func gcd_poly(ns ...int) int {
+	n := len(ns)
+	if n == 1 {
+		return ns[0]
 	}
-	return res
+	if n == 2 {
+		return gcd(ns[0], ns[1])
+	}
+	h := n / 2
+	return gcd(gcd_poly(ns[:h]...), gcd_poly(ns[h:]...))
 }
 
-func gcdPair(a, b uint) uint {
-	for b > 0 {
-		temp := b
-		b = a % b
-		a = temp
+func gcd(x, y int) int {
+	for y != 0 {
+		x, y = y, x%y
 	}
-	return a
+	return x
 }
 
 // ForMethodNamed is a test helper that wraps a check for method by name
