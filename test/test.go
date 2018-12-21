@@ -41,23 +41,33 @@ func RandomStringFromRunes(seed int64, n uint, valid []rune) string {
 }
 
 // RandomWeightedString generates a random weighted string of length n.
-// If n < sum(weights), an approximation is used
-// TODO: Broken. Approximation is used even if sum(weights) == n
+// If n != sum(weights), an approximation is used
 func RandomWeightedString(seed int64, n uint, weights map[rune]uint) string {
-	tot := uint(0)
-	for _, w := range weights {
-		tot += w
-	}
-	// TODO: If weights have a greatest common denominator, they should be reduced
-	valid := make([]rune, tot)
-	index := uint(0)
+	rand.Seed(seed)
+
+	// Allocate memory
+	s := make([]rune, n)
+
+	// Fill with valid letters dependent on weights
+	idx := 0
+outer:
 	for r, w := range weights {
-		for i := index; i < index+w; i++ {
-			valid[i] = r
+		for i := idx; i < idx+int(w); i++ {
+			if i < int(n) {
+				s[i] = r
+			} else {
+				break outer
+			}
 		}
-		index += w
+		idx = idx + int(w)
 	}
-	return RandomStringFromRunes(seed, n, valid)
+
+	// Shuffle array
+	for i := range s {
+		j := rand.Intn(i + 1)
+		s[i], s[j] = s[j], s[i]
+	}
+	return string(s)
 }
 
 func gcd_poly(ns ...int) int {
