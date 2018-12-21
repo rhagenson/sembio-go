@@ -70,7 +70,7 @@ outer:
 	return string(s)
 }
 
-func gcd_poly(ns ...int) int {
+func gcd_var(ns ...int) int {
 	n := len(ns)
 	if n == 1 {
 		return ns[0]
@@ -79,7 +79,7 @@ func gcd_poly(ns ...int) int {
 		return gcd(ns[0], ns[1])
 	}
 	h := n / 2
-	return gcd(gcd_poly(ns[:h]...), gcd_poly(ns[h:]...))
+	return gcd(gcd_var(ns[:h]...), gcd_var(ns[h:]...))
 }
 
 func gcd(x, y int) int {
