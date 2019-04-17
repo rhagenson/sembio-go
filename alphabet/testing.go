@@ -22,7 +22,7 @@ func IsExpectedLength(a Interface, n int) func(t *testing.T) {
 
 // HasExpectedLetter is a test helper to wrap a check for
 // an alphabet.Interface implementation having a given letter
-func HasExpectedLetter(a Interface, c string) func(t *testing.T) {
+func HasExpectedLetter(a Interface, c byte) func(t *testing.T) {
 	return func(t *testing.T) {
 		for _, ok := range a.Contains(c) {
 			if !ok {
@@ -32,19 +32,15 @@ func HasExpectedLetter(a Interface, c string) func(t *testing.T) {
 	}
 }
 
-// TestSplitByN splits a string into n sized chunks
-// TODO: Should return an error detailing why a nil was returned
-func TestSplitByN(s string, n int) []string {
-	if n == 0 || len(s)%n != 0 {
-		return nil
+func NotLetters(letters []byte) []byte {
+	notLetters := []byte(
+		"abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+	)
+	for _, l := range letters {
+		i := bytes.IndexByte(notLetters, l)
+		if i != -1 {
+			notLetters = append(notLetters[:i], notLetters[i+1:]...)
+		}
 	}
-	subs := make([]string, len(s)/n)
-
-	runes := bytes.Runes([]byte(s))
-	idx := 0
-	for i := 0; i < len(s)+n-1; i = i + n {
-		subs[idx] = string(runes[i : i+n])
-		idx++
-	}
-	return subs
+	return notLetters
 }
