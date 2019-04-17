@@ -32,6 +32,8 @@ func HasExpectedLetter(a Interface, c byte) func(t *testing.T) {
 	}
 }
 
+// NotLetters returns all ASCII letters not in the input set
+// TODO: Return a func(t *testing.T) to denote it is for testing only
 func NotLetters(letters []byte) []byte {
 	notLetters := []byte(
 		"abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
