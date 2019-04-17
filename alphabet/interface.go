@@ -9,12 +9,8 @@ type Interface interface {
 	fmt.Stringer
 
 	// Contains checks that the given elements are in the Alphabet
-	Contains(...string) []bool
+	Contains(...byte) []bool
 
 	// Length is the number of letters in the Alphabet
 	Length() int
-
-	// Width is the byte width of letters
-	// Zero (default int value) is the same as one to represent single-byte width
-	Width() uint
 }

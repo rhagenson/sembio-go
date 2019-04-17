@@ -1,49 +1,36 @@
 package alphabet
 
-import "strings"
+import (
+	"bytes"
+)
 
 // Alphabet is a collection of letters
 type Alphabet struct {
-	letters string
-	width   uint
+	letters []byte
 }
 
 // New is an Alphabet generator
-func New(letters string, width uint) *Alphabet {
-	if width < 1 {
-		return &Alphabet{
-			letters: letters,
-			width:   1,
-		}
-	}
+func New(letters string) *Alphabet {
 	return &Alphabet{
-		letters: letters,
-		width:   width,
+		letters: []byte(letters),
 	}
 }
 
 // Length is numbers of letters in the Alphabet
 func (a Alphabet) Length() int {
-	return len(a.String()) / int(a.Width())
+	return len(a.letters)
 }
 
 // Contains confirms whether an array of potential letters are in the Alphabet
-func (a Alphabet) Contains(letters ...string) []bool {
+func (a Alphabet) Contains(letters ...byte) []bool {
 	found := make([]bool, len(letters))
 	for i, l := range letters {
-		aligned := strings.Index(a.String(), l)%int(a.Width()) == 0
-		present := strings.Index(a.String(), l) > -1
-		found[i] = aligned && present
+		found[i] = bytes.IndexByte(a.letters, l) != -1
 	}
 	return found
 }
 
 // String generates a stringified copy of the Alphabet
 func (a Alphabet) String() string {
-	return a.letters
-}
-
-// Width is the byte width of the Alphabet
-func (a Alphabet) Width() uint {
-	return a.width
+	return string(a.letters)
 }
