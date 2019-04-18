@@ -10,9 +10,9 @@ testing.go is a collection of test helpers which should wholly
 be used by people hoping to satisfy an Interface.
 */
 
-// IsExpectedLength is a test helper to wrap a check for
+// TestIsExpectedLength is a test helper to wrap a check for
 // an alphabet.Interface implementation having the correct number of letters
-func IsExpectedLength(a Interface, n int) func(t *testing.T) {
+func TestIsExpectedLength(a Interface, n int) func(t *testing.T) {
 	return func(t *testing.T) {
 		if a.Length() != n {
 			t.Errorf("Got: %d, Want: %d", a.Length(), n)
@@ -20,9 +20,9 @@ func IsExpectedLength(a Interface, n int) func(t *testing.T) {
 	}
 }
 
-// HasExpectedLetter is a test helper to wrap a check for
+// TestHasExpectedLetter is a test helper to wrap a check for
 // an alphabet.Interface implementation having a given letter
-func HasExpectedLetter(a Interface, c byte) func(t *testing.T) {
+func TestHasExpectedLetter(a Interface, c byte) func(t *testing.T) {
 	return func(t *testing.T) {
 		for _, ok := range a.Contains(c) {
 			if !ok {
@@ -32,9 +32,9 @@ func HasExpectedLetter(a Interface, c byte) func(t *testing.T) {
 	}
 }
 
-// NotLetters returns all ASCII letters not in the input set
-// TODO: Return a func(t *testing.T) to denote it is for testing only
-func NotLetters(letters []byte) []byte {
+// TestExcludesLetters a test helper that returns all
+// ASCII letters not in the input set
+func TestExcludesLetters(letters []byte) []byte {
 	notLetters := []byte(
 		"abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 	)
