@@ -1,6 +1,7 @@
 package fasta_test
 
 import (
+	"bytes"
 	"strings"
 	"testing"
 
@@ -24,7 +25,7 @@ func TestDnaIupac(t *testing.T) {
 					n,
 					alphabet.DnaIupac,
 				)
-				f, err := fasta.ReadDnaIupac(r)
+				f, err := fasta.ReadDnaIupac(bytes.NewReader(r))
 				if strings.Count(f.Sequence(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false

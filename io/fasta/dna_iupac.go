@@ -16,8 +16,20 @@ type DnaIupac struct {
 
 // ReadDnaIupac reads in a FASTA file that should contain only valid DnaIupac letters
 func ReadDnaIupac(r io.Reader) (DnaIupac, error) {
-	s, err := Read(r, func(s string) (sequence.Interface, error) {
+	entry, err := ReadSingle(r, func(s string) (sequence.Interface, error) {
 		return immutable.NewDnaIupac(s)
 	})
-	return DnaIupac{s.(*Struct)}, err
+	return DnaIupac{entry.(*Struct)}, err
+}
+
+// ReadMultiDnaIupac reads in a multi-record FASTA file that should contain only valid DnaIupac letters
+func ReadMultiDnaIupac(r io.Reader) ([]DnaIupac, error) {
+	entries, err := ReadMulti(r, func(s string) (sequence.Interface, error) {
+		return immutable.NewDnaIupac(s)
+	})
+	records := make([]DnaIupac, len(entries))
+	for i, entry := range entries {
+		records[i] = DnaIupac{entry.(*Struct)}
+	}
+	return records, err
 }

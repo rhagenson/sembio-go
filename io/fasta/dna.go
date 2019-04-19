@@ -14,10 +14,24 @@ type Dna struct {
 	*Struct
 }
 
-// ReadDna reads in a FASTA file that should contain only valid DNA letters
+// ReadDna reads in a FASTA file that should contain only valid Dna letters
 func ReadDna(r io.Reader) (Dna, error) {
-	s, err := Read(r, func(s string) (sequence.Interface, error) {
+	entry, err := ReadSingle(r, func(s string) (sequence.Interface, error) {
 		return immutable.NewDna(s)
 	})
-	return Dna{s.(*Struct)}, err
+	return Dna{entry.(*Struct)}, err
+}
+
+// ReadMultiDna reads in a multi-record FASTA file that should contain only valid Dna letters
+func ReadMultiDna(r io.Reader) ([]Dna, error) {
+	entries, err := ReadMulti(r, func(s string) (sequence.Interface, error) {
+		return immutable.NewDna(s)
+	})
+	records := make([]Dna, len(entries))
+	for i, entry := range entries {
+		if entry != nil {
+			records[i] = Dna{entry.(*Struct)}
+		}
+	}
+	return records, err
 }

@@ -16,8 +16,20 @@ type Protein struct {
 
 // ReadProtein reads in a FASTA file that should contain only valid Protein letters
 func ReadProtein(r io.Reader) (Protein, error) {
-	s, err := Read(r, func(s string) (sequence.Interface, error) {
+	entry, err := ReadSingle(r, func(s string) (sequence.Interface, error) {
 		return immutable.NewProtein(s)
 	})
-	return Protein{s.(*Struct)}, err
+	return Protein{entry.(*Struct)}, err
+}
+
+// ReadMultiProtein reads in a multi-record FASTA file that should contain only valid Protein letters
+func ReadMultiProtein(r io.Reader) ([]Protein, error) {
+	entries, err := ReadMulti(r, func(s string) (sequence.Interface, error) {
+		return immutable.NewProtein(s)
+	})
+	records := make([]Protein, len(entries))
+	for i, entry := range entries {
+		records[i] = Protein{entry.(*Struct)}
+	}
+	return records, err
 }

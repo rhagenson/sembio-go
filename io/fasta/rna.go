@@ -16,8 +16,20 @@ type Rna struct {
 
 // ReadRna reads in a FASTA file that should contain only valid Rna letters
 func ReadRna(r io.Reader) (Rna, error) {
-	s, err := Read(r, func(s string) (sequence.Interface, error) {
+	entry, err := ReadSingle(r, func(s string) (sequence.Interface, error) {
 		return immutable.NewRna(s)
 	})
-	return Rna{s.(*Struct)}, err
+	return Rna{entry.(*Struct)}, err
+}
+
+// ReadMultiRna reads in a multi-record FASTA file that should contain only valid Rna letters
+func ReadMultiRna(r io.Reader) ([]Rna, error) {
+	entries, err := ReadMulti(r, func(s string) (sequence.Interface, error) {
+		return immutable.NewRna(s)
+	})
+	records := make([]Rna, len(entries))
+	for i, entry := range entries {
+		records[i] = Rna{entry.(*Struct)}
+	}
+	return records, err
 }

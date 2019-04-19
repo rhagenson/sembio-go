@@ -1,6 +1,7 @@
 package fasta_test
 
 import (
+	"bytes"
 	"strings"
 	"testing"
 
@@ -24,12 +25,50 @@ func TestDna(t *testing.T) {
 					n,
 					alphabet.Dna,
 				)
-				f, err := fasta.ReadDna(r)
-				if strings.Count(f.Sequence(), "\n") > 1 {
+				f, err := fasta.ReadDna(bytes.NewReader(r))
+				switch {
+				case strings.Count(f.Sequence(), "\n") > 1:
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false
+				case err != nil:
+					t.Errorf("error in parsing input: %v", err)
+					return false
+				default:
+					return true
 				}
-				return true
+			},
+			gen.UIntRange(1, 100),
+		),
+	)
+	properties.TestingRun(t)
+}
+
+func TestMultiDna(t *testing.T) {
+	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
+	properties := gopter.NewProperties(parameters)
+
+	properties.Property("ReadMultiDna removes newline characters in body",
+		prop.ForAll(
+			func(n uint) bool {
+				r := fasta.TestGenMultiFasta(
+					test.Seed,
+					n,
+					alphabet.Dna,
+				)
+				fs, err := fasta.ReadDna(bytes.NewReader(r))
+				// for _, f := range fs {
+				switch {
+				case strings.Count(fs.Sequence(), "\n") > 1:
+					t.Errorf("body contains internal newline characters: %v", err)
+					return false
+				case err != nil:
+					t.Errorf("error in parsing input: %v", err)
+					return false
+				default:
+					return true
+				}
+				// }
+				// return true
 			},
 			gen.UIntRange(1, 100),
 		),
