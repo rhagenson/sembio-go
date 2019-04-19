@@ -25,7 +25,7 @@ func TestProtein(t *testing.T) {
 					alphabet.Protein,
 				)
 				f, err := fasta.ReadProtein(r)
-				if strings.Count(f.Body(), "\n") > 1 {
+				if strings.Count(f.Sequence(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false
 				}

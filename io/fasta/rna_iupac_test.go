@@ -25,7 +25,7 @@ func TestRnaIupac(t *testing.T) {
 					alphabet.RnaIupac,
 				)
 				f, err := fasta.ReadRnaIupac(r)
-				if strings.Count(f.Body(), "\n") > 1 {
+				if strings.Count(f.Sequence(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false
 				}
