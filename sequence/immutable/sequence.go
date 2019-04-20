@@ -16,8 +16,8 @@ type Struct struct {
 	validators []ValFunc
 }
 
-// NewStruct generates a new generalized sequence with optional validators
-func NewStruct(s string, vs ...ValFunc) *Struct {
+// New generates a new generalized sequence with optional validators
+func New(s string, vs ...ValFunc) *Struct {
 	seq := &Struct{
 		seq:        s,
 		validators: make([]ValFunc, 0),

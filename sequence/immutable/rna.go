@@ -24,7 +24,7 @@ type Rna struct {
 
 // NewRna generates a New sequence that validates against the Rna alphabet
 func NewRna(s string) (*Rna, error) {
-	n := NewStruct(
+	n := New(
 		s,
 		AlphabetIs(alphabet.Rna),
 	)

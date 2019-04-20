@@ -23,7 +23,7 @@ type RnaIupac struct {
 
 // NewRnaIupac generates a New sequence that validates against the RnaIupac alphabet
 func NewRnaIupac(s string) (*RnaIupac, error) {
-	n := NewStruct(
+	n := New(
 		s,
 		AlphabetIs(alphabet.RnaIupac),
 	)
