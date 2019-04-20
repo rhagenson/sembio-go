@@ -22,7 +22,7 @@ type DnaIupac struct {
 
 // NewDnaIupac generates a New sequence that validates against the DnaIupac alphabet
 func NewDnaIupac(s string) (*DnaIupac, error) {
-	n := NewStruct(
+	n := New(
 		s,
 		AlphabetIs(alphabet.DnaIupac),
 	)

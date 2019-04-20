@@ -20,7 +20,7 @@ type ProteinGapped struct {
 
 // NewProteinGapped generates a New sequence that validates against the ProteinGapped alphabet
 func NewProteinGapped(s string) (*ProteinGapped, error) {
-	n := NewStruct(
+	n := New(
 		s,
 		AlphabetIs(alphabet.ProteinGapped),
 	)

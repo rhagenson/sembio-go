@@ -15,7 +15,7 @@ type Validator interface {
 }
 
 // AlphabetIs specifies whether a sequence conforms to a given Alphabet
-func AlphabetIs(a *alphabet.Alphabet) ValFunc {
+func AlphabetIs(a alphabet.Interface) ValFunc {
 	return ValFunc(
 		func(x *Struct) error {
 			for i := uint(0); i < x.Length(); i++ {

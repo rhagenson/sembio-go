@@ -20,7 +20,7 @@ type Protein struct {
 
 // NewProtein generates a New sequence that validates against the Protein alphabet
 func NewProtein(s string) (*Protein, error) {
-	n := NewStruct(
+	n := New(
 		s,
 		AlphabetIs(alphabet.Protein),
 	)

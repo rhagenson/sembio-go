@@ -29,7 +29,7 @@ type Dna struct {
 
 // NewDna generates a New sequence that validates against the Dna alphabet
 func NewDna(s string) (*Dna, error) {
-	n := NewStruct(
+	n := New(
 		s,
 		AlphabetIs(alphabet.Dna),
 	)
