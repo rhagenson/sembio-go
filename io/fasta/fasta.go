@@ -12,6 +12,14 @@ type Struct struct {
 	seq    sequence.Interface
 }
 
+// New is an Struct generator
+func New(header string, seq sequence.Interface) *Struct {
+	return &Struct{
+		header: header,
+		seq:    seq,
+	}
+}
+
 // Header is the header line
 func (f *Struct) Header() string {
 	return f.header
