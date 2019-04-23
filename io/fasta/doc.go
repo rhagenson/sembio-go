@@ -1,4 +1,4 @@
 /*
-Package fasta is a collection of FASTA format readers with heavy typing
+Package fasta handles reading, writing, and utilizing FASTA format
 */
 package fasta
