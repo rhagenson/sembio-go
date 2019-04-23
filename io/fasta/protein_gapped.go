@@ -15,7 +15,7 @@ type ProteinGapped struct {
 }
 
 // ReadProteinGapped reads in a FASTA file that should contain only valid ProteinGapped letters
-func ReadProteinGapped(r io.Reader) (ProteinGapped, error) {
+func ReadProteinGapped(r io.ReadCloser) (ProteinGapped, error) {
 	entry, err := ReadSingle(r, func(s string) (sequence.Interface, error) {
 		return immutable.NewProteinGapped(s)
 	})
@@ -23,7 +23,7 @@ func ReadProteinGapped(r io.Reader) (ProteinGapped, error) {
 }
 
 // ReadMultiProteinGapped reads in a multi-record FASTA file that should contain only valid ProteinGapped letters
-func ReadMultiProteinGapped(r io.Reader) ([]ProteinGapped, error) {
+func ReadMultiProteinGapped(r io.ReadCloser) ([]ProteinGapped, error) {
 	entries, err := ReadMulti(r, func(s string) (sequence.Interface, error) {
 		return immutable.NewProteinGapped(s)
 	})

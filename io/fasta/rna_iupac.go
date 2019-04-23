@@ -15,7 +15,7 @@ type RnaIupac struct {
 }
 
 // ReadRnaIupac reads in a FASTA file that should contain only valid RnaIupac letters
-func ReadRnaIupac(r io.Reader) (RnaIupac, error) {
+func ReadRnaIupac(r io.ReadCloser) (RnaIupac, error) {
 	entry, err := ReadSingle(r, func(s string) (sequence.Interface, error) {
 		return immutable.NewRnaIupac(s)
 	})
@@ -23,7 +23,7 @@ func ReadRnaIupac(r io.Reader) (RnaIupac, error) {
 }
 
 // ReadMultiRnaIupac reads in a multi-record FASTA file that should contain only valid RnaIupac letters
-func ReadMultiRnaIupac(r io.Reader) ([]RnaIupac, error) {
+func ReadMultiRnaIupac(r io.ReadCloser) ([]RnaIupac, error) {
 	entries, err := ReadMulti(r, func(s string) (sequence.Interface, error) {
 		return immutable.NewRnaIupac(s)
 	})

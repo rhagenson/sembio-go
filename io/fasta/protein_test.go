@@ -2,6 +2,7 @@ package fasta_test
 
 import (
 	"bytes"
+	"io/ioutil"
 	"strings"
 	"testing"
 
@@ -25,7 +26,7 @@ func TestProtein(t *testing.T) {
 					n,
 					alphabet.Protein,
 				)
-				f, err := fasta.ReadProtein(bytes.NewReader(r))
+				f, err := fasta.ReadProtein(ioutil.NopCloser(bytes.NewReader(r)))
 				if strings.Count(f.Sequence(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false

@@ -2,6 +2,7 @@ package fasta_test
 
 import (
 	"bytes"
+	"io/ioutil"
 	"strings"
 	"testing"
 
@@ -25,7 +26,7 @@ func TestDna(t *testing.T) {
 					n,
 					alphabet.Dna,
 				)
-				f, err := fasta.ReadDna(bytes.NewReader(r))
+				f, err := fasta.ReadDna(ioutil.NopCloser(bytes.NewReader(r)))
 				switch {
 				case strings.Count(f.Sequence(), "\n") > 1:
 					t.Errorf("body contains internal newline characters: %v", err)
@@ -55,7 +56,7 @@ func TestMultiDna(t *testing.T) {
 					n,
 					alphabet.Dna,
 				)
-				fs, err := fasta.ReadDna(bytes.NewReader(r))
+				fs, err := fasta.ReadDna(ioutil.NopCloser(bytes.NewReader(r)))
 				// for _, f := range fs {
 				switch {
 				case strings.Count(fs.Sequence(), "\n") > 1:
