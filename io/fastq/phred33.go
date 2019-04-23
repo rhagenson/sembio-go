@@ -1,4 +1,4 @@
-package qscore
+package fastq
 
 import (
 	"fmt"
