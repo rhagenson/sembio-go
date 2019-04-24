@@ -54,24 +54,25 @@ func TestMultiDna(t *testing.T) {
 				r := fasta.TestGenMultiFasta(
 					test.Seed,
 					n,
+					10,
 					alphabet.Dna,
 				)
-				fs, err := fasta.ReadDna(ioutil.NopCloser(bytes.NewReader(r)))
-				// for _, f := range fs {
-				switch {
-				case strings.Count(fs.Sequence(), "\n") > 1:
-					t.Errorf("body contains internal newline characters: %v", err)
-					return false
-				case err != nil:
-					t.Errorf("error in parsing input: %v", err)
-					return false
-				default:
-					return true
+				fs, err := fasta.ReadMultiDna(ioutil.NopCloser(bytes.NewReader(r)))
+				for _, f := range fs {
+					switch {
+					case strings.Count(f.Sequence(), "\n") > 1:
+						t.Errorf("body contains internal newline characters: %v", err)
+						return false
+					case err != nil:
+						t.Errorf("error in parsing input: %v", err)
+						return false
+					default:
+						return true
+					}
 				}
-				// }
-				// return true
+				return true
 			},
-			gen.UIntRange(1, 100),
+			gen.UIntRange(100, 1000),
 		),
 	)
 	properties.TestingRun(t)

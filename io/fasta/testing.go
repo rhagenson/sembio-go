@@ -38,13 +38,12 @@ func TestGenFasta(seed int64, n uint, a alphabet.Interface) []byte {
 // This generator is based on the very broad definition of FASTA being
 // a two-line format with header and body line(s). It generates n 80-length
 // lines using the letters from alphabet.Interface
-func TestGenMultiFasta(seed int64, n uint, a alphabet.Interface) []byte {
-	seqs := make([]byte, 10*int(n))
-	for i := 0; i < 10*int(n); i += int(n) {
-		seq := TestGenFasta(seed, n, a)
-		for j, b := range seq {
-			seqs[i+j] = b
-		}
+func TestGenMultiFasta(seed int64, n, m uint, a alphabet.Interface) []byte {
+	rand.Seed(seed)
+	nseqs := rand.Intn(int(m))
+	b := make([]byte, 0)
+	for i := 0; i < nseqs; i++ {
+		b = append(b, TestGenFasta(seed, n, a)...)
 	}
-	return seqs
+	return b
 }
