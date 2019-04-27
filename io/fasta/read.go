@@ -2,43 +2,19 @@ package fasta
 
 import (
 	"bufio"
-	"errors"
 	"io"
 	"strings"
 
 	"bitbucket.org/rhagenson/bio/sequence"
 )
 
-// ReadSingle reads a single records from a FASTA file using the generator f to validate the sequence
-func ReadSingle(r io.ReadCloser, f sequence.Generator) (Interface, error) {
-	br := bufio.NewScanner(r)
-	br.Split(bufio.ScanLines)
-	record := new(record)
-	for br.Scan() {
-		line := strings.TrimSpace(br.Text())
-		switch {
-		case line == "": // Skip blank lines
-			continue
-		case line[0] == FastaHeaderPrefix: // Header
-			if len(record.sequence) == 0 {
-				record.header = line
-			} else {
-				return nil, errors.New("expected one record in FASTA input, got multiple")
-			}
-		default: // Sequence
-			record.sequence = record.sequence + line
-		}
-	}
-	seqx, err := f(record.sequence)
-	return New(record.header, seqx), err
-}
-
-// ReadMulti reads all records from a FASTA file using the generator f to validate the sequences
+// Read reads n records from a FASTA file using the generator f to validate the sequences
 // Only records up to the first error are returned (along with the error)
-func ReadMulti(r io.ReadCloser, f sequence.Generator) ([]Interface, error) {
+func Read(r io.Reader, n uint, f sequence.Generator) ([]Interface, error) {
 	br := bufio.NewScanner(r)
 	br.Split(bufio.ScanLines)
-	accum := make([]record, 0)
+	records := make([]Interface, 0, n)
+	count := uint(0)
 	header := ""
 	seq := new(strings.Builder)
 	for br.Scan() {
@@ -50,27 +26,40 @@ func ReadMulti(r io.ReadCloser, f sequence.Generator) ([]Interface, error) {
 			if seq.Len() == 0 {
 				header = line
 			} else {
-				accum = append(accum, record{
-					header,
-					seq.String(),
-				})
+				seqx, err := f(seq.String())
+				if err != nil {
+					return records, err
+				}
+				records = append(records, New(header, seqx))
+				count++
+				if n != 0 && count == n {
+					return records, nil
+				}
+				header = ""
+				seq = new(strings.Builder)
 			}
 		default: // Sequence
 			seq.WriteString(line)
 		}
 	}
-	records := make([]Interface, len(accum))
-	for i, r := range accum {
-		seqx, err := f(r.sequence)
+	if header != "" && seq.String() != "" {
+		seqx, err := f(seq.String())
 		if err != nil {
-			return nil, err
+			return records, err
 		}
-		records[i] = New(r.header, seqx)
+		records = append(records, New(header, seqx))
 	}
 	return records, nil
 }
 
-type record struct {
-	header   string
-	sequence string
+// ReadSingle reads a single records from a FASTA file using the generator f to validate the sequence
+func ReadSingle(r io.Reader, f sequence.Generator) (Interface, error) {
+	records, err := Read(r, 1, f)
+	return records[0], err
+}
+
+// ReadMulti reads all records from a FASTA file using the generator f to validate the sequences
+// Only records up to the first error are returned (along with the error)
+func ReadMulti(r io.Reader, f sequence.Generator) ([]Interface, error) {
+	return Read(r, 0, f)
 }
