@@ -29,9 +29,7 @@ func ReadMultiDna(r io.ReadCloser) ([]Dna, error) {
 	})
 	records := make([]Dna, len(entries))
 	for i, entry := range entries {
-		if entry != nil {
-			records[i] = Dna{entry.(*Struct)}
-		}
+		records[i] = Dna{entry.(*Struct)}
 	}
 	return records, err
 }
