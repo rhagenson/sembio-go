@@ -3,7 +3,6 @@ package immutable
 import (
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
-	"bitbucket.org/rhagenson/bio/utils"
 )
 
 var _ sequence.Reverser = new(Protein)
@@ -44,5 +43,5 @@ func (x *Protein) Alphabet() alphabet.Interface {
 
 // LetterCount reveals the number of occurrences for each letter in a sequence
 func (x *Protein) LetterCount() map[string]uint {
-	return utils.LetterCount(x)
+	return sequence.LetterCount(x)
 }

@@ -3,7 +3,6 @@ package immutable
 import (
 	"bitbucket.org/rhagenson/bio/alphabet"
 	"bitbucket.org/rhagenson/bio/sequence"
-	"bitbucket.org/rhagenson/bio/utils"
 	"bitbucket.org/rhagenson/bio/utils/complement"
 )
 
@@ -66,5 +65,5 @@ func (x *DnaIupac) Alphabet() alphabet.Interface {
 
 // LetterCount reveals the number of occurrences for each letter in a sequence
 func (x *DnaIupac) LetterCount() map[string]uint {
-	return utils.LetterCount(x)
+	return sequence.LetterCount(x)
 }

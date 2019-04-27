@@ -112,5 +112,5 @@ func (x *Dna) Alphabet() alphabet.Interface {
 
 // LetterCount reveals the number of occurrences for each letter in a sequence
 func (x *Dna) LetterCount() map[string]uint {
-	return utils.LetterCount(x)
+	return sequence.LetterCount(x)
 }
