@@ -1,4 +1,4 @@
-module bitbucket.org/rhagenson/bio
+module github.com/rhagenson/bio-go
 
 go 1.12
 
