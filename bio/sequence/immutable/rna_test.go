@@ -131,8 +131,7 @@ func TestRnaImmutability(t *testing.T) {
 					[]rune(alphabet.Rna.String()),
 				)
 				original, _ := immutable.NewRna(s)
-				clone := new(immutable.Rna)
-				*clone = *original
+				clone, _ := immutable.NewRna(s)
 				original.With(immutable.PositionAs(n*(1/2), t))
 				return original.String() == clone.String()
 			},

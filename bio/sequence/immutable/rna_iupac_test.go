@@ -131,8 +131,7 @@ func TestRnaIupacImmutability(t *testing.T) {
 					[]rune(alphabet.RnaIupac.String()),
 				)
 				original, _ := immutable.NewRnaIupac(s)
-				clone := new(immutable.RnaIupac)
-				*clone = *original
+				clone, _ := immutable.NewRnaIupac(s)
 				original.With(immutable.PositionAs(n*(1/2), t))
 				return original.String() == clone.String()
 			},
@@ -153,8 +152,7 @@ func TestRnaIupacImmutability(t *testing.T) {
 					[]rune(alphabet.RnaIupac.String()),
 				)
 				original, _ := immutable.NewRnaIupac(s)
-				clone := new(immutable.RnaIupac)
-				*clone = *original
+				clone, _ := immutable.NewRnaIupac(s)
 				original.With(immutable.RangeAs(n*(1/4), n*(3/4), t))
 				return original.String() == clone.String()
 			},
@@ -170,8 +168,7 @@ func TestRnaIupacImmutability(t *testing.T) {
 					[]rune(alphabet.RnaIupac.String()),
 				)
 				original, _ := immutable.NewRnaIupac(s)
-				clone := new(immutable.RnaIupac)
-				*clone = *original
+				clone, _ := immutable.NewRnaIupac(s)
 				original.Reverse()
 				return original.String() == clone.String()
 			},
@@ -187,8 +184,7 @@ func TestRnaIupacImmutability(t *testing.T) {
 					[]rune(alphabet.RnaIupac.String()),
 				)
 				original, _ := immutable.NewRnaIupac(s)
-				clone := new(immutable.RnaIupac)
-				*clone = *original
+				clone, _ := immutable.NewRnaIupac(s)
 				original.Complement()
 				return original.String() == clone.String()
 			},
@@ -204,8 +200,7 @@ func TestRnaIupacImmutability(t *testing.T) {
 					[]rune(alphabet.RnaIupac.String()),
 				)
 				original, _ := immutable.NewRnaIupac(s)
-				clone := new(immutable.RnaIupac)
-				*clone = *original
+				clone, _ := immutable.NewRnaIupac(s)
 				original.RevComp()
 				return original.String() == clone.String()
 			},

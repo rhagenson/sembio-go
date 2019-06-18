@@ -170,9 +170,8 @@ func TestDnaIupacImmutability(t *testing.T) {
 					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := immutable.NewDnaIupac(s)
-				clone := new(immutable.DnaIupac)
-				*clone = *original
-				original.With(immutable.PositionAs(n*(1/2), t))
+				clone, _ := immutable.NewDnaIupac(s)
+				original.With(immutable.PositionAs(n/2, t))
 				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -192,9 +191,8 @@ func TestDnaIupacImmutability(t *testing.T) {
 					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := immutable.NewDnaIupac(s)
-				clone := new(immutable.DnaIupac)
-				*clone = *original
-				original.With(immutable.RangeAs(n*(1/4), n*(3/4), t))
+				clone, _ := immutable.NewDnaIupac(s)
+				original.With(immutable.RangeAs(n/4, n*3/4, t))
 				return original.String() == clone.String()
 			},
 			gen.UIntRange(1, sequence.TestableLength),
@@ -209,8 +207,7 @@ func TestDnaIupacImmutability(t *testing.T) {
 					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := immutable.NewDnaIupac(s)
-				clone := new(immutable.DnaIupac)
-				*clone = *original
+				clone, _ := immutable.NewDnaIupac(s)
 				original.Reverse()
 				return original.String() == clone.String()
 			},
@@ -226,8 +223,7 @@ func TestDnaIupacImmutability(t *testing.T) {
 					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := immutable.NewDnaIupac(s)
-				clone := new(immutable.DnaIupac)
-				*clone = *original
+				clone, _ := immutable.NewDnaIupac(s)
 				original.Complement()
 				return original.String() == clone.String()
 			},
@@ -243,8 +239,7 @@ func TestDnaIupacImmutability(t *testing.T) {
 					[]rune(alphabet.DnaIupac.String()),
 				)
 				original, _ := immutable.NewDnaIupac(s)
-				clone := new(immutable.DnaIupac)
-				*clone = *original
+				clone, _ := immutable.NewDnaIupac(s)
 				original.RevComp()
 				return original.String() == clone.String()
 			},

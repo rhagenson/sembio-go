@@ -186,8 +186,7 @@ func TestDnaImmutability(t *testing.T) {
 					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := immutable.NewDna(s)
-				clone := new(immutable.Dna)
-				*clone = *original
+				clone, _ := immutable.NewDna(s)
 				original.With(immutable.PositionAs(n*(1/2), t))
 				return original.String() == clone.String()
 			},
@@ -208,8 +207,7 @@ func TestDnaImmutability(t *testing.T) {
 					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := immutable.NewDna(s)
-				clone := new(immutable.Dna)
-				*clone = *original
+				clone, _ := immutable.NewDna(s)
 				original.With(immutable.RangeAs(n*(1/4), n*(3/4), t))
 				return original.String() == clone.String()
 			},
@@ -225,8 +223,7 @@ func TestDnaImmutability(t *testing.T) {
 					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := immutable.NewDna(s)
-				clone := new(immutable.Dna)
-				*clone = *original
+				clone, _ := immutable.NewDna(s)
 				original.Reverse()
 				return original.String() == clone.String()
 			},
@@ -242,8 +239,7 @@ func TestDnaImmutability(t *testing.T) {
 					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := immutable.NewDna(s)
-				clone := new(immutable.Dna)
-				*clone = *original
+				clone, _ := immutable.NewDna(s)
 				original.Complement()
 				return original.String() == clone.String()
 			},
@@ -259,8 +255,7 @@ func TestDnaImmutability(t *testing.T) {
 					[]rune(alphabet.Dna.String()),
 				)
 				original, _ := immutable.NewDna(s)
-				clone := new(immutable.Dna)
-				*clone = *original
+				clone, _ := immutable.NewDna(s)
 				original.RevComp()
 				return original.String() == clone.String()
 			},

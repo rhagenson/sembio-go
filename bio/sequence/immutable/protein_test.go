@@ -121,8 +121,7 @@ func TestProteinImmutability(t *testing.T) {
 					[]rune(alphabet.Protein.String()),
 				)
 				original, _ := immutable.NewProtein(s)
-				clone := new(immutable.Protein)
-				*clone = *original
+				clone, _ := immutable.NewProtein(s)
 				original.With(immutable.PositionAs(n*(1/2), t))
 				return original.String() == clone.String()
 			},
@@ -143,8 +142,7 @@ func TestProteinImmutability(t *testing.T) {
 					[]rune(alphabet.Protein.String()),
 				)
 				original, _ := immutable.NewProtein(s)
-				clone := new(immutable.Protein)
-				*clone = *original
+				clone, _ := immutable.NewProtein(s)
 				original.With(immutable.RangeAs(n*(1/4), n*(3/4), t))
 				return original.String() == clone.String()
 			},
@@ -160,8 +158,7 @@ func TestProteinImmutability(t *testing.T) {
 					[]rune(alphabet.Protein.String()),
 				)
 				original, _ := immutable.NewProtein(s)
-				clone := new(immutable.Protein)
-				*clone = *original
+				clone, _ := immutable.NewProtein(s)
 				original.Reverse()
 				return original.String() == clone.String()
 			},
