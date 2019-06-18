@@ -38,7 +38,7 @@ func (x *Rna) Reverse() (sequence.Interface, error) {
 		t[i], t[l-1-i] = t[l-1-i], t[i]
 	}
 	x.seq = string(t)
-	return x, nil
+	return x, x.Validate()
 }
 
 // RevComp is the same Rna with the sequence reversed and complemented
@@ -49,7 +49,7 @@ func (x *Rna) RevComp() (sequence.Interface, error) {
 		t[i], t[l-1-i] = complement.Rna(t[l-1-i]), complement.Rna(t[i])
 	}
 	x.seq = string(t)
-	return x, nil
+	return x, x.Validate()
 }
 
 // Complement is the same Rna with the sequence complemented
@@ -60,7 +60,7 @@ func (x *Rna) Complement() (sequence.Interface, error) {
 		t[i] = complement.Rna(byte(x.seq[i]))
 	}
 	x.seq = string(t)
-	return x, nil
+	return x, x.Validate()
 }
 
 // Alphabet reveals the underlying alphabet in use

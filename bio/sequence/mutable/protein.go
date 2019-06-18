@@ -34,7 +34,7 @@ func (x *Protein) Reverse() (sequence.Interface, error) {
 		t[i], t[l-1-i] = t[l-1-i], t[i]
 	}
 	x.seq = string(t)
-	return x, nil
+	return x, x.Validate()
 }
 
 // Alphabet reveals the underlying alphabet in use

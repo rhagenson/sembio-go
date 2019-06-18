@@ -37,7 +37,7 @@ func (x *RnaIupac) Reverse() (sequence.Interface, error) {
 		t[i], t[l-1-i] = t[l-1-i], t[i]
 	}
 	x.seq = string(t)
-	return x, nil
+	return x, x.Validate()
 }
 
 // RevComp is the same RnaIupac with the sequence reversed and complemented
@@ -48,7 +48,7 @@ func (x *RnaIupac) RevComp() (sequence.Interface, error) {
 		t[i], t[l-1-i] = complement.RnaIupac(t[l-1-i]), complement.RnaIupac(t[i])
 	}
 	x.seq = string(t)
-	return x, nil
+	return x, x.Validate()
 }
 
 // Complement is the same RnaIupac with the sequence complemented
@@ -59,7 +59,7 @@ func (x *RnaIupac) Complement() (sequence.Interface, error) {
 		t[i] = complement.RnaIupac(t[i])
 	}
 	x.seq = string(t)
-	return x, nil
+	return x, x.Validate()
 }
 
 // Alphabet reveals the underlying alphabet in use

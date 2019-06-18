@@ -44,7 +44,7 @@ func (x *Dna) Reverse() (sequence.Interface, error) {
 		t[i], t[l-1-i] = t[l-1-i], t[i]
 	}
 	x.seq = string(t)
-	return x, nil
+	return x, x.Validate()
 }
 
 // RevComp is the same Dna with the sequence reversed and complemented
@@ -55,7 +55,7 @@ func (x *Dna) RevComp() (sequence.Interface, error) {
 		t[i], t[l-1-i] = complement.Dna(t[l-1-i]), complement.Dna(t[i])
 	}
 	x.seq = string(t)
-	return x, nil
+	return x, x.Validate()
 }
 
 // Complement is the same Dna with the sequence complemented
@@ -65,7 +65,7 @@ func (x *Dna) Complement() (sequence.Interface, error) {
 		t[i] = complement.Dna(t[i])
 	}
 	x.seq = string(t)
-	return x, nil
+	return x, x.Validate()
 }
 
 // Transcribe returns the DNA->RNA transcription product
