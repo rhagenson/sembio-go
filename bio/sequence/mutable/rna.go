@@ -1,0 +1,74 @@
+package mutable
+
+import (
+	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/sequence"
+	"github.com/rhagenson/bio-go/bio/utils/complement"
+)
+
+var _ sequence.Interface = new(Rna)
+var _ sequence.Reverser = new(Rna)
+var _ sequence.RevComper = new(Rna)
+var _ sequence.Complementer = new(Rna)
+var _ sequence.Alphabeter = new(Rna)
+var _ sequence.LetterCounter = new(Rna)
+var _ Wither = new(Rna)
+var _ Validator = new(Rna)
+
+// Rna is a sequence witch validates against the Rna alphabet
+// and knows how to reverse, complement, and revcomp itself
+type Rna struct {
+	*Struct
+}
+
+// NewRna generates a New sequence that validates against the Rna alphabet
+func NewRna(s string) (*Rna, error) {
+	n := New(
+		s,
+		AlphabetIs(alphabet.Rna),
+	)
+	return &Rna{n}, n.Validate()
+}
+
+// Reverse is the same Rna with the sequence reversed
+func (x *Rna) Reverse() (sequence.Interface, error) {
+	l := x.Length()
+	t := []byte(x.seq)
+	for i := uint(0); i < l/2; i++ {
+		t[i], t[l-1-i] = t[l-1-i], t[i]
+	}
+	x.seq = string(t)
+	return x, nil
+}
+
+// RevComp is the same Rna with the sequence reversed and complemented
+func (x *Rna) RevComp() (sequence.Interface, error) {
+	l := x.Length()
+	t := []byte(x.seq)
+	for i := uint(0); i < l/2; i++ {
+		t[i], t[l-1-i] = complement.Rna(t[l-1-i]), complement.Rna(t[i])
+	}
+	x.seq = string(t)
+	return x, nil
+}
+
+// Complement is the same Rna with the sequence complemented
+func (x *Rna) Complement() (sequence.Interface, error) {
+	l := x.Length()
+	t := []byte(x.seq)
+	for i := uint(0); i < l; i++ {
+		t[i] = complement.Rna(byte(x.seq[i]))
+	}
+	x.seq = string(t)
+	return x, nil
+}
+
+// Alphabet reveals the underlying alphabet in use
+func (x *Rna) Alphabet() alphabet.Interface {
+	return alphabet.Rna
+}
+
+// LetterCount reveals the number of occurrences for each letter in a sequence
+func (x *Rna) LetterCount() map[string]uint {
+	return sequence.LetterCount(x)
+}
