@@ -11,6 +11,7 @@ import (
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/sequence/mutable"
 	"github.com/rhagenson/bio-go/bio/test"
+	"github.com/rhagenson/bio-go/bio/utils"
 )
 
 func TestInitializedDnaIupac(t *testing.T) {
@@ -206,6 +207,9 @@ func TestDnaIupacMutability(t *testing.T) {
 					n,
 					[]rune(alphabet.DnaIupac.String()),
 				)
+				if s == utils.ReverseByBytes(s) { // Skip palindromes
+					return true
+				}
 				original, _ := mutable.NewDnaIupac(s)
 				clone, _ := mutable.NewDnaIupac(s)
 				original.Reverse()

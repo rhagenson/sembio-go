@@ -11,6 +11,7 @@ import (
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/sequence/mutable"
 	"github.com/rhagenson/bio-go/bio/test"
+	"github.com/rhagenson/bio-go/bio/utils"
 )
 
 func TestInitializedProtein(t *testing.T) {
@@ -157,6 +158,9 @@ func TestProteinMutability(t *testing.T) {
 					n,
 					[]rune(alphabet.Protein.String()),
 				)
+				if s == utils.ReverseByBytes(s) { // Skip palindromes
+					return true
+				}
 				original, _ := mutable.NewProtein(s)
 				clone, _ := mutable.NewProtein(s)
 				original.Reverse()
