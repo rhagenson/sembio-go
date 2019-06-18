@@ -4,13 +4,13 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/leanovate/gopter"
+	"github.com/leanovate/gopter/gen"
+	"github.com/leanovate/gopter/prop"
 	"github.com/rhagenson/bio-go/bio/alphabet"
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/sequence/immutable"
 	"github.com/rhagenson/bio-go/bio/test"
-	"github.com/leanovate/gopter"
-	"github.com/leanovate/gopter/gen"
-	"github.com/leanovate/gopter/prop"
 )
 
 func TestInitializedProtein(t *testing.T) {
@@ -204,7 +204,7 @@ func TestProteinErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune("XNQZ"),
+					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.Protein.String())))),
 				)
 				if _, err := immutable.NewProtein(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {

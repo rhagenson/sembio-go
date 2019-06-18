@@ -4,13 +4,13 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/leanovate/gopter"
+	"github.com/leanovate/gopter/gen"
+	"github.com/leanovate/gopter/prop"
 	"github.com/rhagenson/bio-go/bio/alphabet"
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/sequence/immutable"
 	"github.com/rhagenson/bio-go/bio/test"
-	"github.com/leanovate/gopter"
-	"github.com/leanovate/gopter/gen"
-	"github.com/leanovate/gopter/prop"
 )
 
 func TestInitializedDnaIupac(t *testing.T) {
@@ -319,7 +319,7 @@ func TestDnaIupacErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune("XNQZ"),
+					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.DnaIupac.String())))),
 				)
 				if _, err := immutable.NewDnaIupac(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {

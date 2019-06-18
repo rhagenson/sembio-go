@@ -4,14 +4,14 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/leanovate/gopter"
+	"github.com/leanovate/gopter/gen"
+	"github.com/leanovate/gopter/prop"
 	"github.com/rhagenson/bio-go/bio/alphabet"
 	"github.com/rhagenson/bio-go/bio/data/codon"
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/sequence/immutable"
 	"github.com/rhagenson/bio-go/bio/test"
-	"github.com/leanovate/gopter"
-	"github.com/leanovate/gopter/gen"
-	"github.com/leanovate/gopter/prop"
 )
 
 func TestInitializedDna(t *testing.T) {
@@ -335,7 +335,7 @@ func TestDnaErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune("XNQZ"),
+					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.Dna.String())))),
 				)
 				if _, err := immutable.NewDna(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
