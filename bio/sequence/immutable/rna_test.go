@@ -113,7 +113,7 @@ func TestRnaCreation(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestRnaPersistence(t *testing.T) {
+func TestRnaImmutability(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 

@@ -168,7 +168,7 @@ func TestDnaCreation(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestDnaPersistence(t *testing.T) {
+func TestDnaImmutability(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 

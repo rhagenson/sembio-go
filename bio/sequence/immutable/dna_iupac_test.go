@@ -152,7 +152,7 @@ func TestDnaIupacCreation(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestDnaIupacPersistence(t *testing.T) {
+func TestDnaIupacImmutability(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 

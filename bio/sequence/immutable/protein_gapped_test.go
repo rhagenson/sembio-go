@@ -103,7 +103,7 @@ func TestProteinGappedCreation(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestProteinGappedPersistence(t *testing.T) {
+func TestProteinGappedImmutability(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 

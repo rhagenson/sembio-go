@@ -103,7 +103,7 @@ func TestProteinCreation(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestProteinPersistence(t *testing.T) {
+func TestProteinImmutability(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
