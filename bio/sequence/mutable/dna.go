@@ -7,7 +7,6 @@ import (
 	"github.com/rhagenson/bio-go/bio/data/codon"
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/utils"
-	"github.com/rhagenson/bio-go/bio/utils/complement"
 )
 
 var _ sequence.Interface = new(Dna)
@@ -31,16 +30,16 @@ type Dna struct {
 func NewDna(s string) (*Dna, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.Dna),
+		AlphabetIs(alphabet.NewDna()),
 	)
 	return &Dna{n}, n.Validate()
 }
 
 // Reverse is the same Dna with the sequence reversed
 func (x *Dna) Reverse() (sequence.Interface, error) {
-	t := []byte(x.String())
-	l := len(t)
-	for i := 0; i < l/2; i++ {
+	l := x.Length()
+	t := []byte(x.seq)
+	for i := uint(0); i < l/2; i++ {
 		t[i], t[l-1-i] = t[l-1-i], t[i]
 	}
 	x.seq = string(t)
@@ -49,10 +48,11 @@ func (x *Dna) Reverse() (sequence.Interface, error) {
 
 // RevComp is the same Dna with the sequence reversed and complemented
 func (x *Dna) RevComp() (sequence.Interface, error) {
+	c := x.Alphabet().(alphabet.Complementer)
 	t := []byte(x.String())
 	l := len(t)
 	for i := 0; i < l/2; i++ {
-		t[i], t[l-1-i] = complement.Dna(t[l-1-i]), complement.Dna(t[i])
+		t[i], t[l-1-i] = c.Complement(t[l-1-i]), c.Complement(t[i])
 	}
 	x.seq = string(t)
 	return x, x.Validate()
@@ -60,9 +60,10 @@ func (x *Dna) RevComp() (sequence.Interface, error) {
 
 // Complement is the same Dna with the sequence complemented
 func (x *Dna) Complement() (sequence.Interface, error) {
+	c := x.Alphabet().(alphabet.Complementer)
 	t := []byte(x.String())
 	for i := range t {
-		t[i] = complement.Dna(t[i])
+		t[i] = c.Complement(t[i])
 	}
 	x.seq = string(t)
 	return x, x.Validate()
@@ -109,7 +110,7 @@ func (x *Dna) Translate(table codon.Interface, stop byte) (sequence.Interface, e
 
 // Alphabet reveals the underlying alphabet in use
 func (x *Dna) Alphabet() alphabet.Interface {
-	return alphabet.Dna
+	return alphabet.NewDna()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

@@ -14,3 +14,8 @@ type Interface interface {
 	// Length is the number of letters in the Alphabet
 	Length() int
 }
+
+// Complementer is any alphabet that has complementing characters
+type Complementer interface {
+	Complement(byte) byte
+}

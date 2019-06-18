@@ -3,7 +3,6 @@ package mutable
 import (
 	"github.com/rhagenson/bio-go/bio/alphabet"
 	"github.com/rhagenson/bio-go/bio/sequence"
-	"github.com/rhagenson/bio-go/bio/utils/complement"
 )
 
 var _ sequence.Reverser = new(RnaIupac)
@@ -24,7 +23,7 @@ type RnaIupac struct {
 func NewRnaIupac(s string) (*RnaIupac, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.RnaIupac),
+		AlphabetIs(alphabet.NewRnaIupac()),
 	)
 	return &RnaIupac{n}, n.Validate()
 }
@@ -42,10 +41,11 @@ func (x *RnaIupac) Reverse() (sequence.Interface, error) {
 
 // RevComp is the same RnaIupac with the sequence reversed and complemented
 func (x *RnaIupac) RevComp() (sequence.Interface, error) {
+	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l/2; i++ {
-		t[i], t[l-1-i] = complement.RnaIupac(t[l-1-i]), complement.RnaIupac(t[i])
+		t[i], t[l-1-i] = c.Complement(t[l-1-i]), c.Complement(t[i])
 	}
 	x.seq = string(t)
 	return x, x.Validate()
@@ -53,10 +53,11 @@ func (x *RnaIupac) RevComp() (sequence.Interface, error) {
 
 // Complement is the same RnaIupac with the sequence complemented
 func (x *RnaIupac) Complement() (sequence.Interface, error) {
+	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l; i++ {
-		t[i] = complement.RnaIupac(t[i])
+		t[i] = c.Complement(t[i])
 	}
 	x.seq = string(t)
 	return x, x.Validate()
@@ -64,7 +65,7 @@ func (x *RnaIupac) Complement() (sequence.Interface, error) {
 
 // Alphabet reveals the underlying alphabet in use
 func (x *RnaIupac) Alphabet() alphabet.Interface {
-	return alphabet.RnaIupac
+	return alphabet.NewRnaIupac()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

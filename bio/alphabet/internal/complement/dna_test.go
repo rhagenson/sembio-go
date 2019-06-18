@@ -12,7 +12,7 @@ import (
 
 // TestDNAReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
 func TestDNAReturnsX(t *testing.T) {
-	for _, c := range "XNQZ" {
+	for _, c := range string(alphabet.TestExcludesLetters([]byte(alphabet.DnaLetters))) {
 		usual := complement.Dna(byte(c))
 		if usual != 'X' {
 			t.Errorf(

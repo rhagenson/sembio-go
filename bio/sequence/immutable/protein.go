@@ -21,7 +21,7 @@ type Protein struct {
 func NewProtein(s string) (*Protein, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.Protein),
+		AlphabetIs(alphabet.NewProtein()),
 	)
 	return &Protein{n}, n.Validate()
 }
@@ -38,7 +38,7 @@ func (x *Protein) Reverse() (sequence.Interface, error) {
 
 // Alphabet reveals the underlying alphabet in use
 func (x *Protein) Alphabet() alphabet.Interface {
-	return alphabet.Protein
+	return alphabet.NewProtein()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

@@ -1,26 +1,5 @@
 package alphabet
 
-// The general collection of different single byte biological alphabets
-var (
-	// Dna is the four letter standard encoding
-	Dna = New(DnaLetters)
-
-	// DnaIupac is the sixteen letter IUPAC encoding
-	DnaIupac = New(DnaIupacLetters)
-
-	// Rna is the four letter standard encoding
-	Rna = New(RnaLetters)
-
-	// RnaIupac is the sixteen letter IUPAC encoding
-	RnaIupac = New(RnaIupacLetters)
-
-	// Protein is the twenty letter standard encoding
-	Protein = New(ProteinLetters)
-
-	// Protein is the twenty letter standard encoding plus a gap letter
-	ProteinGapped = New(ProteinLetters + GapLetter)
-)
-
 const (
 	// GapLetter is the character used to represent a sequence gap.
 	GapLetter = "-"

@@ -12,7 +12,7 @@ import (
 
 // TestIupacReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
 func TestIupacReturnsX(t *testing.T) {
-	for _, c := range "XQZ" {
+	for _, c := range string(alphabet.TestExcludesLetters([]byte(alphabet.IupacLetters))) {
 		usual := complement.Iupac(byte(c))
 		if usual != 'X' {
 			t.Errorf(

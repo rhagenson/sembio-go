@@ -12,7 +12,7 @@ import (
 
 // TestRnaReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
 func TestRnaReturnsX(t *testing.T) {
-	for _, c := range "XNQZ" {
+	for _, c := range string(alphabet.TestExcludesLetters([]byte(alphabet.RnaLetters))) {
 		usual := complement.Rna(byte(c))
 		if usual != 'X' {
 			t.Errorf(

@@ -3,7 +3,6 @@ package immutable
 import (
 	"github.com/rhagenson/bio-go/bio/alphabet"
 	"github.com/rhagenson/bio-go/bio/sequence"
-	"github.com/rhagenson/bio-go/bio/utils/complement"
 )
 
 var _ sequence.Reverser = new(DnaIupac)
@@ -23,7 +22,7 @@ type DnaIupac struct {
 func NewDnaIupac(s string) (*DnaIupac, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.DnaIupac),
+		AlphabetIs(alphabet.NewDnaIupac()),
 	)
 	return &DnaIupac{n}, n.Validate()
 }
@@ -40,27 +39,29 @@ func (x *DnaIupac) Reverse() (sequence.Interface, error) {
 
 // RevComp is the same DnaIupac with the sequence reversed and complemented
 func (x *DnaIupac) RevComp() (sequence.Interface, error) {
+	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l/2; i++ {
-		t[i], t[l-1-i] = complement.DnaIupac(t[l-1-i]), complement.DnaIupac(t[i])
+		t[i], t[l-1-i] = c.Complement(t[l-1-i]), c.Complement(t[i])
 	}
 	return NewDnaIupac(string(t))
 }
 
 // Complement is the same DnaIupac with the sequence complemented
 func (x *DnaIupac) Complement() (sequence.Interface, error) {
+	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
 	t := []byte(x.seq)
 	for i := uint(0); i < l; i++ {
-		t[i] = complement.DnaIupac(t[i])
+		t[i] = c.Complement(t[i])
 	}
 	return NewDnaIupac(string(t))
 }
 
 // Alphabet reveals the underlying alphabet in use
 func (x *DnaIupac) Alphabet() alphabet.Interface {
-	return alphabet.DnaIupac
+	return alphabet.NewDnaIupac()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

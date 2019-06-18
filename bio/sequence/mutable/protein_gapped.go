@@ -21,7 +21,7 @@ type ProteinGapped struct {
 func NewProteinGapped(s string) (*ProteinGapped, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.ProteinGapped),
+		AlphabetIs(alphabet.NewProteinGapped()),
 	)
 	return &ProteinGapped{n}, n.Validate()
 }
@@ -39,7 +39,7 @@ func (x *ProteinGapped) Reverse() (sequence.Interface, error) {
 
 // Alphabet reveals the underlying alphabet in use
 func (x *ProteinGapped) Alphabet() alphabet.Interface {
-	return alphabet.ProteinGapped
+	return alphabet.NewProteinGapped()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence
