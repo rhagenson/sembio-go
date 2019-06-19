@@ -8,6 +8,7 @@ import (
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/sequence/mutable"
 	"github.com/rhagenson/bio-go/bio/test"
@@ -51,7 +52,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				seq, _ := mutable.NewRnaIupac(s)
 				return seq.Length() == n
@@ -65,7 +66,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				seq, _ := mutable.NewRnaIupac(s)
 				got, _ := seq.Range(0, n)
@@ -80,7 +81,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				seq, _ := mutable.NewRnaIupac(s)
 				onefourth := n / 4
@@ -97,7 +98,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				seq, _ := mutable.NewRnaIupac(s)
 				onefourth := n / 4
@@ -124,12 +125,12 @@ func TestRnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				original, _ := mutable.NewRnaIupac(s)
 				clone, _ := mutable.NewRnaIupac(s)
@@ -145,12 +146,12 @@ func TestRnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				original, _ := mutable.NewRnaIupac(s)
 				clone, _ := mutable.NewRnaIupac(s)
@@ -166,7 +167,7 @@ func TestRnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				if s == utils.ReverseByBytes(s) { // Skip palindromes
 					return true
@@ -185,7 +186,7 @@ func TestRnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				original, _ := mutable.NewRnaIupac(s)
 				clone, _ := mutable.NewRnaIupac(s)
@@ -201,7 +202,7 @@ func TestRnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				original, _ := mutable.NewRnaIupac(s)
 				clone, _ := mutable.NewRnaIupac(s)
@@ -224,7 +225,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				want, _ := mutable.NewRnaIupac(s)
 				rev, _ := want.Reverse()
@@ -240,7 +241,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				want, _ := mutable.NewRnaIupac(s)
 				rev, _ := want.Complement()
@@ -256,7 +257,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				want, _ := mutable.NewRnaIupac(s)
 				rev, _ := want.RevComp()
@@ -279,7 +280,7 @@ func TestRnaIupacErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.NewRnaIupac().String())))),
+					[]rune(string(alphabet.TestExcludesSingleLetters([]byte(hashmap.NewRnaIupac().String())))),
 				)
 				if _, err := mutable.NewRnaIupac(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
@@ -301,7 +302,7 @@ func TestRnaIupacErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				seq, _ := mutable.NewRnaIupac(s)
 				_, err := seq.Range(n, 0)
@@ -331,7 +332,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				ret := make(chan *mutable.RnaIupac)
 				go func(s string, out chan *mutable.RnaIupac) {
@@ -355,7 +356,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				ret := make(chan *mutable.RnaIupac)
 				seq, _ := mutable.NewRnaIupac(s)
@@ -380,7 +381,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				ret := make(chan *mutable.RnaIupac)
 				seq, _ := mutable.NewRnaIupac(s)
@@ -405,7 +406,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewRnaIupac().String()),
+					[]rune(hashmap.NewRnaIupac().String()),
 				)
 				ret := make(chan *mutable.RnaIupac)
 				seq, _ := mutable.NewRnaIupac(s)

@@ -6,18 +6,18 @@ import (
 	"testing"
 
 	"github.com/rhagenson/bio-go/bio/alphabet"
-	"github.com/rhagenson/bio-go/bio/test"
 	"github.com/rhagenson/bio-go/bio/alphabet/internal/complement"
+	"github.com/rhagenson/bio-go/bio/test"
 )
 
-// TestDNAReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
+// TestDNAReturnsX checks that when encountering an unknown nucleotide results in "X" placeholder
 func TestDNAReturnsX(t *testing.T) {
-	for _, c := range string(alphabet.TestExcludesLetters([]byte(alphabet.DnaLetters))) {
-		usual := complement.Dna(byte(c))
-		if usual != 'X' {
+	for _, c := range alphabet.TestExcludesSingleLetters([]byte(alphabet.DnaLetters)) {
+		usual := complement.Dna(string(c))
+		if usual != "X" {
 			t.Errorf(
 				"Want: %q, Got: %q",
-				'X',
+				"X",
 				usual,
 			)
 		}
@@ -29,9 +29,9 @@ func TestDNAReturnsX(t *testing.T) {
 func TestDnaIsReversible(t *testing.T) {
 	t.Run("DNA is reversible", func(t *testing.T) {
 		for _, c := range alphabet.DnaLetters {
-			comp := complement.Dna(byte(c))
-			if complement.Dna(comp) != byte(c) {
-				t.Errorf("Want: %q; Got: %q", byte(c), comp)
+			comp := complement.Dna(string(c))
+			if complement.Dna(comp) != string(c) {
+				t.Errorf("Want: %q; Got: %q", string(c), comp)
 			}
 		}
 	})
@@ -44,7 +44,7 @@ func BenchmarkDNA(b *testing.B) {
 			var d byte
 			for n := 0; n < b.N; n++ {
 				d = alphabet.DnaLetters[rand.Intn(len(alphabet.DnaLetters))]
-				complement.Dna(d)
+				complement.Dna(string(d))
 			}
 		},
 	)

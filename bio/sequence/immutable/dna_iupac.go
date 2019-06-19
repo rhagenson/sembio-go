@@ -1,7 +1,10 @@
 package immutable
 
 import (
+	"strings"
+
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/sequence"
 )
 
@@ -10,6 +13,7 @@ var _ sequence.RevComper = new(DnaIupac)
 var _ sequence.Complementer = new(DnaIupac)
 var _ sequence.Alphabeter = new(DnaIupac)
 var _ sequence.LetterCounter = new(DnaIupac)
+var _ sequence.Validator = new(DnaIupac)
 var _ Wither = new(DnaIupac)
 
 // DnaIupac is a sequence witch validates against the DnaIupac alphabet
@@ -22,7 +26,7 @@ type DnaIupac struct {
 func NewDnaIupac(s string) (*DnaIupac, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.NewDnaIupac()),
+		sequence.AlphabetIs(hashmap.NewDnaIupac()),
 	)
 	return &DnaIupac{n}, n.Validate()
 }
@@ -41,27 +45,32 @@ func (x *DnaIupac) Reverse() (sequence.Interface, error) {
 func (x *DnaIupac) RevComp() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
-	t := []byte(x.seq)
+	t := make([]string, l)
+	var pos1, pos2 string
 	for i := uint(0); i < l/2; i++ {
-		t[i], t[l-1-i] = c.Complement(t[l-1-i]), c.Complement(t[i])
+		pos1, _ = x.Position(i)
+		pos2, _ = x.Position(l - 1 - i)
+		t[i], t[l-1-i] = c.Complement(pos2), c.Complement(pos1)
 	}
-	return NewDnaIupac(string(t))
+	return NewDnaIupac(strings.Join(t, ""))
 }
 
 // Complement is the same DnaIupac with the sequence complemented
 func (x *DnaIupac) Complement() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
-	t := []byte(x.seq)
+	t := make([]string, l)
+	var pos string
 	for i := uint(0); i < l; i++ {
-		t[i] = c.Complement(t[i])
+		pos, _ = x.Position(i)
+		t[i] = c.Complement(pos)
 	}
-	return NewDnaIupac(string(t))
+	return NewDnaIupac(strings.Join(t, ""))
 }
 
 // Alphabet reveals the underlying alphabet in use
 func (x *DnaIupac) Alphabet() alphabet.Interface {
-	return alphabet.NewDnaIupac()
+	return hashmap.NewDnaIupac()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

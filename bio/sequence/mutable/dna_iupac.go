@@ -1,7 +1,10 @@
 package mutable
 
 import (
+	"strings"
+
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/sequence"
 )
 
@@ -22,7 +25,7 @@ type DnaIupac struct {
 func NewDnaIupac(s string) (*DnaIupac, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.NewDnaIupac()),
+		sequence.AlphabetIs(hashmap.NewDnaIupac()),
 	)
 	return &DnaIupac{n}, n.Validate()
 }
@@ -42,11 +45,14 @@ func (x *DnaIupac) Reverse() (sequence.Interface, error) {
 func (x *DnaIupac) RevComp() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
-	t := []byte(x.seq)
+	t := make([]string, l)
+	var pos1, pos2 string
 	for i := uint(0); i < l/2; i++ {
-		t[i], t[l-1-i] = c.Complement(t[l-1-i]), c.Complement(t[i])
+		pos1, _ = x.Position(i)
+		pos2, _ = x.Position(l - 1 - i)
+		t[i], t[l-1-i] = c.Complement(pos2), c.Complement(pos1)
 	}
-	x.seq = string(t)
+	x.seq = strings.Join(t, "")
 	return x, x.Validate()
 }
 
@@ -54,17 +60,17 @@ func (x *DnaIupac) RevComp() (sequence.Interface, error) {
 func (x *DnaIupac) Complement() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
-	t := []byte(x.seq)
+	t := make([]string, l)
 	for i := uint(0); i < l; i++ {
 		t[i] = c.Complement(t[i])
 	}
-	x.seq = string(t)
+	x.seq = strings.Join(t, "")
 	return x, x.Validate()
 }
 
 // Alphabet reveals the underlying alphabet in use
 func (x *DnaIupac) Alphabet() alphabet.Interface {
-	return alphabet.NewDnaIupac()
+	return hashmap.NewDnaIupac()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

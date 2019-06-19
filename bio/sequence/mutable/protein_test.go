@@ -8,6 +8,7 @@ import (
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/sequence/mutable"
 	"github.com/rhagenson/bio-go/bio/test"
@@ -41,7 +42,7 @@ func TestProteinCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				seq, _ := mutable.NewProtein(s)
 				return seq.Length() == n
@@ -55,7 +56,7 @@ func TestProteinCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				seq, _ := mutable.NewProtein(s)
 				got, _ := seq.Range(0, n)
@@ -70,7 +71,7 @@ func TestProteinCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				seq, _ := mutable.NewProtein(s)
 				onefourth := n / 4
@@ -87,7 +88,7 @@ func TestProteinCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				seq, _ := mutable.NewProtein(s)
 				onefourth := n / 4
@@ -114,12 +115,12 @@ func TestProteinMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				original, _ := mutable.NewProtein(s)
 				clone, _ := mutable.NewProtein(s)
@@ -135,12 +136,12 @@ func TestProteinMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				original, _ := mutable.NewProtein(s)
 				clone, _ := mutable.NewProtein(s)
@@ -156,7 +157,7 @@ func TestProteinMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				if s == utils.ReverseByBytes(s) { // Skip palindromes
 					return true
@@ -182,7 +183,7 @@ func TestProteinMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				want, _ := mutable.NewProtein(s)
 				rev, _ := want.Reverse()
@@ -205,7 +206,7 @@ func TestProteinErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.NewProtein().String())))),
+					[]rune(string(alphabet.TestExcludesSingleLetters([]byte(hashmap.NewProtein().String())))),
 				)
 				if _, err := mutable.NewProtein(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
@@ -227,7 +228,7 @@ func TestProteinErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				seq, _ := mutable.NewProtein(s)
 				_, err := seq.Range(n, 0)
@@ -257,7 +258,7 @@ func TestProteinParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				ret := make(chan *mutable.Protein)
 				go func(s string, out chan *mutable.Protein) {
@@ -281,7 +282,7 @@ func TestProteinParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProtein().String()),
+					[]rune(hashmap.NewProtein().String()),
 				)
 				ret := make(chan *mutable.Protein)
 				seq, _ := mutable.NewProtein(s)

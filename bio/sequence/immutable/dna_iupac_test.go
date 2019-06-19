@@ -8,6 +8,7 @@ import (
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/sequence/immutable"
 	"github.com/rhagenson/bio-go/bio/test"
@@ -60,7 +61,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				seq, _ := immutable.NewDnaIupac(s)
 				return seq.Length() == n
@@ -74,7 +75,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				seq, _ := immutable.NewDnaIupac(s)
 				got, _ := seq.Range(0, n)
@@ -89,7 +90,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				seq, _ := immutable.NewDnaIupac(s)
 				onefourth := n / 4
@@ -106,7 +107,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				seq, _ := immutable.NewDnaIupac(s)
 				onefourth := n / 4
@@ -162,12 +163,12 @@ func TestDnaIupacImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				original, _ := immutable.NewDnaIupac(s)
 				clone, _ := immutable.NewDnaIupac(s)
@@ -183,12 +184,12 @@ func TestDnaIupacImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				original, _ := immutable.NewDnaIupac(s)
 				clone, _ := immutable.NewDnaIupac(s)
@@ -204,7 +205,7 @@ func TestDnaIupacImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				original, _ := immutable.NewDnaIupac(s)
 				clone, _ := immutable.NewDnaIupac(s)
@@ -220,7 +221,7 @@ func TestDnaIupacImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				original, _ := immutable.NewDnaIupac(s)
 				clone, _ := immutable.NewDnaIupac(s)
@@ -236,7 +237,7 @@ func TestDnaIupacImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				original, _ := immutable.NewDnaIupac(s)
 				clone, _ := immutable.NewDnaIupac(s)
@@ -259,7 +260,7 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				want, _ := immutable.NewDnaIupac(s)
 				rev, _ := want.Reverse()
@@ -275,7 +276,7 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				want, _ := immutable.NewDnaIupac(s)
 				rev, _ := want.Complement()
@@ -291,7 +292,7 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				want, _ := immutable.NewDnaIupac(s)
 				rev, _ := want.RevComp()
@@ -314,7 +315,7 @@ func TestDnaIupacErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.NewDnaIupac().String())))),
+					[]rune(string(alphabet.TestExcludesSingleLetters([]byte(hashmap.NewDnaIupac().String())))),
 				)
 				if _, err := immutable.NewDnaIupac(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
@@ -336,7 +337,7 @@ func TestDnaIupacErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				seq, _ := immutable.NewDnaIupac(s)
 				_, err := seq.Range(n, 0)
@@ -366,7 +367,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				ret := make(chan *immutable.DnaIupac)
 				go func(s string, out chan *immutable.DnaIupac) {
@@ -390,7 +391,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				ret := make(chan *immutable.DnaIupac)
 				seq, _ := immutable.NewDnaIupac(s)
@@ -415,7 +416,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				ret := make(chan *immutable.DnaIupac)
 				seq, _ := immutable.NewDnaIupac(s)
@@ -440,7 +441,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewDnaIupac().String()),
+					[]rune(hashmap.NewDnaIupac().String()),
 				)
 				ret := make(chan *immutable.DnaIupac)
 				seq, _ := immutable.NewDnaIupac(s)

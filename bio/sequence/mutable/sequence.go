@@ -8,19 +8,19 @@ import (
 
 var _ sequence.Interface = new(Struct)
 var _ Wither = new(Struct)
-var _ Validator = new(Struct)
+var _ sequence.Validator = new(Struct)
 
 // Struct stores a linear sequence and has optional validators
 type Struct struct {
 	seq        string
-	validators []ValFunc
+	validators []sequence.ValFunc
 }
 
 // New generates a new generalized sequence with optional validators
-func New(s string, vs ...ValFunc) *Struct {
+func New(s string, vs ...sequence.ValFunc) *Struct {
 	seq := &Struct{
 		seq:        s,
-		validators: make([]ValFunc, 0),
+		validators: make([]sequence.ValFunc, 0),
 	}
 	seq.validators = append(seq.validators, vs...)
 	return seq

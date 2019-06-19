@@ -1,4 +1,6 @@
-package alphabet
+package hashmap
+
+import "github.com/rhagenson/bio-go/bio/alphabet"
 
 // ProteinGapped is the twenty letter standard encoding plus a gap letter
 type ProteinGapped struct {
@@ -7,6 +9,6 @@ type ProteinGapped struct {
 
 func NewProteinGapped() *ProteinGapped {
 	return &ProteinGapped{
-		New(ProteinLetters + GapLetter),
+		New(alphabet.ProteinLetters + alphabet.GapLetter),
 	}
 }

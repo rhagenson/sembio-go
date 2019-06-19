@@ -6,17 +6,18 @@ import (
 	"testing"
 
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/internal/complement"
 	"github.com/rhagenson/bio-go/bio/test"
-	"github.com/rhagenson/bio-go/bio/alphabet/internal/complement")
+)
 
-// TestIupacReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
+// TestIupacReturnsX checks that when encountering an unknown nucleotide results in "X" placeholder
 func TestIupacReturnsX(t *testing.T) {
-	for _, c := range string(alphabet.TestExcludesLetters([]byte(alphabet.IupacLetters))) {
-		usual := complement.Iupac(byte(c))
-		if usual != 'X' {
+	for _, c := range string(alphabet.TestExcludesSingleLetters([]byte(alphabet.IupacLetters))) {
+		usual := complement.Iupac(string(c))
+		if usual != "X" {
 			t.Errorf(
 				"Want: %q, Got: %q",
-				'X',
+				"X",
 				usual,
 			)
 		}
@@ -28,8 +29,8 @@ func TestIupacReturnsX(t *testing.T) {
 func TestIupacIsReversible(t *testing.T) {
 	t.Run("IUPAC is reversible", func(t *testing.T) {
 		for _, c := range alphabet.IupacLetters {
-			comp := complement.Iupac(byte(c))
-			if complement.Iupac(comp) != byte(c) {
+			comp := complement.Iupac(string(c))
+			if complement.Iupac(comp) != string(c) {
 				t.Errorf("Want: %q; Got: %q", byte(c), comp)
 			}
 		}
@@ -44,20 +45,20 @@ func BenchmarkCompIupac(b *testing.B) {
 			var d byte
 			for n := 0; n < b.N; n++ {
 				d = alphabet.IupacLetters[rand.Intn(len(alphabet.IupacLetters))]
-				complement.Iupac(d)
+				complement.Iupac(string(d))
 			}
 		},
 	)
 }
 
-// TestDnaIupacReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
+// TestDnaIupacReturnsX checks that when encountering an unknown nucleotide results in "X" placeholder
 func TestDnaIupacReturnsX(t *testing.T) {
 	for _, c := range "XQZ" {
-		usual := complement.DnaIupac(byte(c))
-		if usual != 'X' {
+		usual := complement.DnaIupac(string(c))
+		if usual != "X" {
 			t.Errorf(
 				"Want: %q, Got: %q",
-				'X',
+				"X",
 				usual,
 			)
 		}
@@ -69,9 +70,9 @@ func TestDnaIupacReturnsX(t *testing.T) {
 func TestDnaIupacIsReversible(t *testing.T) {
 	t.Run("DNA-IUPAC is reversible", func(t *testing.T) {
 		for _, c := range alphabet.DnaIupacLetters {
-			comp := complement.DnaIupac(byte(c))
-			if complement.DnaIupac(comp) != byte(c) {
-				t.Errorf("Want: %q; Got: %q", byte(c), comp)
+			comp := complement.DnaIupac(string(c))
+			if complement.DnaIupac(comp) != string(c) {
+				t.Errorf("Want: %q; Got: %q", string(c), comp)
 			}
 		}
 	})
@@ -85,20 +86,20 @@ func BenchmarkCompDnaIupac(b *testing.B) {
 			var d byte
 			for n := 0; n < b.N; n++ {
 				d = alphabet.DnaIupacLetters[rand.Intn(len(alphabet.DnaIupacLetters))]
-				complement.DnaIupac(d)
+				complement.DnaIupac(string(d))
 			}
 		},
 	)
 }
 
-// TestRnaIupacReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
+// TestRnaIupacReturnsX checks that when encountering an unknown nucleotide results in "X" placeholder
 func TestRnaIupacReturnsX(t *testing.T) {
 	for _, c := range "XQZ" {
-		usual := complement.RnaIupac(byte(c))
-		if usual != 'X' {
+		usual := complement.RnaIupac(string(c))
+		if usual != "X" {
 			t.Errorf(
 				"Want: %q, Got: %q",
-				'X',
+				"X",
 				usual,
 			)
 		}
@@ -110,9 +111,9 @@ func TestRnaIupacReturnsX(t *testing.T) {
 func TestRnaIupacIsReversible(t *testing.T) {
 	t.Run("RNA-IUPAC is reversible", func(t *testing.T) {
 		for _, c := range alphabet.RnaIupacLetters {
-			comp := complement.RnaIupac(byte(c))
-			if complement.RnaIupac(comp) != byte(c) {
-				t.Errorf("Want: %q; Got: %q", byte(c), comp)
+			comp := complement.RnaIupac(string(c))
+			if complement.RnaIupac(comp) != string(c) {
+				t.Errorf("Want: %q; Got: %q", string(c), comp)
 			}
 		}
 	})
@@ -126,7 +127,7 @@ func BenchmarkCompRnaIupac(b *testing.B) {
 			var d byte
 			for n := 0; n < b.N; n++ {
 				d = alphabet.RnaIupacLetters[rand.Intn(len(alphabet.RnaIupacLetters))]
-				complement.RnaIupac(d)
+				complement.RnaIupac(string(d))
 			}
 		},
 	)

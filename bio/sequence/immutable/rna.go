@@ -1,7 +1,10 @@
 package immutable
 
 import (
+	"strings"
+
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/sequence"
 )
 
@@ -11,23 +14,22 @@ var _ sequence.RevComper = new(Rna)
 var _ sequence.Complementer = new(Rna)
 var _ sequence.Alphabeter = new(Rna)
 var _ sequence.LetterCounter = new(Rna)
+var _ sequence.Validator = new(Rna)
 var _ Wither = new(Rna)
-var _ Validator = new(Rna)
 
 // Rna is a sequence witch validates against the Rna alphabet
 // and knows how to reverse, complement, and revcomp itself
 type Rna struct {
 	*Struct
-	alpha alphabet.Interface
 }
 
 // NewRna generates a New sequence that validates against the Rna alphabet
 func NewRna(s string) (*Rna, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.NewRna()),
+		sequence.AlphabetIs(hashmap.NewRna()),
 	)
-	return &Rna{n, alphabet.NewRna()}, n.Validate()
+	return &Rna{n}, n.Validate()
 }
 
 // Reverse is the same Rna with the sequence reversed
@@ -44,27 +46,32 @@ func (x *Rna) Reverse() (sequence.Interface, error) {
 func (x *Rna) RevComp() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
-	t := []byte(x.seq)
+	t := make([]string, l)
+	var pos1, pos2 string
 	for i := uint(0); i < l/2; i++ {
-		t[i], t[l-1-i] = c.Complement(t[l-1-i]), c.Complement(t[i])
+		pos1, _ = x.Position(i)
+		pos2, _ = x.Position(l - 1 - i)
+		t[i], t[l-1-i] = c.Complement(pos2), c.Complement(pos1)
 	}
-	return NewRna(string(t))
+	return NewRna(strings.Join(t, ""))
 }
 
 // Complement is the same Rna with the sequence complemented
 func (x *Rna) Complement() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
-	t := []byte(x.seq)
+	t := make([]string, l)
+	var pos string
 	for i := uint(0); i < l; i++ {
-		t[i] = c.Complement(byte(x.seq[i]))
+		pos, _ = x.Position(i)
+		t[i] = c.Complement(pos)
 	}
-	return NewRna(string(t))
+	return NewRna(strings.Join(t, ""))
 }
 
 // Alphabet reveals the underlying alphabet in use
 func (x *Rna) Alphabet() alphabet.Interface {
-	return alphabet.NewRna()
+	return hashmap.NewRna()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

@@ -9,7 +9,7 @@ import (
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
-	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/io/fasta"
 	"github.com/rhagenson/bio-go/bio/test"
 )
@@ -24,7 +24,7 @@ func TestDna(t *testing.T) {
 				r := fasta.TestGenFasta(
 					test.Seed,
 					n,
-					alphabet.NewDna(),
+					hashmap.NewDna(),
 				)
 				f, err := fasta.ReadDna(ioutil.NopCloser(bytes.NewReader(r)))
 				switch {
@@ -55,7 +55,7 @@ func TestMultiDna(t *testing.T) {
 					test.Seed,
 					n,
 					10,
-					alphabet.NewDna(),
+					hashmap.NewDna(),
 				)
 				fs, err := fasta.ReadMultiDna(ioutil.NopCloser(bytes.NewReader(r)))
 				for _, f := range fs {

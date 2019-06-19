@@ -12,7 +12,7 @@ import (
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
-	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/io/fasta"
 	"github.com/rhagenson/bio-go/bio/test"
 )
@@ -27,7 +27,7 @@ func TestReadSingle(t *testing.T) {
 				r := fasta.TestGenFasta(
 					test.Seed,
 					n,
-					alphabet.NewRna(),
+					hashmap.NewRna(),
 				)
 				f, err := fasta.ReadSingle(ioutil.NopCloser(bytes.NewReader(r)), func(s string) (sequence.Interface, error) {
 					return immutable.New(s), nil
@@ -55,7 +55,7 @@ func TestReadMulti(t *testing.T) {
 					test.Seed,
 					n,
 					10,
-					alphabet.NewRna(),
+					hashmap.NewRna(),
 				)
 				fs, err := fasta.ReadMulti(ioutil.NopCloser(bytes.NewReader(r)), func(s string) (sequence.Interface, error) {
 					return immutable.New(s), nil

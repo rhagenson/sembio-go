@@ -9,7 +9,7 @@ type Interface interface {
 	fmt.Stringer
 
 	// Contains checks that the given elements are in the Alphabet
-	Contains(...byte) []bool
+	Contains(...string) []bool
 
 	// Length is the number of letters in the Alphabet
 	Length() int
@@ -17,5 +17,5 @@ type Interface interface {
 
 // Complementer is any alphabet that has complementing characters
 type Complementer interface {
-	Complement(byte) byte
+	Complement(string) string
 }

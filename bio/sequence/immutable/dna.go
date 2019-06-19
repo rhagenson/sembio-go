@@ -2,8 +2,10 @@ package immutable
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/data/codon"
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/utils"
@@ -17,8 +19,8 @@ var _ sequence.Transcriber = new(Dna)
 var _ sequence.Translater = new(Dna)
 var _ sequence.Alphabeter = new(Dna)
 var _ sequence.LetterCounter = new(Dna)
+var _ sequence.Validator = new(Dna)
 var _ Wither = new(Dna)
-var _ Validator = new(Dna)
 
 // Dna is a sequence witch validates against the Dna alphabet
 // and knows how to reverse, complement, and revcomp itself
@@ -30,7 +32,7 @@ type Dna struct {
 func NewDna(s string) (*Dna, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.NewDna()),
+		sequence.AlphabetIs(hashmap.NewDna()),
 	)
 	return &Dna{n}, n.Validate()
 }
@@ -48,22 +50,28 @@ func (x *Dna) Reverse() (sequence.Interface, error) {
 // RevComp is the same Dna with the sequence reversed and complemented
 func (x *Dna) RevComp() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
-	t := []byte(x.String())
-	l := len(t)
-	for i := 0; i < l/2; i++ {
-		t[i], t[l-1-i] = c.Complement(t[l-1-i]), c.Complement(t[i])
+	l := x.Length()
+	t := make([]string, l)
+	var pos1, pos2 string
+	for i := uint(0); i < l/2; i++ {
+		pos1, _ = x.Position(i)
+		pos2, _ = x.Position(l - 1 - i)
+		t[i], t[l-1-i] = c.Complement(pos2), c.Complement(pos1)
 	}
-	return NewDna(string(t))
+	return NewDna(strings.Join(t, ""))
 }
 
 // Complement is the same Dna with the sequence complemented
 func (x *Dna) Complement() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
-	t := []byte(x.String())
-	for i := range t {
-		t[i] = c.Complement(t[i])
+	l := x.Length()
+	t := make([]string, l)
+	var pos string
+	for i := uint(0); i < l; i++ {
+		pos, _ = x.Position(i)
+		t[i] = c.Complement(pos)
 	}
-	return NewDna(string(t))
+	return NewDna(strings.Join(t, ""))
 }
 
 // Transcribe returns the DNA->RNA transcription product
@@ -107,7 +115,7 @@ func (x *Dna) Translate(table codon.Interface, stop byte) (sequence.Interface, e
 
 // Alphabet reveals the underlying alphabet in use
 func (x *Dna) Alphabet() alphabet.Interface {
-	return alphabet.NewDna()
+	return hashmap.NewDna()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

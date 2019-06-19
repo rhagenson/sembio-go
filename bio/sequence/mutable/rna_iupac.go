@@ -1,7 +1,10 @@
 package mutable
 
 import (
+	"strings"
+
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/sequence"
 )
 
@@ -10,8 +13,8 @@ var _ sequence.RevComper = new(RnaIupac)
 var _ sequence.Complementer = new(RnaIupac)
 var _ sequence.Alphabeter = new(RnaIupac)
 var _ sequence.LetterCounter = new(RnaIupac)
+var _ sequence.Validator = new(RnaIupac)
 var _ Wither = new(RnaIupac)
-var _ Validator = new(RnaIupac)
 
 // RnaIupac is a sequence witch validates against the RnaIupac alphabet
 // and knows how to reverse, complement, and revcomp itself
@@ -23,7 +26,7 @@ type RnaIupac struct {
 func NewRnaIupac(s string) (*RnaIupac, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.NewRnaIupac()),
+		sequence.AlphabetIs(hashmap.NewRnaIupac()),
 	)
 	return &RnaIupac{n}, n.Validate()
 }
@@ -43,11 +46,14 @@ func (x *RnaIupac) Reverse() (sequence.Interface, error) {
 func (x *RnaIupac) RevComp() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
-	t := []byte(x.seq)
+	t := make([]string, l)
+	var pos1, pos2 string
 	for i := uint(0); i < l/2; i++ {
-		t[i], t[l-1-i] = c.Complement(t[l-1-i]), c.Complement(t[i])
+		pos1, _ = x.Position(i)
+		pos2, _ = x.Position(l - 1 - i)
+		t[i], t[l-1-i] = c.Complement(pos2), c.Complement(pos1)
 	}
-	x.seq = string(t)
+	x.seq = strings.Join(t, "")
 	return x, x.Validate()
 }
 
@@ -55,17 +61,19 @@ func (x *RnaIupac) RevComp() (sequence.Interface, error) {
 func (x *RnaIupac) Complement() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
-	t := []byte(x.seq)
+	t := make([]string, l)
+	var pos string
 	for i := uint(0); i < l; i++ {
-		t[i] = c.Complement(t[i])
+		pos, _ = x.Position(i)
+		t[i] = c.Complement(pos)
 	}
-	x.seq = string(t)
+	x.seq = strings.Join(t, "")
 	return x, x.Validate()
 }
 
 // Alphabet reveals the underlying alphabet in use
 func (x *RnaIupac) Alphabet() alphabet.Interface {
-	return alphabet.NewRnaIupac()
+	return hashmap.NewRnaIupac()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

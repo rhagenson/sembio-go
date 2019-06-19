@@ -2,14 +2,15 @@ package mutable
 
 import (
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/sequence"
 )
 
 var _ sequence.Reverser = new(Protein)
 var _ sequence.Alphabeter = new(Protein)
 var _ sequence.LetterCounter = new(Protein)
+var _ sequence.Validator = new(Protein)
 var _ Wither = new(Protein)
-var _ Validator = new(Protein)
 
 // Protein is a sequence witch validates against the Protein alphabet
 // and knows how to reverse itself
@@ -21,7 +22,7 @@ type Protein struct {
 func NewProtein(s string) (*Protein, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.NewProtein()),
+		sequence.AlphabetIs(hashmap.NewProtein()),
 	)
 	return &Protein{n}, n.Validate()
 }
@@ -39,7 +40,7 @@ func (x *Protein) Reverse() (sequence.Interface, error) {
 
 // Alphabet reveals the underlying alphabet in use
 func (x *Protein) Alphabet() alphabet.Interface {
-	return alphabet.NewProtein()
+	return hashmap.NewProtein()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

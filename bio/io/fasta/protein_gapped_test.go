@@ -9,7 +9,7 @@ import (
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
-	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/io/fasta"
 	"github.com/rhagenson/bio-go/bio/test"
 )
@@ -24,7 +24,7 @@ func TestProteinGapped(t *testing.T) {
 				r := fasta.TestGenFasta(
 					test.Seed,
 					n,
-					alphabet.NewProteinGapped(),
+					hashmap.NewProteinGapped(),
 				)
 				f, err := fasta.ReadProteinGapped(ioutil.NopCloser(bytes.NewReader(r)))
 				if strings.Count(f.Sequence(), "\n") > 1 {
@@ -50,7 +50,7 @@ func TestMultiProteinGapped(t *testing.T) {
 					test.Seed,
 					n,
 					10,
-					alphabet.NewProteinGapped(),
+					hashmap.NewProteinGapped(),
 				)
 				fs, err := fasta.ReadMultiProteinGapped(ioutil.NopCloser(bytes.NewReader(r)))
 				for _, f := range fs {

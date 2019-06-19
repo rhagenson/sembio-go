@@ -1,15 +1,17 @@
-package alphabet
+package hashmap
+
+import "strings"
 
 // Struct is a collection of letters
 type Struct struct {
-	chars map[byte]struct{}
+	chars map[string]struct{}
 }
 
 // New is an Struct generator
 func New(letters string) *Struct {
-	set := make(map[byte]struct{}, len(letters))
-	for _, b := range []byte(letters) {
-		set[b] = struct{}{}
+	set := make(map[string]struct{}, len(letters))
+	for _, b := range letters {
+		set[string(b)] = struct{}{}
 	}
 	return &Struct{
 		chars: set,
@@ -22,7 +24,7 @@ func (a Struct) Length() int {
 }
 
 // Contains confirms whether a potential letters are in the Alphabet
-func (a Struct) Contains(letters ...byte) []bool {
+func (a Struct) Contains(letters ...string) []bool {
 	found := make([]bool, len(letters))
 	for i, l := range letters {
 		if _, ok := a.chars[l]; ok {
@@ -34,9 +36,9 @@ func (a Struct) Contains(letters ...byte) []bool {
 
 // String generates a stringified copy of the Alphabet
 func (a Struct) String() string {
-	letters := make([]byte, 0, len(a.chars))
+	letters := make([]string, 0, len(a.chars))
 	for k := range a.chars {
 		letters = append(letters, k)
 	}
-	return string(letters)
+	return strings.Join(letters, "")
 }

@@ -1,4 +1,4 @@
-package alphabet_test
+package hashmap_test
 
 import (
 	"bytes"
@@ -7,11 +7,13 @@ import (
 	"testing"
 
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
+	"github.com/rhagenson/bio-go/bio/utils"
 )
 
 func TestTesting(t *testing.T) {
 	t.Run("IsExpectedLength", func(t *testing.T) {
-		a := alphabet.New("N")
+		a := hashmap.New("N")
 		t.Run("Success", alphabet.TestIsExpectedLength(a, 1))
 		t.Run("Failure", func(t *testing.T) {
 			var t2 = new(testing.T)
@@ -22,11 +24,11 @@ func TestTesting(t *testing.T) {
 		})
 	})
 	t.Run("HasExpectedLetter", func(t *testing.T) {
-		a := alphabet.New("N")
-		t.Run("Success", alphabet.TestHasExpectedLetter(a, 'N'))
+		a := hashmap.New("N")
+		t.Run("Success", alphabet.TestHasExpectedLetter(a, "N"))
 		t.Run("Failure", func(t *testing.T) {
 			var t2 = new(testing.T)
-			alphabet.TestHasExpectedLetter(a, 'X')(t2)
+			alphabet.TestHasExpectedLetter(a, "X")(t2)
 			if !t2.Failed() {
 				t.Errorf("Failure case incorrectly passed.")
 			}
@@ -37,7 +39,7 @@ func TestTesting(t *testing.T) {
 		// minimum position (A) to maximum position (z)
 		letter := byte(rand.Intn('z'-'A') + 'A')
 		t.Run("Success", func(t *testing.T) {
-			if bytes.IndexByte(alphabet.TestExcludesLetters([]byte{letter}), letter) != -1 {
+			if bytes.IndexByte(alphabet.TestExcludesSingleLetters([]byte{letter}), letter) != -1 {
 				t.Errorf(fmt.Sprintf("%q was found when it should not have been", letter))
 			}
 		})
@@ -46,7 +48,7 @@ func TestTesting(t *testing.T) {
 			if nextLetter += 1; nextLetter > 'z' {
 				nextLetter = 'A' // Wrap to ASCII start
 			}
-			if bytes.IndexByte(alphabet.TestExcludesLetters([]byte{letter}), nextLetter) == -1 {
+			if bytes.IndexByte(alphabet.TestExcludesSingleLetters([]byte{letter}), nextLetter) == -1 {
 				t.Errorf("Failure case incorrectly passed.")
 			}
 		})
@@ -54,12 +56,12 @@ func TestTesting(t *testing.T) {
 }
 
 func TestDna(t *testing.T) {
-	var a alphabet.Interface = alphabet.NewDna()
+	var a alphabet.Interface = hashmap.NewDna()
 	letters := []byte("ATGC")
-	notLetters := alphabet.TestExcludesLetters(letters)
+	notLetters := alphabet.TestExcludesSingleLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 4))
 	t.Run("Expected letters", func(t *testing.T) {
-		for i, v := range a.Contains(letters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -68,7 +70,7 @@ func TestDna(t *testing.T) {
 		}
 	})
 	t.Run("Incorrect letters", func(t *testing.T) {
-		for i, v := range a.Contains(notLetters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(notLetters)...) {
 			t.Run(fmt.Sprintf("Excludes %q", notLetters[i]), func(t *testing.T) {
 				if v {
 					t.Errorf("Should not contain %q", notLetters[i])
@@ -79,13 +81,13 @@ func TestDna(t *testing.T) {
 }
 
 func TestDnaIupac(t *testing.T) {
-	var a alphabet.Interface = alphabet.NewDnaIupac()
+	var a alphabet.Interface = hashmap.NewDnaIupac()
 	letters := []byte("ATGC" + "RYSWKM" + "BDHVN")
-	notLetters := alphabet.TestExcludesLetters(letters)
+	notLetters := alphabet.TestExcludesSingleLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 16))
-	t.Run("Has gap", alphabet.TestHasExpectedLetter(a, '-'))
+	t.Run("Has gap", alphabet.TestHasExpectedLetter(a, "-"))
 	t.Run("Expected letters", func(t *testing.T) {
-		for i, v := range a.Contains(letters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -94,7 +96,7 @@ func TestDnaIupac(t *testing.T) {
 		}
 	})
 	t.Run("Incorrect letters", func(t *testing.T) {
-		for i, v := range a.Contains(notLetters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(notLetters)...) {
 			t.Run(fmt.Sprintf("Excludes %q", notLetters[i]), func(t *testing.T) {
 				if v {
 					t.Errorf("Should not contain %q", notLetters[i])
@@ -105,12 +107,12 @@ func TestDnaIupac(t *testing.T) {
 }
 
 func TestRna(t *testing.T) {
-	var a alphabet.Interface = alphabet.NewRna()
+	var a alphabet.Interface = hashmap.NewRna()
 	letters := []byte("AUGC")
-	notLetters := alphabet.TestExcludesLetters(letters)
+	notLetters := alphabet.TestExcludesSingleLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 4))
 	t.Run("Expected letters", func(t *testing.T) {
-		for i, v := range a.Contains(letters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -119,7 +121,7 @@ func TestRna(t *testing.T) {
 		}
 	})
 	t.Run("Incorrect letters", func(t *testing.T) {
-		for i, v := range a.Contains(notLetters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(notLetters)...) {
 			t.Run(fmt.Sprintf("Excludes %q", notLetters[i]), func(t *testing.T) {
 				if v {
 					t.Errorf("Should not contain %q", notLetters[i])
@@ -130,13 +132,13 @@ func TestRna(t *testing.T) {
 }
 
 func TestRnaIupac(t *testing.T) {
-	var a alphabet.Interface = alphabet.NewRnaIupac()
+	var a alphabet.Interface = hashmap.NewRnaIupac()
 	letters := []byte("AUGC" + "RYSWKM" + "BDHVN")
-	notLetters := alphabet.TestExcludesLetters(letters)
+	notLetters := alphabet.TestExcludesSingleLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 16))
-	t.Run("Has gap", alphabet.TestHasExpectedLetter(a, '-'))
+	t.Run("Has gap", alphabet.TestHasExpectedLetter(a, "-"))
 	t.Run("Expected letters", func(t *testing.T) {
-		for i, v := range a.Contains(letters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -145,7 +147,7 @@ func TestRnaIupac(t *testing.T) {
 		}
 	})
 	t.Run("Incorrect letters", func(t *testing.T) {
-		for i, v := range a.Contains(notLetters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(notLetters)...) {
 			t.Run(fmt.Sprintf("Excludes %q", notLetters[i]), func(t *testing.T) {
 				if v {
 					t.Errorf("Should not contain %q", notLetters[i])
@@ -156,12 +158,12 @@ func TestRnaIupac(t *testing.T) {
 }
 
 func TestProtein(t *testing.T) {
-	var a alphabet.Interface = alphabet.NewProtein()
+	var a alphabet.Interface = hashmap.NewProtein()
 	letters := []byte("ACDEFGHIKLMNPQRSTVWY")
-	notLetters := alphabet.TestExcludesLetters(letters)
+	notLetters := alphabet.TestExcludesSingleLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 20))
 	t.Run("Expected letters", func(t *testing.T) {
-		for i, v := range a.Contains(letters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -170,7 +172,7 @@ func TestProtein(t *testing.T) {
 		}
 	})
 	t.Run("Incorrect letters", func(t *testing.T) {
-		for i, v := range a.Contains(notLetters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(notLetters)...) {
 			t.Run(fmt.Sprintf("Excludes %q", notLetters[i]), func(t *testing.T) {
 				if v {
 					t.Errorf("Should not contain %q", notLetters[i])
@@ -181,13 +183,13 @@ func TestProtein(t *testing.T) {
 }
 
 func TestProteinGapped(t *testing.T) {
-	var a alphabet.Interface = alphabet.NewProteinGapped()
+	var a alphabet.Interface = hashmap.NewProteinGapped()
 	letters := []byte("ACDEFGHIKLMNPQRSTVWY")
-	notLetters := alphabet.TestExcludesLetters(letters)
+	notLetters := alphabet.TestExcludesSingleLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 21))
-	t.Run("Has gap", alphabet.TestHasExpectedLetter(a, '-'))
+	t.Run("Has gap", alphabet.TestHasExpectedLetter(a, "-"))
 	t.Run("Expected letters", func(t *testing.T) {
-		for i, v := range a.Contains(letters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(letters)...) {
 			t.Run(fmt.Sprintf("Contains %q", letters[i]), func(t *testing.T) {
 				if !v {
 					t.Errorf("Does not contain %q", letters[i])
@@ -196,7 +198,7 @@ func TestProteinGapped(t *testing.T) {
 		}
 	})
 	t.Run("Incorrect letters", func(t *testing.T) {
-		for i, v := range a.Contains(notLetters...) {
+		for i, v := range a.Contains(utils.BytesToStrings(notLetters)...) {
 			t.Run(fmt.Sprintf("Excludes %q", notLetters[i]), func(t *testing.T) {
 				if v {
 					t.Errorf("Should not contain %q", notLetters[i])

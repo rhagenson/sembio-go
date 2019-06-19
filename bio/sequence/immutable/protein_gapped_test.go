@@ -8,6 +8,7 @@ import (
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/sequence"
 	"github.com/rhagenson/bio-go/bio/sequence/immutable"
 	"github.com/rhagenson/bio-go/bio/test"
@@ -40,7 +41,7 @@ func TestProteinGappedCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				seq, _ := immutable.NewProteinGapped(s)
 				return seq.Length() == n
@@ -54,7 +55,7 @@ func TestProteinGappedCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				seq, _ := immutable.NewProteinGapped(s)
 				got, _ := seq.Range(0, n)
@@ -69,7 +70,7 @@ func TestProteinGappedCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				seq, _ := immutable.NewProteinGapped(s)
 				onefourth := n / 4
@@ -86,7 +87,7 @@ func TestProteinGappedCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				seq, _ := immutable.NewProteinGapped(s)
 				onefourth := n / 4
@@ -113,12 +114,12 @@ func TestProteinGappedImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				original, _ := immutable.NewProteinGapped(s)
 				clone, _ := immutable.NewProteinGapped(s)
@@ -134,12 +135,12 @@ func TestProteinGappedImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				original, _ := immutable.NewProteinGapped(s)
 				clone, _ := immutable.NewProteinGapped(s)
@@ -155,7 +156,7 @@ func TestProteinGappedImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				original, _ := immutable.NewProteinGapped(s)
 				clone, _ := immutable.NewProteinGapped(s)
@@ -178,7 +179,7 @@ func TestProteinGappedMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				want, _ := immutable.NewProteinGapped(s)
 				rev, _ := want.Reverse()
@@ -201,7 +202,7 @@ func TestProteinGappedErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.NewProteinGapped().String())))),
+					[]rune(string(alphabet.TestExcludesSingleLetters([]byte(hashmap.NewProteinGapped().String())))),
 				)
 				if _, err := immutable.NewProteinGapped(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
@@ -223,7 +224,7 @@ func TestProteinGappedErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				seq, _ := immutable.NewProteinGapped(s)
 				_, err := seq.Range(n, 0)
@@ -253,7 +254,7 @@ func TestProteinGappedParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				ret := make(chan *immutable.ProteinGapped)
 				go func(s string, out chan *immutable.ProteinGapped) {
@@ -277,7 +278,7 @@ func TestProteinGappedParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.NewProteinGapped().String()),
+					[]rune(hashmap.NewProteinGapped().String()),
 				)
 				ret := make(chan *immutable.ProteinGapped)
 				seq, _ := immutable.NewProteinGapped(s)

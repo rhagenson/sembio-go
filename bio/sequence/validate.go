@@ -1,4 +1,4 @@
-package immutable
+package sequence
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // ValFunc is a function that validates a sequence
-type ValFunc func(*Struct) error
+type ValFunc func(Interface) error
 
 // Validator provides a variadic method to validate the sequence
 type Validator interface {
@@ -17,9 +17,9 @@ type Validator interface {
 // AlphabetIs specifies whether a sequence conforms to a given Alphabet
 func AlphabetIs(a alphabet.Interface) ValFunc {
 	return ValFunc(
-		func(x *Struct) error {
+		func(x Interface) error {
 			for i := uint(0); i < x.Length(); i++ {
-				letter := x.seq[i]
+				letter, _ := x.Position(i)
 				for _, found := range a.Contains(letter) {
 					if !found {
 						return fmt.Errorf("%q not in alphabet", letter)

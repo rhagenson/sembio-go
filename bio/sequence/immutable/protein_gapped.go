@@ -2,14 +2,15 @@ package immutable
 
 import (
 	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
 	"github.com/rhagenson/bio-go/bio/sequence"
 )
 
 var _ sequence.Reverser = new(ProteinGapped)
 var _ sequence.Alphabeter = new(ProteinGapped)
 var _ sequence.LetterCounter = new(ProteinGapped)
+var _ sequence.Validator = new(ProteinGapped)
 var _ Wither = new(ProteinGapped)
-var _ Validator = new(ProteinGapped)
 
 // ProteinGapped is a sequence witch validates against the ProteinGapped alphabet
 // and knows how to reverse itself
@@ -21,7 +22,7 @@ type ProteinGapped struct {
 func NewProteinGapped(s string) (*ProteinGapped, error) {
 	n := New(
 		s,
-		AlphabetIs(alphabet.NewProteinGapped()),
+		sequence.AlphabetIs(hashmap.NewProteinGapped()),
 	)
 	return &ProteinGapped{n}, n.Validate()
 }
@@ -38,7 +39,7 @@ func (x *ProteinGapped) Reverse() (sequence.Interface, error) {
 
 // Alphabet reveals the underlying alphabet in use
 func (x *ProteinGapped) Alphabet() alphabet.Interface {
-	return alphabet.NewProteinGapped()
+	return hashmap.NewProteinGapped()
 }
 
 // LetterCount reveals the number of occurrences for each letter in a sequence

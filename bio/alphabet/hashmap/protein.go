@@ -1,4 +1,6 @@
-package alphabet
+package hashmap
+
+import "github.com/rhagenson/bio-go/bio/alphabet"
 
 // Protein is the twenty letter standard encoding
 type Protein struct {
@@ -7,6 +9,6 @@ type Protein struct {
 
 func NewProtein() *Protein {
 	return &Protein{
-		New(ProteinLetters),
+		New(alphabet.ProteinLetters),
 	}
 }
