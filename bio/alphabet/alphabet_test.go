@@ -54,7 +54,7 @@ func TestTesting(t *testing.T) {
 }
 
 func TestDna(t *testing.T) {
-	var a alphabet.Interface = alphabet.Dna
+	var a alphabet.Interface = alphabet.NewDna()
 	letters := []byte("ATGC")
 	notLetters := alphabet.TestExcludesLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 4))
@@ -79,7 +79,7 @@ func TestDna(t *testing.T) {
 }
 
 func TestDnaIupac(t *testing.T) {
-	var a alphabet.Interface = alphabet.DnaIupac
+	var a alphabet.Interface = alphabet.NewDnaIupac()
 	letters := []byte("ATGC" + "RYSWKM" + "BDHVN")
 	notLetters := alphabet.TestExcludesLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 16))
@@ -105,7 +105,7 @@ func TestDnaIupac(t *testing.T) {
 }
 
 func TestRna(t *testing.T) {
-	var a alphabet.Interface = alphabet.Rna
+	var a alphabet.Interface = alphabet.NewRna()
 	letters := []byte("AUGC")
 	notLetters := alphabet.TestExcludesLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 4))
@@ -130,7 +130,7 @@ func TestRna(t *testing.T) {
 }
 
 func TestRnaIupac(t *testing.T) {
-	var a alphabet.Interface = alphabet.RnaIupac
+	var a alphabet.Interface = alphabet.NewRnaIupac()
 	letters := []byte("AUGC" + "RYSWKM" + "BDHVN")
 	notLetters := alphabet.TestExcludesLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 16))
@@ -156,7 +156,7 @@ func TestRnaIupac(t *testing.T) {
 }
 
 func TestProtein(t *testing.T) {
-	var a alphabet.Interface = alphabet.Protein
+	var a alphabet.Interface = alphabet.NewProtein()
 	letters := []byte("ACDEFGHIKLMNPQRSTVWY")
 	notLetters := alphabet.TestExcludesLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 20))
@@ -181,7 +181,7 @@ func TestProtein(t *testing.T) {
 }
 
 func TestProteinGapped(t *testing.T) {
-	var a alphabet.Interface = alphabet.ProteinGapped
+	var a alphabet.Interface = alphabet.NewProteinGapped()
 	letters := []byte("ACDEFGHIKLMNPQRSTVWY")
 	notLetters := alphabet.TestExcludesLetters(letters)
 	t.Run("Correct length", alphabet.TestIsExpectedLength(a, 21))

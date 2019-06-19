@@ -74,7 +74,7 @@ func TestDnaCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				seq, _ := mutable.NewDna(s)
 				return seq.Length() == n
@@ -88,7 +88,7 @@ func TestDnaCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				seq, _ := mutable.NewDna(s)
 				got, _ := seq.Range(0, n)
@@ -103,7 +103,7 @@ func TestDnaCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				seq, _ := mutable.NewDna(s)
 				onefourth := n / 4
@@ -120,7 +120,7 @@ func TestDnaCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				seq, _ := mutable.NewDna(s)
 				onefourth := n / 4
@@ -140,7 +140,7 @@ func TestDnaCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				seq, _ := mutable.NewDna(s)
 				trans, _ := seq.Transcribe()
@@ -156,7 +156,7 @@ func TestDnaCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				seq, _ := mutable.NewDna(s)
 				trans, _ := seq.Translate(codon.Standard{}, '*')
@@ -179,12 +179,12 @@ func TestDnaMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				original, _ := mutable.NewDna(s)
 				clone, _ := mutable.NewDna(s)
@@ -200,12 +200,12 @@ func TestDnaMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				original, _ := mutable.NewDna(s)
 				clone, _ := mutable.NewDna(s)
@@ -221,7 +221,7 @@ func TestDnaMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				if s == utils.ReverseByBytes(s) { // Skip palindromes
 					return true
@@ -240,7 +240,7 @@ func TestDnaMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				original, _ := mutable.NewDna(s)
 				clone, _ := mutable.NewDna(s)
@@ -256,7 +256,7 @@ func TestDnaMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				original, _ := mutable.NewDna(s)
 				clone, _ := mutable.NewDna(s)
@@ -279,7 +279,7 @@ func TestDnaMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				want, _ := mutable.NewDna(s)
 				rev, _ := want.Reverse()
@@ -295,7 +295,7 @@ func TestDnaMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				want, _ := mutable.NewDna(s)
 				rev, _ := want.Complement()
@@ -311,7 +311,7 @@ func TestDnaMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				want, _ := mutable.NewDna(s)
 				rev, _ := want.RevComp()
@@ -334,7 +334,7 @@ func TestDnaErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.Dna.String())))),
+					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.NewDna().String())))),
 				)
 				if _, err := mutable.NewDna(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
@@ -356,7 +356,7 @@ func TestDnaErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				seq, _ := mutable.NewDna(s)
 				_, err := seq.Range(n, 0)
@@ -386,7 +386,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				ret := make(chan *mutable.Dna)
 				go func(s string, out chan *mutable.Dna) {
@@ -410,7 +410,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				ret := make(chan *mutable.Dna)
 				seq, _ := mutable.NewDna(s)
@@ -435,7 +435,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				ret := make(chan *mutable.Dna)
 				seq, _ := mutable.NewDna(s)
@@ -460,7 +460,7 @@ func TestDnaParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDna().String()),
 				)
 				ret := make(chan *mutable.Dna)
 				seq, _ := mutable.NewDna(s)

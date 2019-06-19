@@ -61,7 +61,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				seq, _ := mutable.NewDnaIupac(s)
 				return seq.Length() == n
@@ -75,7 +75,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				seq, _ := mutable.NewDnaIupac(s)
 				got, _ := seq.Range(0, n)
@@ -90,7 +90,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				seq, _ := mutable.NewDnaIupac(s)
 				onefourth := n / 4
@@ -107,7 +107,7 @@ func TestDnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				seq, _ := mutable.NewDnaIupac(s)
 				onefourth := n / 4
@@ -163,12 +163,12 @@ func TestDnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				original, _ := mutable.NewDnaIupac(s)
 				clone, _ := mutable.NewDnaIupac(s)
@@ -184,12 +184,12 @@ func TestDnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Dna.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				original, _ := mutable.NewDnaIupac(s)
 				clone, _ := mutable.NewDnaIupac(s)
@@ -205,7 +205,7 @@ func TestDnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				if s == utils.ReverseByBytes(s) { // Skip palindromes
 					return true
@@ -224,7 +224,7 @@ func TestDnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				original, _ := mutable.NewDnaIupac(s)
 				clone, _ := mutable.NewDnaIupac(s)
@@ -240,7 +240,7 @@ func TestDnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				original, _ := mutable.NewDnaIupac(s)
 				clone, _ := mutable.NewDnaIupac(s)
@@ -263,7 +263,7 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				want, _ := mutable.NewDnaIupac(s)
 				rev, _ := want.Reverse()
@@ -279,7 +279,7 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				want, _ := mutable.NewDnaIupac(s)
 				rev, _ := want.Complement()
@@ -295,7 +295,7 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				want, _ := mutable.NewDnaIupac(s)
 				rev, _ := want.RevComp()
@@ -318,7 +318,7 @@ func TestDnaIupacErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.DnaIupac.String())))),
+					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.NewDnaIupac().String())))),
 				)
 				if _, err := mutable.NewDnaIupac(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
@@ -340,7 +340,7 @@ func TestDnaIupacErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				seq, _ := mutable.NewDnaIupac(s)
 				_, err := seq.Range(n, 0)
@@ -370,7 +370,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				ret := make(chan *mutable.DnaIupac)
 				go func(s string, out chan *mutable.DnaIupac) {
@@ -394,7 +394,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				ret := make(chan *mutable.DnaIupac)
 				seq, _ := mutable.NewDnaIupac(s)
@@ -419,7 +419,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				ret := make(chan *mutable.DnaIupac)
 				seq, _ := mutable.NewDnaIupac(s)
@@ -444,7 +444,7 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.DnaIupac.String()),
+					[]rune(alphabet.NewDnaIupac().String()),
 				)
 				ret := make(chan *mutable.DnaIupac)
 				seq, _ := mutable.NewDnaIupac(s)

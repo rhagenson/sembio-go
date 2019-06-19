@@ -6,12 +6,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rhagenson/bio-go/bio/alphabet"
-	"github.com/rhagenson/bio-go/bio/io/fasta"
-	"github.com/rhagenson/bio-go/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
+	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/rhagenson/bio-go/bio/io/fasta"
+	"github.com/rhagenson/bio-go/bio/test"
 )
 
 func TestProtein(t *testing.T) {
@@ -24,7 +24,7 @@ func TestProtein(t *testing.T) {
 				r := fasta.TestGenFasta(
 					test.Seed,
 					n,
-					alphabet.Protein,
+					alphabet.NewProtein(),
 				)
 				f, err := fasta.ReadProtein(ioutil.NopCloser(bytes.NewReader(r)))
 				if strings.Count(f.Sequence(), "\n") > 1 {
@@ -50,7 +50,7 @@ func TestMultiProtein(t *testing.T) {
 					test.Seed,
 					n,
 					10,
-					alphabet.Protein,
+					alphabet.NewProtein(),
 				)
 				fs, err := fasta.ReadMultiProtein(ioutil.NopCloser(bytes.NewReader(r)))
 				for _, f := range fs {

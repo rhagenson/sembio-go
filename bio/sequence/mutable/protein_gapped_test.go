@@ -41,7 +41,7 @@ func TestProteinGappedCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				seq, _ := mutable.NewProteinGapped(s)
 				return seq.Length() == n
@@ -55,7 +55,7 @@ func TestProteinGappedCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				seq, _ := mutable.NewProteinGapped(s)
 				got, _ := seq.Range(0, n)
@@ -70,7 +70,7 @@ func TestProteinGappedCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				seq, _ := mutable.NewProteinGapped(s)
 				onefourth := n / 4
@@ -87,7 +87,7 @@ func TestProteinGappedCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				seq, _ := mutable.NewProteinGapped(s)
 				onefourth := n / 4
@@ -114,12 +114,12 @@ func TestProteinGappedMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				original, _ := mutable.NewProteinGapped(s)
 				clone, _ := mutable.NewProteinGapped(s)
@@ -135,12 +135,12 @@ func TestProteinGappedMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				original, _ := mutable.NewProteinGapped(s)
 				clone, _ := mutable.NewProteinGapped(s)
@@ -156,7 +156,7 @@ func TestProteinGappedMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				if s == utils.ReverseByBytes(s) { // Skip palindromes
 					return true
@@ -182,7 +182,7 @@ func TestProteinGappedMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				want, _ := mutable.NewProteinGapped(s)
 				rev, _ := want.Reverse()
@@ -205,7 +205,7 @@ func TestProteinGappedErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.ProteinGapped.String())))),
+					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.NewProteinGapped().String())))),
 				)
 				if _, err := mutable.NewProteinGapped(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
@@ -227,7 +227,7 @@ func TestProteinGappedErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				seq, _ := mutable.NewProteinGapped(s)
 				_, err := seq.Range(n, 0)
@@ -257,7 +257,7 @@ func TestProteinGappedParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				ret := make(chan *mutable.ProteinGapped)
 				go func(s string, out chan *mutable.ProteinGapped) {
@@ -281,7 +281,7 @@ func TestProteinGappedParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.ProteinGapped.String()),
+					[]rune(alphabet.NewProteinGapped().String()),
 				)
 				ret := make(chan *mutable.ProteinGapped)
 				seq, _ := mutable.NewProteinGapped(s)

@@ -50,7 +50,7 @@ func TestRnaCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				seq, _ := immutable.NewRna(s)
 				return seq.Length() == n
@@ -64,7 +64,7 @@ func TestRnaCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				seq, _ := immutable.NewRna(s)
 				got, _ := seq.Range(0, n)
@@ -79,7 +79,7 @@ func TestRnaCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				seq, _ := immutable.NewRna(s)
 				onefourth := n / 4
@@ -96,7 +96,7 @@ func TestRnaCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				seq, _ := immutable.NewRna(s)
 				onefourth := n / 4
@@ -123,12 +123,12 @@ func TestRnaImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				original, _ := immutable.NewRna(s)
 				clone, _ := immutable.NewRna(s)
@@ -144,12 +144,12 @@ func TestRnaImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				original, _ := immutable.NewRna(s)
 				clone := new(immutable.Rna)
@@ -166,7 +166,7 @@ func TestRnaImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				original, _ := immutable.NewRna(s)
 				clone := new(immutable.Rna)
@@ -183,7 +183,7 @@ func TestRnaImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				original, _ := immutable.NewRna(s)
 				clone := new(immutable.Rna)
@@ -200,7 +200,7 @@ func TestRnaImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				original, _ := immutable.NewRna(s)
 				clone := new(immutable.Rna)
@@ -224,7 +224,7 @@ func TestRnaMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				want, _ := immutable.NewRna(s)
 				rev, _ := want.Reverse()
@@ -240,7 +240,7 @@ func TestRnaMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				want, _ := immutable.NewRna(s)
 				rev, _ := want.Complement()
@@ -256,7 +256,7 @@ func TestRnaMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				want, _ := immutable.NewRna(s)
 				rev, _ := want.RevComp()
@@ -279,7 +279,7 @@ func TestRnaErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.Rna.String())))),
+					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.NewRna().String())))),
 				)
 				if _, err := immutable.NewRna(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
@@ -301,7 +301,7 @@ func TestRnaErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				seq, _ := immutable.NewRna(s)
 				_, err := seq.Range(n, 0)
@@ -331,7 +331,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				ret := make(chan *immutable.Rna)
 				go func(s string, out chan *immutable.Rna) {
@@ -355,7 +355,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				ret := make(chan *immutable.Rna)
 				seq, _ := immutable.NewRna(s)
@@ -380,7 +380,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				ret := make(chan *immutable.Rna)
 				seq, _ := immutable.NewRna(s)
@@ -405,7 +405,7 @@ func TestRnaParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Rna.String()),
+					[]rune(alphabet.NewRna().String()),
 				)
 				ret := make(chan *immutable.Rna)
 				seq, _ := immutable.NewRna(s)

@@ -51,7 +51,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				seq, _ := mutable.NewRnaIupac(s)
 				return seq.Length() == n
@@ -65,7 +65,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				seq, _ := mutable.NewRnaIupac(s)
 				got, _ := seq.Range(0, n)
@@ -80,7 +80,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				seq, _ := mutable.NewRnaIupac(s)
 				onefourth := n / 4
@@ -97,7 +97,7 @@ func TestRnaIupacCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				seq, _ := mutable.NewRnaIupac(s)
 				onefourth := n / 4
@@ -124,12 +124,12 @@ func TestRnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				original, _ := mutable.NewRnaIupac(s)
 				clone, _ := mutable.NewRnaIupac(s)
@@ -145,12 +145,12 @@ func TestRnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				original, _ := mutable.NewRnaIupac(s)
 				clone, _ := mutable.NewRnaIupac(s)
@@ -166,7 +166,7 @@ func TestRnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				if s == utils.ReverseByBytes(s) { // Skip palindromes
 					return true
@@ -185,7 +185,7 @@ func TestRnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				original, _ := mutable.NewRnaIupac(s)
 				clone, _ := mutable.NewRnaIupac(s)
@@ -201,7 +201,7 @@ func TestRnaIupacMutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				original, _ := mutable.NewRnaIupac(s)
 				clone, _ := mutable.NewRnaIupac(s)
@@ -224,7 +224,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				want, _ := mutable.NewRnaIupac(s)
 				rev, _ := want.Reverse()
@@ -240,7 +240,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				want, _ := mutable.NewRnaIupac(s)
 				rev, _ := want.Complement()
@@ -256,7 +256,7 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				want, _ := mutable.NewRnaIupac(s)
 				rev, _ := want.RevComp()
@@ -279,7 +279,7 @@ func TestRnaIupacErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.RnaIupac.String())))),
+					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.NewRnaIupac().String())))),
 				)
 				if _, err := mutable.NewRnaIupac(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
@@ -301,7 +301,7 @@ func TestRnaIupacErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				seq, _ := mutable.NewRnaIupac(s)
 				_, err := seq.Range(n, 0)
@@ -331,7 +331,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				ret := make(chan *mutable.RnaIupac)
 				go func(s string, out chan *mutable.RnaIupac) {
@@ -355,7 +355,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				ret := make(chan *mutable.RnaIupac)
 				seq, _ := mutable.NewRnaIupac(s)
@@ -380,7 +380,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				ret := make(chan *mutable.RnaIupac)
 				seq, _ := mutable.NewRnaIupac(s)
@@ -405,7 +405,7 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.RnaIupac.String()),
+					[]rune(alphabet.NewRnaIupac().String()),
 				)
 				ret := make(chan *mutable.RnaIupac)
 				seq, _ := mutable.NewRnaIupac(s)

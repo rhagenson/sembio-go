@@ -7,8 +7,7 @@ import (
 
 	"github.com/rhagenson/bio-go/bio/alphabet"
 	"github.com/rhagenson/bio-go/bio/test"
-	"github.com/rhagenson/bio-go/bio/utils/complement"
-)
+	"github.com/rhagenson/bio-go/bio/alphabet/internal/complement")
 
 // TestIupacReturnsX checks that when encountering an unknown nucleotide results in 'X' placeholder
 func TestIupacReturnsX(t *testing.T) {

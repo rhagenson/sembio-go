@@ -40,7 +40,7 @@ func TestProteinCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				seq, _ := immutable.NewProtein(s)
 				return seq.Length() == n
@@ -54,7 +54,7 @@ func TestProteinCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				seq, _ := immutable.NewProtein(s)
 				got, _ := seq.Range(0, n)
@@ -69,7 +69,7 @@ func TestProteinCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				seq, _ := immutable.NewProtein(s)
 				onefourth := n / 4
@@ -86,7 +86,7 @@ func TestProteinCreation(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				seq, _ := immutable.NewProtein(s)
 				onefourth := n / 4
@@ -113,12 +113,12 @@ func TestProteinImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				original, _ := immutable.NewProtein(s)
 				clone, _ := immutable.NewProtein(s)
@@ -134,12 +134,12 @@ func TestProteinImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				t := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				original, _ := immutable.NewProtein(s)
 				clone, _ := immutable.NewProtein(s)
@@ -155,7 +155,7 @@ func TestProteinImmutability(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				original, _ := immutable.NewProtein(s)
 				clone, _ := immutable.NewProtein(s)
@@ -178,7 +178,7 @@ func TestProteinMethodComplements(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				want, _ := immutable.NewProtein(s)
 				rev, _ := want.Reverse()
@@ -201,7 +201,7 @@ func TestProteinErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.Protein.String())))),
+					[]rune(string(alphabet.TestExcludesLetters([]byte(alphabet.NewProtein().String())))),
 				)
 				if _, err := immutable.NewProtein(s); err != nil {
 					if !strings.Contains(err.Error(), "not in alphabet") {
@@ -223,7 +223,7 @@ func TestProteinErrors(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				seq, _ := immutable.NewProtein(s)
 				_, err := seq.Range(n, 0)
@@ -253,7 +253,7 @@ func TestProteinParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				ret := make(chan *immutable.Protein)
 				go func(s string, out chan *immutable.Protein) {
@@ -277,7 +277,7 @@ func TestProteinParallelOperations(t *testing.T) {
 				s := test.RandomStringFromRunes(
 					test.Seed,
 					n,
-					[]rune(alphabet.Protein.String()),
+					[]rune(alphabet.NewProtein().String()),
 				)
 				ret := make(chan *immutable.Protein)
 				seq, _ := immutable.NewProtein(s)
