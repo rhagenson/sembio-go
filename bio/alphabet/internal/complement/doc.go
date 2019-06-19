@@ -1,4 +1,4 @@
 /*
-Package complement are functions for complementing biological sequences
+Package complement is for functions to complement biological sequences
 */
 package complement
