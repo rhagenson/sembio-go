@@ -45,14 +45,11 @@ func (x *RnaIupac) Reverse() (sequence.Interface, error) {
 func (x *RnaIupac) RevComp() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
-	t := make([]string, l)
-	var pos1, pos2 string
+	t := []byte(x.seq)
 	for i := uint(0); i < l/2; i++ {
-		pos1, _ = x.Position(i)
-		pos2, _ = x.Position(l - 1 - i)
-		t[i], t[l-1-i] = c.Complement(pos2), c.Complement(pos1)
+		t[i], t[l-1-i] = byte(c.Complement(string(t[l-1-i]))[0]), byte(c.Complement(string(t[i]))[0])
 	}
-	return NewRnaIupac(strings.Join(t, ""))
+	return NewRnaIupac(string(t))
 }
 
 // Complement is the same RnaIupac with the sequence complemented

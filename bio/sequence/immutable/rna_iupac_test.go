@@ -1,6 +1,7 @@
 package immutable_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -255,10 +256,13 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(hashmap.NewRnaIupac().String()),
 				)
-				want, _ := immutable.NewRnaIupac(s)
-				rev, _ := want.RevComp()
-				got, _ := rev.(*immutable.RnaIupac).RevComp()
-				return want.String() == got.(*immutable.RnaIupac).String()
+				orig, _ := immutable.NewRnaIupac(s)
+				want := orig.String()
+				rev, _ := orig.RevComp()
+				drev, _ := rev.(*immutable.RnaIupac).RevComp()
+				got, _ := drev.Range(0, drev.Length())
+				fmt.Printf("want: %s\ngot: %s\n", want, got)
+				return want == got
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),

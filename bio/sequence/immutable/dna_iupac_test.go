@@ -294,10 +294,12 @@ func TestDnaIupacMethodComplements(t *testing.T) {
 					n,
 					[]rune(hashmap.NewDnaIupac().String()),
 				)
-				want, _ := immutable.NewDnaIupac(s)
-				rev, _ := want.RevComp()
-				got, _ := rev.(*immutable.DnaIupac).RevComp()
-				return want.String() == got.(*immutable.DnaIupac).String()
+				orig, _ := immutable.NewDnaIupac(s)
+				want := orig.String()
+				rev, _ := orig.RevComp()
+				drev, _ := rev.(*immutable.DnaIupac).RevComp()
+				got, _ := drev.Range(0, drev.Length())
+				return want == got
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),

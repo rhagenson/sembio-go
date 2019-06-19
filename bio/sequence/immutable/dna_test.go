@@ -310,10 +310,12 @@ func TestDnaMethodComplements(t *testing.T) {
 					n,
 					[]rune(hashmap.NewDna().String()),
 				)
-				want, _ := immutable.NewDna(s)
-				rev, _ := want.RevComp()
-				got, _ := rev.(*immutable.Dna).RevComp()
-				return want.String() == got.(*immutable.Dna).String()
+				orig, _ := immutable.NewDna(s)
+				want := orig.String()
+				rev, _ := orig.RevComp()
+				drev, _ := rev.(*immutable.Dna).RevComp()
+				got, _ := drev.Range(0, drev.Length())
+				return want == got
 			},
 			gen.UIntRange(1, sequence.TestableLength),
 		),
