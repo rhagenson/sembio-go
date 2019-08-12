@@ -12,7 +12,7 @@ var _ sequence.LetterCounter = new(Protein)
 var _ sequence.Validator = new(Protein)
 var _ Wither = new(Protein)
 
-// Protein is a sequence witch validates against the Protein alphabet
+// Protein is a sequence which validates against the Protein alphabet
 // and knows how to reverse itself
 type Protein struct {
 	*Struct

@@ -16,7 +16,7 @@ var _ sequence.LetterCounter = new(RnaIupac)
 var _ sequence.Validator = new(RnaIupac)
 var _ Wither = new(RnaIupac)
 
-// RnaIupac is a sequence witch validates against the RnaIupac alphabet
+// RnaIupac is a sequence which validates against the RnaIupac alphabet
 // and knows how to reverse, complement, and revcomp itself
 type RnaIupac struct {
 	*Struct

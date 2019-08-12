@@ -22,7 +22,7 @@ var _ sequence.LetterCounter = new(Dna)
 var _ sequence.Validator = new(Dna)
 var _ Wither = new(Dna)
 
-// Dna is a sequence witch validates against the Dna alphabet
+// Dna is a sequence which validates against the Dna alphabet
 // and knows how to reverse, complement, and revcomp itself
 type Dna struct {
 	*Struct

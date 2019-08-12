@@ -17,7 +17,7 @@ var _ sequence.LetterCounter = new(Rna)
 var _ sequence.Validator = new(Rna)
 var _ Wither = new(Rna)
 
-// Rna is a sequence witch validates against the Rna alphabet
+// Rna is a sequence which validates against the Rna alphabet
 // and knows how to reverse, complement, and revcomp itself
 type Rna struct {
 	*Struct

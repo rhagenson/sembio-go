@@ -12,7 +12,7 @@ var _ sequence.LetterCounter = new(ProteinGapped)
 var _ sequence.Validator = new(ProteinGapped)
 var _ Wither = new(ProteinGapped)
 
-// ProteinGapped is a sequence witch validates against the ProteinGapped alphabet
+// ProteinGapped is a sequence which validates against the ProteinGapped alphabet
 // and knows how to reverse itself
 type ProteinGapped struct {
 	*Struct
