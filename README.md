@@ -1,5 +1,7 @@
 # Bio -- Bioinformatics Module
 
+[![Build Status](https://travis-ci.org/bio-ext/bio-go.svg?branch=master)](https://travis-ci.org/bio-ext/bio-go)
+
 ## Overview
 
 `bio` is a semantic Bioinformatics module that emphasizes a definitive design structure.
