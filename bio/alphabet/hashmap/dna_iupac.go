@@ -10,12 +10,14 @@ type DnaIupac struct {
 	*Struct
 }
 
+// NewDnaIupac generates an IUPAC DNA alphabet
 func NewDnaIupac() *DnaIupac {
 	return &DnaIupac{
 		New(alphabet.DnaIupacLetters),
 	}
 }
 
+// Complement produces the IUPAC DNA complement
 func (*DnaIupac) Complement(c string) string {
 	return complement.DnaIupac(c)
 }

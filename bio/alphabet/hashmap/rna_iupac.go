@@ -10,12 +10,14 @@ type RnaIupac struct {
 	*Struct
 }
 
+// NewRnaIupac generates an IUPAC RNA alphabet
 func NewRnaIupac() *RnaIupac {
 	return &RnaIupac{
 		New(alphabet.RnaIupacLetters),
 	}
 }
 
+// Complement produces the IUPAC complement
 func (*RnaIupac) Complement(c string) string {
 	return complement.RnaIupac(c)
 }

@@ -7,6 +7,7 @@ type Protein struct {
 	*Struct
 }
 
+// NewProtein generates a protein alphabet
 func NewProtein() *Protein {
 	return &Protein{
 		New(alphabet.ProteinLetters),
