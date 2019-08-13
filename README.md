@@ -1,7 +1,9 @@
 # Bio -- Bioinformatics Module
 
 [![Build Status](https://travis-ci.org/bio-ext/bio-go.svg?branch=master)](https://travis-ci.org/bio-ext/bio-go)
+[![DOI](https://zenodo.org/badge/180650332.svg)](https://zenodo.org/badge/latestdoi/180650332)
 [![Go Report](https://goreportcard.com/badge/github.com/bio-ext/bio-go)](https://goreportcard.com/report/github.com/bio-ext/bio-go)
+
 
 ## Overview
 
