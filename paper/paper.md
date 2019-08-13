@@ -23,6 +23,8 @@ Bioinformatics libraries that informed the development of this one are: BioPytho
 
 Bioinformatics projects often require building custom, small tools for the purpose of complementing larger tools' inflexibility. Developers are forced to balance size with flexibility -- the larger the program and the more people using it, the less flexible its developers can be to changing it for the better. `bio-go` is intended to be used in producing flexible tools that can change according to the specific needs of ongoing Bioinformatics projects.
 
+`bio-go` was designed to be approachable by the end-user programmers who make up a large portion of practicing Bioinformaticians -- those with immediate research problems to solve, but without the time or resources to build and thoroughly test a multitude of solutions to the same intermediate problems. The programmer should explore solutions laterally across the import tree (e.g., `bio/sequence/immutable` to `bio/sequence/mutable`) until the approach is tuned to the specific needs of the current research problem.
+
 # Acknowledgements
 
 I acknowledge the valuable input on Bioinformatics data types and their semantics afforded to me by Sean C. West and Ryan P. Ehrlich, as well as the friendly ears of Cynthia L. Frasier and Timothy M. Sefczek who have helped me determine how to develop with biologists as end users.
