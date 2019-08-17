@@ -29,3 +29,13 @@ Full path: `bio/sequence/immutable/dna_iupac.go` to use `immutable.NewDnaIupac(.
 This structure should promote quick searches for the _why_, _how_, and _what_ that must be answered for every project many times over.
 
 This design means that everything under a directory _should_ implement the interfaces above and inline with it in the tree; for example: everything under `bio/sequence` implements `sequence.Interface` and everything under `bio/alphabet` implements `alphabet.Interface` and so on.
+
+## Documentation
+
+Documentation can be built through use of `godoc -http=localhost:6060` which then generates documentation accessible through a web browser at `localhost:6060`. For access to  prior to downloading `bio-go`, visit: <https://godoc.org/github.com/bio-ext/bio-go/bio>
+
+## Testing
+
+Tests can be run through use of `go test -v ./...` at the root of this repository. Use of the verbose `-v` flag is recommended as `bio-go` makes extensive use of property tests, which should provide insight into what can be expected of a given implementation.
+
+All tests, benchmarks, and examples are run continuously and can be viewed on [Travis CI](https://travis-ci.org/bio-ext/bio-go).
