@@ -55,7 +55,6 @@ func TestTesting(t *testing.T) {
 	})
 }
 
-// ExampleNew shows how to create a new alphabet
 func ExampleNew() {
 	a := hashmap.New("QWERTY")
 	fmt.Println(a)
@@ -102,7 +101,6 @@ func TestDna(t *testing.T) {
 	})
 }
 
-// ExampleNewDna shows how to create a new DNA alphabet
 func ExampleNewDna() {
 	a := hashmap.NewDna()
 	fmt.Println(a)
@@ -122,6 +120,13 @@ func ExampleDna_Contains() {
 	fmt.Println(a.Contains([]string{"A", "T", "G", "C", "U", "Q"}...))
 	// Output:
 	// [true true true true false false]
+}
+
+func ExampleDna_Complement() {
+	a := hashmap.NewDna()
+	fmt.Println(a.Complement("A"))
+	// Output:
+	// T
 }
 
 func TestDnaIupac(t *testing.T) {
@@ -150,7 +155,6 @@ func TestDnaIupac(t *testing.T) {
 	})
 }
 
-// ExampleNewDnaIupac shows how to create a new IUPAC DNA alphabet
 func ExampleNewDnaIupac() {
 	a := hashmap.NewDnaIupac()
 	fmt.Println(a)
@@ -170,6 +174,13 @@ func ExampleDnaIupac_Contains() {
 	fmt.Println(a.Contains([]string{"A", "T", "G", "C", "-", "Q"}...))
 	// Output:
 	// [true true true true true false]
+}
+
+func ExampleDnaIupac_Complement() {
+	a := hashmap.NewDnaIupac()
+	fmt.Println(a.Complement("N"))
+	// Output:
+	// N
 }
 
 func TestRna(t *testing.T) {
@@ -197,7 +208,6 @@ func TestRna(t *testing.T) {
 	})
 }
 
-// ExampleNewRna shows how to create a new RNA alphabet
 func ExampleNewRna() {
 	a := hashmap.NewRna()
 	fmt.Println(a)
@@ -217,6 +227,13 @@ func ExampleRna_Contains() {
 	fmt.Println(a.Contains([]string{"A", "T", "G", "C", "U", "Q"}...))
 	// Output:
 	// [true false true true true false]
+}
+
+func ExampleRna_Complement() {
+	a := hashmap.NewRna()
+	fmt.Println(a.Complement("A"))
+	// Output:
+	// U
 }
 
 func TestRnaIupac(t *testing.T) {
@@ -245,7 +262,6 @@ func TestRnaIupac(t *testing.T) {
 	})
 }
 
-// ExampleNewRna shows how to create a new IUPAC RNA alphabet
 func ExampleNewRnaIupac() {
 	a := hashmap.NewRnaIupac()
 	fmt.Println(a)
@@ -265,6 +281,13 @@ func ExampleRnaIupac_Contains() {
 	fmt.Println(a.Contains([]string{"A", "T", "G", "C", "U", "Q"}...))
 	// Output:
 	// [true false true true true false]
+}
+
+func ExampleRnaIupac_Complement() {
+	a := hashmap.NewRnaIupac()
+	fmt.Println(a.Complement("N"))
+	// Output:
+	// N
 }
 
 func TestProtein(t *testing.T) {
@@ -292,7 +315,6 @@ func TestProtein(t *testing.T) {
 	})
 }
 
-// ExampleProtein shows how to create a new (standard) Protein alphabet
 func ExampleNewProtein() {
 	a := hashmap.NewProtein()
 	fmt.Println(a)
@@ -340,7 +362,6 @@ func TestProteinGapped(t *testing.T) {
 	})
 }
 
-// ExampleProteinGapped shows how to create a new (standard, gapped) Protein alphabet
 func ExampleNewProteinGapped() {
 	a := hashmap.NewProteinGapped()
 	fmt.Println(a)
