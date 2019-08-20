@@ -55,6 +55,28 @@ func TestTesting(t *testing.T) {
 	})
 }
 
+// ExampleNew shows how to create a new alphabet
+func ExampleNew() {
+	a := hashmap.New("QWERTY")
+	fmt.Println(a)
+	// Output:
+	// EQRTWY
+}
+
+func ExampleStruct_Length() {
+	a := hashmap.New("QWERTY")
+	fmt.Println(a.Length())
+	// Output:
+	// 6
+}
+
+func ExampleStruct_Contains() {
+	a := hashmap.New("QWERTY")
+	fmt.Println(a.Contains([]string{"Q", "WERTY", "A"}...))
+	// Output:
+	// [true false false]
+}
+
 func TestDna(t *testing.T) {
 	var a alphabet.Interface = hashmap.NewDna()
 	letters := []byte("ATGC")
