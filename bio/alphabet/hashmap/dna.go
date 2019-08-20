@@ -1,8 +1,8 @@
 package hashmap
 
 import (
-	"github.com/rhagenson/bio-go/bio/alphabet"
-	"github.com/rhagenson/bio-go/bio/alphabet/internal/complement"
+	"github.com/bio-ext/bio-go/bio/alphabet"
+	"github.com/bio-ext/bio-go/bio/alphabet/internal/complement"
 )
 
 // Dna is the four letter standard encoding

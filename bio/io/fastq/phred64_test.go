@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/rhagenson/bio-go/bio/io/fastq"
+	"github.com/bio-ext/bio-go/bio/io/fastq"
 )
 
 func TestIllumina64V13(t *testing.T) {

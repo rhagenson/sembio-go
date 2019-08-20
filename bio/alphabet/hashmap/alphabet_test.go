@@ -6,9 +6,9 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/rhagenson/bio-go/bio/alphabet"
-	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
-	"github.com/rhagenson/bio-go/bio/utils"
+	"github.com/bio-ext/bio-go/bio/alphabet"
+	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
+	"github.com/bio-ext/bio-go/bio/utils"
 )
 
 func TestTesting(t *testing.T) {
@@ -102,6 +102,28 @@ func TestDna(t *testing.T) {
 	})
 }
 
+// ExampleNewDna shows how to create a new DNA alphabet
+func ExampleNewDna() {
+	a := hashmap.NewDna()
+	fmt.Println(a)
+	// Output:
+	// ACGT
+}
+
+func ExampleDna_Length() {
+	a := hashmap.NewDna()
+	fmt.Println(a.Length())
+	// Output:
+	// 4
+}
+
+func ExampleDna_Contains() {
+	a := hashmap.NewDna()
+	fmt.Println(a.Contains([]string{"A", "T", "G", "C", "U", "Q"}...))
+	// Output:
+	// [true true true true false false]
+}
+
 func TestDnaIupac(t *testing.T) {
 	var a alphabet.Interface = hashmap.NewDnaIupac()
 	letters := []byte("ATGC" + "RYSWKM" + "BDHVN")
@@ -128,6 +150,28 @@ func TestDnaIupac(t *testing.T) {
 	})
 }
 
+// ExampleNewDnaIupac shows how to create a new IUPAC DNA alphabet
+func ExampleNewDnaIupac() {
+	a := hashmap.NewDnaIupac()
+	fmt.Println(a)
+	// Output:
+	// -ABCDGHKMNRSTVWY
+}
+
+func ExampleDnaIupac_Length() {
+	a := hashmap.NewDnaIupac()
+	fmt.Println(a.Length())
+	// Output:
+	// 16
+}
+
+func ExampleDnaIupac_Contains() {
+	a := hashmap.NewDnaIupac()
+	fmt.Println(a.Contains([]string{"A", "T", "G", "C", "-", "Q"}...))
+	// Output:
+	// [true true true true true false]
+}
+
 func TestRna(t *testing.T) {
 	var a alphabet.Interface = hashmap.NewRna()
 	letters := []byte("AUGC")
@@ -151,6 +195,28 @@ func TestRna(t *testing.T) {
 			})
 		}
 	})
+}
+
+// ExampleNewRna shows how to create a new RNA alphabet
+func ExampleNewRna() {
+	a := hashmap.NewRna()
+	fmt.Println(a)
+	// Output:
+	// ACGU
+}
+
+func ExampleRna_Length() {
+	a := hashmap.NewRna()
+	fmt.Println(a.Length())
+	// Output:
+	// 4
+}
+
+func ExampleRna_Contains() {
+	a := hashmap.NewRna()
+	fmt.Println(a.Contains([]string{"A", "T", "G", "C", "U", "Q"}...))
+	// Output:
+	// [true false true true true false]
 }
 
 func TestRnaIupac(t *testing.T) {
@@ -179,6 +245,28 @@ func TestRnaIupac(t *testing.T) {
 	})
 }
 
+// ExampleNewRna shows how to create a new IUPAC RNA alphabet
+func ExampleNewRnaIupac() {
+	a := hashmap.NewRnaIupac()
+	fmt.Println(a)
+	// Output:
+	// -ABCDGHKMNRSUVWY
+}
+
+func ExampleRnaIupac_Length() {
+	a := hashmap.NewRnaIupac()
+	fmt.Println(a.Length())
+	// Output:
+	// 16
+}
+
+func ExampleRnaIupac_Contains() {
+	a := hashmap.NewRnaIupac()
+	fmt.Println(a.Contains([]string{"A", "T", "G", "C", "U", "Q"}...))
+	// Output:
+	// [true false true true true false]
+}
+
 func TestProtein(t *testing.T) {
 	var a alphabet.Interface = hashmap.NewProtein()
 	letters := []byte("ACDEFGHIKLMNPQRSTVWY")
@@ -202,6 +290,28 @@ func TestProtein(t *testing.T) {
 			})
 		}
 	})
+}
+
+// ExampleProtein shows how to create a new (standard) Protein alphabet
+func ExampleNewProtein() {
+	a := hashmap.NewProtein()
+	fmt.Println(a)
+	// Output:
+	// ACDEFGHIKLMNPQRSTVWY
+}
+
+func ExampleProtein_Length() {
+	a := hashmap.NewProtein()
+	fmt.Println(a.Length())
+	// Output:
+	// 20
+}
+
+func ExampleProtein_Contains() {
+	a := hashmap.NewProtein()
+	fmt.Println(a.Contains([]string{"A", "T", "G", "C", "U", "-", "Q"}...))
+	// Output:
+	// [true true true true false false true]
 }
 
 func TestProteinGapped(t *testing.T) {
@@ -228,4 +338,26 @@ func TestProteinGapped(t *testing.T) {
 			})
 		}
 	})
+}
+
+// ExampleProteinGapped shows how to create a new (standard, gapped) Protein alphabet
+func ExampleNewProteinGapped() {
+	a := hashmap.NewProteinGapped()
+	fmt.Println(a)
+	// Output:
+	// -ACDEFGHIKLMNPQRSTVWY
+}
+
+func ExampleProteinGapped_Length() {
+	a := hashmap.NewProteinGapped()
+	fmt.Println(a.Length())
+	// Output:
+	// 21
+}
+
+func ExampleProteinGapped_Contains() {
+	a := hashmap.NewProteinGapped()
+	fmt.Println(a.Contains([]string{"A", "T", "G", "C", "U", "-", "Q"}...))
+	// Output:
+	// [true true true true false true true]
 }

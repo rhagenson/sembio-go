@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/rhagenson/bio-go/bio/io/fastq"
+	"github.com/bio-ext/bio-go/bio/io/fastq"
 )
 
 func TestSolexa64(t *testing.T) {

@@ -5,9 +5,9 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/rhagenson/bio-go/bio/alphabet"
-	"github.com/rhagenson/bio-go/bio/alphabet/internal/complement"
-	"github.com/rhagenson/bio-go/bio/test"
+	"github.com/bio-ext/bio-go/bio/alphabet"
+	"github.com/bio-ext/bio-go/bio/alphabet/internal/complement"
+	"github.com/bio-ext/bio-go/bio/test"
 )
 
 // TestRnaReturnsX checks that when encountering an unknown nucleotide results in "X" placeholder

@@ -6,15 +6,15 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rhagenson/bio-go/bio/sequence"
-	"github.com/rhagenson/bio-go/bio/sequence/immutable"
+	"github.com/bio-ext/bio-go/bio/sequence"
+	"github.com/bio-ext/bio-go/bio/sequence/immutable"
 
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
-	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
-	"github.com/rhagenson/bio-go/bio/io/fasta"
-	"github.com/rhagenson/bio-go/bio/test"
+	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
+	"github.com/bio-ext/bio-go/bio/io/fasta"
+	"github.com/bio-ext/bio-go/bio/test"
 )
 
 func TestReadSingle(t *testing.T) {

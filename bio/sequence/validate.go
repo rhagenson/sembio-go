@@ -3,7 +3,7 @@ package sequence
 import (
 	"fmt"
 
-	"github.com/rhagenson/bio-go/bio/alphabet"
+	"github.com/bio-ext/bio-go/bio/alphabet"
 )
 
 // ValFunc is a function that validates a sequence

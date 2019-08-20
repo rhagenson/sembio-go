@@ -7,12 +7,12 @@ import (
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
-	"github.com/rhagenson/bio-go/bio/alphabet"
-	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
-	"github.com/rhagenson/bio-go/bio/data/codon"
-	"github.com/rhagenson/bio-go/bio/sequence"
-	"github.com/rhagenson/bio-go/bio/sequence/immutable"
-	"github.com/rhagenson/bio-go/bio/test"
+	"github.com/bio-ext/bio-go/bio/alphabet"
+	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
+	"github.com/bio-ext/bio-go/bio/data/codon"
+	"github.com/bio-ext/bio-go/bio/sequence"
+	"github.com/bio-ext/bio-go/bio/sequence/immutable"
+	"github.com/bio-ext/bio-go/bio/test"
 )
 
 func TestInitializedDna(t *testing.T) {

@@ -4,15 +4,15 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/bio-ext/bio-go/bio/alphabet"
+	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
+	"github.com/bio-ext/bio-go/bio/sequence"
+	"github.com/bio-ext/bio-go/bio/sequence/mutable"
+	"github.com/bio-ext/bio-go/bio/test"
+	"github.com/bio-ext/bio-go/bio/utils"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
-	"github.com/rhagenson/bio-go/bio/alphabet"
-	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
-	"github.com/rhagenson/bio-go/bio/sequence"
-	"github.com/rhagenson/bio-go/bio/sequence/mutable"
-	"github.com/rhagenson/bio-go/bio/test"
-	"github.com/rhagenson/bio-go/bio/utils"
 )
 
 func TestInitializedProtein(t *testing.T) {
