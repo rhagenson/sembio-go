@@ -4,15 +4,15 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/leanovate/gopter"
-	"github.com/leanovate/gopter/gen"
-	"github.com/leanovate/gopter/prop"
 	"github.com/bio-ext/bio-go/bio/alphabet"
 	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
 	"github.com/bio-ext/bio-go/bio/data/codon"
 	"github.com/bio-ext/bio-go/bio/sequence"
 	"github.com/bio-ext/bio-go/bio/sequence/immutable"
 	"github.com/bio-ext/bio-go/bio/test"
+	"github.com/leanovate/gopter"
+	"github.com/leanovate/gopter/gen"
+	"github.com/leanovate/gopter/prop"
 )
 
 func TestInitializedDna(t *testing.T) {
