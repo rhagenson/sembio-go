@@ -1,4 +1,4 @@
-module github.com/rhagenson/bio-go
+module github.com/bio-ext/bio-go
 
 go 1.12
 

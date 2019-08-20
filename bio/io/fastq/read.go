@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/rhagenson/bio-go/bio/sequence"
+	"github.com/bio-ext/bio-go/bio/sequence"
 )
 
 // Read reads n records from a FASTQ file using the generator f to validate the sequences

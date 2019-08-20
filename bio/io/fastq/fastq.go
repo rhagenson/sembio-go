@@ -1,7 +1,7 @@
 package fastq
 
 import (
-	"github.com/rhagenson/bio-go/bio/sequence"
+	"github.com/bio-ext/bio-go/bio/sequence"
 )
 
 var _ Interface = new(Struct)

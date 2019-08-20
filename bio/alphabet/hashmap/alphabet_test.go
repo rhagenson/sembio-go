@@ -6,9 +6,9 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/rhagenson/bio-go/bio/alphabet"
-	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
-	"github.com/rhagenson/bio-go/bio/utils"
+	"github.com/bio-ext/bio-go/bio/alphabet"
+	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
+	"github.com/bio-ext/bio-go/bio/utils"
 )
 
 func TestTesting(t *testing.T) {
@@ -53,6 +53,18 @@ func TestTesting(t *testing.T) {
 			}
 		})
 	})
+}
+
+// ExampleCustomAlphabet shows how to create a new alphabet
+func ExampleCustomAlphabet() {
+	// An alphabet is made from its individual letters
+	a := hashmap.New("QWERTY")
+
+	// Alphabets can printed
+	fmt.Println(a.String())
+
+	// Alphabets can check for given elements
+	fmt.Println(a.Contains([]string{"Q", "WERTY", "A"}...))
 }
 
 func TestDna(t *testing.T) {

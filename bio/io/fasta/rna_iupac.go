@@ -3,8 +3,8 @@ package fasta
 import (
 	"io"
 
-	"github.com/rhagenson/bio-go/bio/sequence"
-	"github.com/rhagenson/bio-go/bio/sequence/immutable"
+	"github.com/bio-ext/bio-go/bio/sequence"
+	"github.com/bio-ext/bio-go/bio/sequence/immutable"
 )
 
 var _ Interface = new(RnaIupac)

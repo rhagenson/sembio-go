@@ -3,9 +3,9 @@ package fasta_test
 import (
 	"testing"
 
-	"github.com/rhagenson/bio-go/bio/io/fasta"
-	"github.com/rhagenson/bio-go/bio/sequence/immutable"
-	"github.com/rhagenson/bio-go/bio/test"
+	"github.com/bio-ext/bio-go/bio/io/fasta"
+	"github.com/bio-ext/bio-go/bio/sequence/immutable"
+	"github.com/bio-ext/bio-go/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"

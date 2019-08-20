@@ -3,7 +3,7 @@ package mutable
 import (
 	"fmt"
 
-	"github.com/rhagenson/bio-go/bio/sequence"
+	"github.com/bio-ext/bio-go/bio/sequence"
 )
 
 var _ sequence.Interface = new(Struct)

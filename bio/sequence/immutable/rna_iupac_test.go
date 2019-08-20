@@ -1,18 +1,17 @@
 package immutable_test
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 
+	"github.com/bio-ext/bio-go/bio/alphabet"
+	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
+	"github.com/bio-ext/bio-go/bio/sequence"
+	"github.com/bio-ext/bio-go/bio/sequence/immutable"
+	"github.com/bio-ext/bio-go/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
-	"github.com/rhagenson/bio-go/bio/alphabet"
-	"github.com/rhagenson/bio-go/bio/alphabet/hashmap"
-	"github.com/rhagenson/bio-go/bio/sequence"
-	"github.com/rhagenson/bio-go/bio/sequence/immutable"
-	"github.com/rhagenson/bio-go/bio/test"
 )
 
 func TestInitializedRnaIupac(t *testing.T) {
@@ -261,7 +260,6 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				rev, _ := orig.RevComp()
 				drev, _ := rev.(*immutable.RnaIupac).RevComp()
 				got, _ := drev.Range(0, drev.Length())
-				fmt.Printf("want: %s\ngot: %s\n", want, got)
 				return want == got
 			},
 			gen.UIntRange(1, sequence.TestableLength),

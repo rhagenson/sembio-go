@@ -1,6 +1,6 @@
 package hashmap
 
-import "github.com/rhagenson/bio-go/bio/alphabet"
+import "github.com/bio-ext/bio-go/bio/alphabet"
 
 // Protein is the twenty letter standard encoding
 type Protein struct {

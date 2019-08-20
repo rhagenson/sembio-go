@@ -1,7 +1,7 @@
 package fastq
 
 import (
-	"github.com/rhagenson/bio-go/bio/io/fasta"
+	"github.com/bio-ext/bio-go/bio/io/fasta"
 )
 
 var _ fasta.Interface = *new(Interface)
