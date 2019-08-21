@@ -1,7 +1,6 @@
 package immutable_test
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 
@@ -261,7 +260,6 @@ func TestRnaIupacMethodComplements(t *testing.T) {
 				rev, _ := orig.RevComp()
 				drev, _ := rev.(*immutable.RnaIupac).RevComp()
 				got, _ := drev.Range(0, drev.Length())
-				fmt.Printf("want: %s\ngot: %s\n", want, got)
 				return want == got
 			},
 			gen.UIntRange(1, sequence.TestableLength),

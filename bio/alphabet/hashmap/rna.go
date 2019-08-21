@@ -2,7 +2,6 @@ package hashmap
 
 import (
 	"github.com/bio-ext/bio-go/bio/alphabet"
-	"github.com/bio-ext/bio-go/bio/alphabet/internal/complement"
 )
 
 // Rna is the four letter standard encoding
@@ -19,5 +18,16 @@ func NewRna() *Rna {
 
 // Complement produces the standard RNA complement
 func (*Rna) Complement(c string) string {
-	return complement.Rna(c)
+	switch c {
+	case "A":
+		return "U"
+	case "U":
+		return "A"
+	case "G":
+		return "C"
+	case "C":
+		return "G"
+	default:
+		return "X"
+	}
 }

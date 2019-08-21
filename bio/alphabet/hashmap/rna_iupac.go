@@ -2,7 +2,6 @@ package hashmap
 
 import (
 	"github.com/bio-ext/bio-go/bio/alphabet"
-	"github.com/bio-ext/bio-go/bio/alphabet/internal/complement"
 )
 
 // RnaIupac is the sixteen letter IUPAC encoding
@@ -19,5 +18,40 @@ func NewRnaIupac() *RnaIupac {
 
 // Complement produces the IUPAC complement
 func (*RnaIupac) Complement(c string) string {
-	return complement.RnaIupac(c)
+	switch c {
+	case "A":
+		return "U"
+	case "U":
+		return "A"
+	case "G":
+		return "C"
+	case "C":
+		return "G"
+
+	case "S", "W", "N", "-":
+		return c
+
+	case "Y":
+		return "R"
+	case "R":
+		return "Y"
+
+	case "K":
+		return "M"
+	case "M":
+		return "K"
+
+	case "B":
+		return "V"
+	case "V":
+		return "B"
+
+	case "D":
+		return "H"
+	case "H":
+		return "D"
+
+	default:
+		return "X"
+	}
 }
