@@ -1,13 +1,16 @@
 package hashmap
 
-import "strings"
+import (
+	"sort"
+	"strings"
+)
 
 // Struct is a collection of letters
 type Struct struct {
 	chars map[string]struct{}
 }
 
-// New is an Struct generator
+// New is a Struct generator
 func New(letters string) *Struct {
 	set := make(map[string]struct{}, len(letters))
 	for _, b := range letters {
@@ -40,5 +43,6 @@ func (a Struct) String() string {
 	for k := range a.chars {
 		letters = append(letters, k)
 	}
+	sort.Strings(letters)
 	return strings.Join(letters, "")
 }

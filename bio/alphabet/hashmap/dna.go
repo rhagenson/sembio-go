@@ -2,7 +2,6 @@ package hashmap
 
 import (
 	"github.com/bio-ext/bio-go/bio/alphabet"
-	"github.com/bio-ext/bio-go/bio/alphabet/internal/complement"
 )
 
 // Dna is the four letter standard encoding
@@ -19,9 +18,16 @@ func NewDna() *Dna {
 
 // Complement produces the standard DNA complement
 func (*Dna) Complement(c string) string {
-	return complementDna(c)
-}
-
-func complementDna(c string) string {
-	return complement.Dna(c)
+	switch c {
+	case "A":
+		return "T"
+	case "T":
+		return "A"
+	case "G":
+		return "C"
+	case "C":
+		return "G"
+	default:
+		return "X"
+	}
 }
