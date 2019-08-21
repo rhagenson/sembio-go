@@ -1,10 +1,11 @@
 # Bio -- Bioinformatics Module
 
+[![GoDoc](https://godoc.org/github.com/bio-ext/bio-go?status.svg)](https://godoc.org/github.com/bio-ext/bio-go)
 [![Build Status](https://travis-ci.org/bio-ext/bio-go.svg?branch=master)](https://travis-ci.org/bio-ext/bio-go)
 [![DOI](https://zenodo.org/badge/180650332.svg)](https://zenodo.org/badge/latestdoi/180650332)
 [![LICENSE](https://img.shields.io/github/license/bio-ext/bio-go)](LICENSE)
 [![codecov](https://codecov.io/gh/bio-ext/bio-go/branch/master/graph/badge.svg)](https://codecov.io/gh/bio-ext/bio-go)
-[![](https://goreportcard.com/badge/github.com/bio-ext/bio-go)](https://goreportcard.com/report/github.com/bio-ext/bio-go)
+[![GoReport](https://goreportcard.com/badge/github.com/bio-ext/bio-go)](https://goreportcard.com/report/github.com/bio-ext/bio-go)
 
 ## Overview
 
