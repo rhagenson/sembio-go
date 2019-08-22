@@ -1,6 +1,7 @@
 package immutable_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -463,4 +464,108 @@ func TestDnaIupacParallelOperations(t *testing.T) {
 		),
 	)
 	properties.TestingRun(t)
+}
+
+// Building a new DnaIupac from valid letters results in no error
+func ExampleNewDnaIupac_errorless() {
+	s, err := immutable.NewDnaIupac("RYSWKM" + "BDHV" + "N" + "ATGC" + "-")
+
+	fmt.Printf("%s, %v", s, err)
+	// Output:
+	// RYSWKMBDHVNATGC-, <nil>
+}
+
+// Building a new DnaIupac from invalid letters results in an error
+// Note that only the first error is returned, not all errors
+// The invalid '%' is caught, but nothing is said of the invalid '&'
+func ExampleNewDnaIupac_errored() {
+	s, err := immutable.NewDnaIupac("%" + "RYSWKM" + "BDHV" + "N" + "ATGC" + "-" + "&")
+
+	fmt.Printf("%s, %v", s, err)
+	// Output:
+	// %RYSWKMBDHVNATGC-&, "%" not in alphabet
+}
+
+// Reversing a valid DnaIupac results in no error
+func ExampleDnaIupac_Reverse_errorless() {
+	s, _ := immutable.NewDnaIupac("RYSWKM" + "BDHV" + "N" + "ATGC" + "-")
+	rev, err := s.Reverse()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// -CGTANVHDBMKWSYR, <nil>
+}
+
+// Reversing an invalid DnaIupac results in an error
+// Note that only the first error is returned, not all errors
+// The invalid '&' is caught, but nothing is said of the invalid '%'
+func ExampleDnaIupac_Reverse_errored() {
+	s, _ := immutable.NewDnaIupac("%" + "RYSWKM" + "BDHV" + "N" + "ATGC" + "-" + "&")
+	rev, err := s.Reverse()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// &-CGTANVHDBMKWSYR%, "&" not in alphabet
+}
+
+// Reverse complementing a valid DnaIupac results in no error
+func ExampleDnaIupac_RevComp_errorless() {
+	s, _ := immutable.NewDnaIupac("RYSWKM" + "BDHV" + "N" + "ATGC" + "-")
+	rev, err := s.RevComp()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// -GCATNBDHVKMWSRY, <nil>
+}
+
+// Reverse complementing an invalid DnaIupac results in an error
+// Note that both invalid letters '%' and '&' became 'X' (which is also an invalid letter)
+func ExampleDnaIupac_RevComp_errored() {
+	s, err := immutable.NewDnaIupac("%" + "RYSWKM" + "BDHV" + "N" + "ATGC" + "-" + "&")
+	rev, err := s.RevComp()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// X-GCATNBDHVKMWSRYX, "X" not in alphabet
+}
+
+// Complementing a valid DnaIupac results in no error
+func ExampleDnaIupac_Complement_errorless() {
+	s, _ := immutable.NewDnaIupac("RYSWKM" + "BDHV" + "N" + "ATGC" + "-")
+	rev, err := s.Complement()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// YRSWMKVHDBNTACG-, <nil>
+}
+
+// Complementing an invalid DnaIupac results in an error
+// Note that both invalid letters '%' and '&' became 'X' (which is also an invalid letter)
+func ExampleDnaIupac_Complement_errored() {
+	s, err := immutable.NewDnaIupac("%" + "RYSWKM" + "BDHV" + "N" + "ATGC" + "-" + "&")
+	rev, err := s.Complement()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// XYRSWMKVHDBNTACG-X, "X" not in alphabet
+}
+
+// Note that the alphabet gets sorted and would be
+// unaffected by an invalid input to immutable.NewDnaIupac()
+func ExampleDnaIupac_Alphabet() {
+	s, _ := immutable.NewDnaIupac("RYSWKM" + "BDHV" + "N" + "ATGC" + "-")
+
+	fmt.Println(s.Alphabet())
+	// Output:
+	// -ABCDGHKMNRSTVWY
+}
+
+// Note that the alphabet gets sorted and would be
+// unaffected by an invalid input to immutable.NewDnaIupac()
+func ExampleDnaIupac_LetterCount() {
+	s, _ := immutable.NewDnaIupac("RYSWKM" + "BDHV" + "N" + "ATGC" + "-" + "NNNN")
+
+	fmt.Println(s.LetterCount())
+	// Output:
+	// map[-:1 A:1 B:1 C:1 D:1 G:1 H:1 K:1 M:1 N:5 R:1 S:1 T:1 V:1 W:1 Y:1]
 }
