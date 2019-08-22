@@ -1,6 +1,7 @@
 package immutable_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -426,4 +427,108 @@ func TestRnaParallelOperations(t *testing.T) {
 		),
 	)
 	properties.TestingRun(t)
+}
+
+// Building a new Rna from valid letters results in no error
+func ExampleNewRna_errorless() {
+	s, err := immutable.NewRna("AUGC")
+
+	fmt.Printf("%s, %v", s, err)
+	// Output:
+	// AUGC, <nil>
+}
+
+// Building a new Rna from invalid letters results in an error
+// Note that only the first error is returned, not all errors
+// The invalid '%' is caught, but nothing is said of the invalid '&'
+func ExampleNewRna_errored() {
+	s, err := immutable.NewRna("%" + "AUGC" + "&")
+
+	fmt.Printf("%s, %v", s, err)
+	// Output:
+	// %AUGC&, "%" not in alphabet
+}
+
+// Reversing a valid Rna results in no error
+func ExampleRna_Reverse_errorless() {
+	s, _ := immutable.NewRna("AUGC")
+	rev, err := s.Reverse()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// CGUA, <nil>
+}
+
+// Reversing an invalid Rna results in an error
+// Note that only the first error is returned, not all errors
+// The invalid '&' is caught, but nothing is said of the invalid '%'
+func ExampleRna_Reverse_errored() {
+	s, _ := immutable.NewRna("%" + "AUGC" + "&")
+	rev, err := s.Reverse()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// &CGUA%, "&" not in alphabet
+}
+
+// Reverse complementing a valid Rna results in no error
+func ExampleRna_RevComp_errorless() {
+	s, _ := immutable.NewRna("AUGC")
+	rev, err := s.RevComp()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// GCAU, <nil>
+}
+
+// Reverse complementing an invalid Rna results in an error
+// Note that both invalid letters '%' and '&' became 'X' (which is also an invalid letter)
+func ExampleRna_RevComp_errored() {
+	s, err := immutable.NewRna("%" + "AUGC" + "&")
+	rev, err := s.RevComp()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// XGCAUX, "X" not in alphabet
+}
+
+// Complementing a valid Rna results in no error
+func ExampleRna_Complement_errorless() {
+	s, _ := immutable.NewRna("AUGC")
+	rev, err := s.Complement()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// UACG, <nil>
+}
+
+// Complementing an invalid Rna results in an error
+// Note that both invalid letters '%' and '&' became 'X' (which is also an invalid letter)
+func ExampleRna_Complement_errored() {
+	s, err := immutable.NewRna("%" + "AUGC" + "&")
+	rev, err := s.Complement()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// XUACGX, "X" not in alphabet
+}
+
+// Note that the alphabet gets sorted and would be
+// unaffected by an invalid input to immutable.NewRna()
+func ExampleRna_Alphabet() {
+	s, _ := immutable.NewRna("AUGC")
+
+	fmt.Println(s.Alphabet())
+	// Output:
+	// ACGU
+}
+
+// Note that the alphabet gets sorted and would be
+// unaffected by an invalid input to immutable.NewRna()
+func ExampleRna_LetterCount() {
+	s, _ := immutable.NewRna("AUGC" + "AAAA")
+
+	fmt.Println(s.LetterCount())
+	// Output:
+	// map[A:5 C:1 G:1 U:1]
 }
