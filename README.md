@@ -17,9 +17,9 @@
 
 ## Design Structure
 
-This library is structured in an intentional manner to build out a fat tree of ideally max depth of three where each step down the tree asks/answers a new question in the following order:
+This module is structured in an intentional manner to build out a fat tree of ideally max depth of three where each step down the tree asks/answers a new question in the following order:
 
-1. _Why_ are you looking into this library? (i.e., the kind of work you are doing)
+1. _Why_ are you looking into this module? (i.e., the kind of work you are doing)
 2. _How_ are you hoping to get the job done? (i.e., do you need speed, immutability, simplicity, and so on)
 3. _What_ are you going to use? (i.e., the what that allows the why for your work)
 
