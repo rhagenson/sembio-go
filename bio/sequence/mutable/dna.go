@@ -72,7 +72,7 @@ func (x *Dna) Complement() (sequence.Interface, error) {
 	l := x.Length()
 	t := make([]string, l)
 	var pos string
-	for i := uint(0); i < l/2; i++ {
+	for i := uint(0); i < l; i++ {
 		pos, _ = x.Position(i)
 		t[i] = c.Complement(pos)
 	}

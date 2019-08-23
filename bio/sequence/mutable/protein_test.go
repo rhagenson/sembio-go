@@ -1,6 +1,7 @@
 package mutable_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -302,4 +303,66 @@ func TestProteinParallelOperations(t *testing.T) {
 		),
 	)
 	properties.TestingRun(t)
+}
+
+// Building a new Protein from valid letters results in no error
+func ExampleNewProtein_errorless() {
+	s, err := mutable.NewProtein("ACDEFGHIKLMNPQRSTVWY")
+
+	fmt.Printf("%s, %v", s, err)
+	// Output:
+	// ACDEFGHIKLMNPQRSTVWY, <nil>
+}
+
+// Building a new Protein from invalid letters results in an error
+// Note that only the first error is returned, not all errors
+// The invalid '%' is caught, but nothing is said of the invalid '&'
+func ExampleNewProtein_errored() {
+	s, err := mutable.NewProtein("%" + "ACDEFGHIKLMNPQRSTVWY" + "&")
+
+	fmt.Printf("%s, %v", s, err)
+	// Output:
+	// %ACDEFGHIKLMNPQRSTVWY&, "%" not in alphabet
+}
+
+// Reversing a valid Protein results in no error
+func ExampleProtein_Reverse_errorless() {
+	s, _ := mutable.NewProtein("ACDEFGHIKLMNPQRSTVWY")
+	rev, err := s.Reverse()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// YWVTSRQPNMLKIHGFEDCA, <nil>
+}
+
+// Reversing an invalid Protein results in an error
+// Note that only the first error is returned, not all errors
+// The invalid '&' is caught, but nothing is said of the invalid '%'
+func ExampleProtein_Reverse_errored() {
+	s, _ := mutable.NewProtein("%" + "ACDEFGHIKLMNPQRSTVWY" + "&")
+	rev, err := s.Reverse()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// &YWVTSRQPNMLKIHGFEDCA%, "&" not in alphabet
+}
+
+// Note that the alphabet gets sorted and would be
+// unaffected by an invalid input to mutable.NewProtein()
+func ExampleProtein_Alphabet() {
+	s, _ := mutable.NewProtein("ACDEFGHIKLMNPQRSTVWY")
+
+	fmt.Println(s.Alphabet())
+	// Output:
+	// ACDEFGHIKLMNPQRSTVWY
+}
+
+// Note that the alphabet gets sorted and would be
+// unaffected by an invalid input to mutable.NewProtein()
+func ExampleProtein_LetterCount() {
+	s, _ := mutable.NewProtein("ACDEFGHIKLMNPQRSTVWY" + "NNNN")
+
+	fmt.Println(s.LetterCount())
+	// Output:
+	// map[A:1 C:1 D:1 E:1 F:1 G:1 H:1 I:1 K:1 L:1 M:1 N:5 P:1 Q:1 R:1 S:1 T:1 V:1 W:1 Y:1]
 }
