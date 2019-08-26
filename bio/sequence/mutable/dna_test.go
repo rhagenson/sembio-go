@@ -1,6 +1,7 @@
 package mutable_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -481,4 +482,108 @@ func TestDnaParallelOperations(t *testing.T) {
 		),
 	)
 	properties.TestingRun(t)
+}
+
+// Building a new Dna from valid letters results in no error
+func ExampleNewDna_errorless() {
+	s, err := mutable.NewDna("ATGC")
+
+	fmt.Printf("%s, %v", s, err)
+	// Output:
+	// ATGC, <nil>
+}
+
+// Building a new Dna from invalid letters results in an error
+// Note that only the first error is returned, not all errors
+// The invalid '%' is caught, but nothing is said of the invalid '&'
+func ExampleNewDna_errored() {
+	s, err := mutable.NewDna("%" + "ATGC" + "&")
+
+	fmt.Printf("%s, %v", s, err)
+	// Output:
+	// %ATGC&, "%" not in alphabet
+}
+
+// Reversing a valid Dna results in no error
+func ExampleDna_Reverse_errorless() {
+	s, _ := mutable.NewDna("ATGC")
+	rev, err := s.Reverse()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// CGTA, <nil>
+}
+
+// Reversing an invalid Dna results in an error
+// Note that only the first error is returned, not all errors
+// The invalid '&' is caught, but nothing is said of the invalid '%'
+func ExampleDna_Reverse_errored() {
+	s, _ := mutable.NewDna("%" + "ATGC" + "&")
+	rev, err := s.Reverse()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// &CGTA%, "&" not in alphabet
+}
+
+// Reverse complementing a valid Dna results in no error
+func ExampleDna_RevComp_errorless() {
+	s, _ := mutable.NewDna("ATGC")
+	rev, err := s.RevComp()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// GCAT, <nil>
+}
+
+// Reverse complementing an invalid Dna results in an error
+// Note that both invalid letters '%' and '&' became 'X' (which is also an invalid letter)
+func ExampleDna_RevComp_errored() {
+	s, err := mutable.NewDna("%" + "ATGC" + "&")
+	rev, err := s.RevComp()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// XGCATX, "X" not in alphabet
+}
+
+// Complementing a valid Dna results in no error
+func ExampleDna_Complement_errorless() {
+	s, _ := mutable.NewDna("ATGC")
+	rev, err := s.Complement()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// TACG, <nil>
+}
+
+// Complementing an invalid Dna results in an error
+// Note that both invalid letters '%' and '&' became 'X' (which is also an invalid letter)
+func ExampleDna_Complement_errored() {
+	s, err := mutable.NewDna("%" + "ATGC" + "&")
+	rev, err := s.Complement()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// XTACGX, "X" not in alphabet
+}
+
+// Note that the alphabet gets sorted and would be
+// unaffected by an invalid input to mutable.NewDna()
+func ExampleDna_Alphabet() {
+	s, _ := mutable.NewDna("ATGC")
+
+	fmt.Println(s.Alphabet())
+	// Output:
+	// ACGT
+}
+
+// Note that the alphabet gets sorted and would be
+// unaffected by an invalid input to mutable.NewDna()
+func ExampleDna_LetterCount() {
+	s, _ := mutable.NewDna("ATGC" + "AAAA")
+
+	fmt.Println(s.LetterCount())
+	// Output:
+	// map[A:5 C:1 G:1 T:1]
 }

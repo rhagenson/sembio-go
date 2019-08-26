@@ -1,6 +1,7 @@
 package mutable_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -426,4 +427,108 @@ func TestRnaIupacParallelOperations(t *testing.T) {
 		),
 	)
 	properties.TestingRun(t)
+}
+
+// Building a new RnaIupac from valid letters results in no error
+func ExampleNewRnaIupac_errorless() {
+	s, err := mutable.NewRnaIupac("RYSWKM" + "BDHV" + "N" + "AUGC" + "-")
+
+	fmt.Printf("%s, %v", s, err)
+	// Output:
+	// RYSWKMBDHVNAUGC-, <nil>
+}
+
+// Building a new RnaIupac from invalid letters results in an error
+// Note that only the first error is returned, not all errors
+// The invalid '%' is caught, but nothing is said of the invalid '&'
+func ExampleNewRnaIupac_errored() {
+	s, err := mutable.NewRnaIupac("%" + "RYSWKM" + "BDHV" + "N" + "AUGC" + "-" + "&")
+
+	fmt.Printf("%s, %v", s, err)
+	// Output:
+	// %RYSWKMBDHVNAUGC-&, "%" not in alphabet
+}
+
+// Reversing a valid RnaIupac results in no error
+func ExampleRnaIupac_Reverse_errorless() {
+	s, _ := mutable.NewRnaIupac("RYSWKM" + "BDHV" + "N" + "AUGC" + "-")
+	rev, err := s.Reverse()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// -CGUANVHDBMKWSYR, <nil>
+}
+
+// Reversing an invalid RnaIupac results in an error
+// Note that only the first error is returned, not all errors
+// The invalid '&' is caught, but nothing is said of the invalid '%'
+func ExampleRnaIupac_Reverse_errored() {
+	s, _ := mutable.NewRnaIupac("%" + "RYSWKM" + "BDHV" + "N" + "AUGC" + "-" + "&")
+	rev, err := s.Reverse()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// &-CGUANVHDBMKWSYR%, "&" not in alphabet
+}
+
+// Reverse complementing a valid RnaIupac results in no error
+func ExampleRnaIupac_RevComp_errorless() {
+	s, _ := mutable.NewRnaIupac("RYSWKM" + "BDHV" + "N" + "AUGC" + "-")
+	rev, err := s.RevComp()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// -GCAUNBDHVKMWSRY, <nil>
+}
+
+// Reverse complementing an invalid RnaIupac results in an error
+// Note that both invalid letters '%' and '&' became 'X' (which is also an invalid letter)
+func ExampleRnaIupac_RevComp_errored() {
+	s, err := mutable.NewRnaIupac("%" + "RYSWKM" + "BDHV" + "N" + "AUGC" + "-" + "&")
+	rev, err := s.RevComp()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// X-GCAUNBDHVKMWSRYX, "X" not in alphabet
+}
+
+// Complementing a valid RnaIupac results in no error
+func ExampleRnaIupac_Complement_errorless() {
+	s, _ := mutable.NewRnaIupac("RYSWKM" + "BDHV" + "N" + "AUGC" + "-")
+	rev, err := s.Complement()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// YRSWMKVHDBNUACG-, <nil>
+}
+
+// Complementing an invalid RnaIupac results in an error
+// Note that both invalid letters '%' and '&' became 'X' (which is also an invalid letter)
+func ExampleRnaIupac_Complement_errored() {
+	s, err := mutable.NewRnaIupac("%" + "RYSWKM" + "BDHV" + "N" + "AUGC" + "-" + "&")
+	rev, err := s.Complement()
+
+	fmt.Printf("%s, %v", rev, err)
+	// Output:
+	// XYRSWMKVHDBNUACG-X, "X" not in alphabet
+}
+
+// Note that the alphabet gets sorted and would be
+// unaffected by an invalid input to mutable.NewRnaIupac()
+func ExampleRnaIupac_Alphabet() {
+	s, _ := mutable.NewRnaIupac("RYSWKM" + "BDHV" + "N" + "AUGC" + "-")
+
+	fmt.Println(s.Alphabet())
+	// Output:
+	// -ABCDGHKMNRSUVWY
+}
+
+// Note that the alphabet gets sorted and would be
+// unaffected by an invalid input to mutable.NewRnaIupac()
+func ExampleRnaIupac_LetterCount() {
+	s, _ := mutable.NewRnaIupac("RYSWKM" + "BDHV" + "N" + "AUGC" + "-" + "NNNN")
+
+	fmt.Println(s.LetterCount())
+	// Output:
+	// map[-:1 A:1 B:1 C:1 D:1 G:1 H:1 K:1 M:1 N:5 R:1 S:1 U:1 V:1 W:1 Y:1]
 }

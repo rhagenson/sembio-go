@@ -61,8 +61,10 @@ func (x *DnaIupac) Complement() (sequence.Interface, error) {
 	c := x.Alphabet().(alphabet.Complementer)
 	l := x.Length()
 	t := make([]string, l)
+	var pos string
 	for i := uint(0); i < l; i++ {
-		t[i] = c.Complement(t[i])
+		pos, _ = x.Position(i)
+		t[i] = c.Complement(pos)
 	}
 	x.seq = strings.Join(t, "")
 	return x, x.Validate()
