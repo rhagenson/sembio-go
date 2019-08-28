@@ -17,7 +17,7 @@ func Read(r io.Reader, n uint, f sequence.Generator) ([]Interface, error) {
 	records := make([]Interface, 0, n)
 	count := uint(0)
 	header := ""
-	header2 := ""
+	plusLine := ""
 	seq := new(strings.Builder)
 	quality := new(strings.Builder)
 	for br.Scan() {
@@ -36,9 +36,9 @@ func Read(r io.Reader, n uint, f sequence.Generator) ([]Interface, error) {
 
 			// Line 3: Header (should match Line 1 above)
 			br.Scan()
-			header2 = strings.TrimSpace(br.Text())
-			if header[0] == FastqPreQualityHeaderPrefix {
-				if header2[1:] != header {
+			plusLine = strings.TrimSpace(br.Text())
+			if plusLine[0] == FastqPreQualityHeaderPrefix {
+				if plusLine[1:] != header {
 					return records, fmt.Errorf("first header:\n\t%q\ndid not match second header:\n\t%q",
 						header, strings.TrimSpace(br.Text()))
 				}
