@@ -11,7 +11,17 @@ var _ Interface = new(Dna)
 
 // Dna is a Fasta containing a DNA sequence
 type Dna struct {
-	*Struct
+	s *Struct
+}
+
+// Header is the header line
+func (x *Dna) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *Dna) Sequence() string {
+	return x.s.Sequence()
 }
 
 // ReadDna reads in a FASTA file that should contain only valid Dna letters

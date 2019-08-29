@@ -11,7 +11,17 @@ var _ Interface = new(DnaIupac)
 
 // DnaIupac is a Fasta containing a DnaIupac sequence
 type DnaIupac struct {
-	*Struct
+	s *Struct
+}
+
+// Header is the header line
+func (x *DnaIupac) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *DnaIupac) Sequence() string {
+	return x.s.Sequence()
 }
 
 // ReadDnaIupac reads in a FASTA file that should contain only valid DnaIupac letters

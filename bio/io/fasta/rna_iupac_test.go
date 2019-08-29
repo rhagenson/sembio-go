@@ -2,7 +2,9 @@ package fasta_test
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 	"testing"
 
@@ -71,4 +73,50 @@ func TestMultiRnaIupac(t *testing.T) {
 		),
 	)
 	properties.TestingRun(t)
+}
+
+func ExampleRnaIupac() {
+	x, err := os.Open("./testdata/rna_iupac.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadRnaIupac(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n%s\n", f.Header(), f.Sequence())
+	// Output:
+	// >Generated RNA IUPAC #1
+	// YHKWMMUKUASCWGWCGCRNHGNDHM-RUNCYUGWCDMDBWDVVAYUCAHAUYSMKAHMCABASMVRMMKSSVM-CYUYVUYBRVCWKBGWAMWVNHAUCWMCYMGS--WBAAUAHVKWGRKMRUBRVHDDYUBDCRKAHSHRYBUR-SSBAYUKUCMBSSHBYCNGHKNUNWAUUSABMUYYDBBMKVBYGHMYSRCVK
+}
+
+func ExampleRnaIupac_Header() {
+	x, err := os.Open("./testdata/rna_iupac.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadRnaIupac(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n", f.Header())
+	// Output:
+	// >Generated RNA IUPAC #1
+}
+
+func ExampleRnaIupac_Sequence() {
+	x, err := os.Open("./testdata/rna_iupac.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadRnaIupac(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n", f.Sequence())
+	// Output:
+	// YHKWMMUKUASCWGWCGCRNHGNDHM-RUNCYUGWCDMDBWDVVAYUCAHAUYSMKAHMCABASMVRMMKSSVM-CYUYVUYBRVCWKBGWAMWVNHAUCWMCYMGS--WBAAUAHVKWGRKMRUBRVHDDYUBDCRKAHSHRYBUR-SSBAYUKUCMBSSHBYCNGHKNUNWAUUSABMUYYDBBMKVBYGHMYSRCVK
 }

@@ -2,7 +2,9 @@ package fasta_test
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 	"testing"
 
@@ -71,4 +73,50 @@ func TestMultiRna(t *testing.T) {
 		),
 	)
 	properties.TestingRun(t)
+}
+
+func ExampleRna() {
+	x, err := os.Open("./testdata/rna.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadRna(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n%s\n", f.Header(), f.Sequence())
+	// Output:
+	// >Generated RNA #1
+	// UGAUGCAUGAUAACUACAUGCCUAUAGUUAGUGAAGGAAGGCUGUUCCACAUUGACCGUGCUGCGUACAGAUUCACUGGGUUGAGCAACCCAACGAGGUAGUGUAUGUUGGUUAGUCUAGGAACCCGGUCUCGUGUCGAUGUUUGGGGGGUCGCCGUAAGUAGAAAAUUUCGGUCGAGAUAUCCUUCCAGCUUUUAUCCG
+}
+
+func ExampleRna_Header() {
+	x, err := os.Open("./testdata/rna.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadRna(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n", f.Header())
+	// Output:
+	// >Generated RNA #1
+}
+
+func ExampleRna_Sequence() {
+	x, err := os.Open("./testdata/rna.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadRna(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n", f.Sequence())
+	// Output:
+	// UGAUGCAUGAUAACUACAUGCCUAUAGUUAGUGAAGGAAGGCUGUUCCACAUUGACCGUGCUGCGUACAGAUUCACUGGGUUGAGCAACCCAACGAGGUAGUGUAUGUUGGUUAGUCUAGGAACCCGGUCUCGUGUCGAUGUUUGGGGGGUCGCCGUAAGUAGAAAAUUUCGGUCGAGAUAUCCUUCCAGCUUUUAUCCG
 }

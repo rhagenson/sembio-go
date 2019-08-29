@@ -11,7 +11,17 @@ var _ Interface = new(Rna)
 
 // Rna is a Fasta containing a Rna sequence
 type Rna struct {
-	*Struct
+	s *Struct
+}
+
+// Header is the header line
+func (x *Rna) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *Rna) Sequence() string {
+	return x.s.Sequence()
 }
 
 // ReadRna reads in a FASTA file that should contain only valid Rna letters

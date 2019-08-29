@@ -11,7 +11,17 @@ var _ Interface = new(Protein)
 
 // Protein is a Fasta containing a Protein sequence
 type Protein struct {
-	*Struct
+	s *Struct
+}
+
+// Header is the header line
+func (x *Protein) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *Protein) Sequence() string {
+	return x.s.Sequence()
 }
 
 // ReadProtein reads in a FASTA file that should contain only valid Protein letters

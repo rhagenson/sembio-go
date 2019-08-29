@@ -2,7 +2,9 @@ package fasta_test
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 	"testing"
 
@@ -76,4 +78,50 @@ func TestMultiDna(t *testing.T) {
 		),
 	)
 	properties.TestingRun(t)
+}
+
+func ExampleDna() {
+	x, err := os.Open("./testdata/dna.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadDna(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n%s\n", f.Header(), f.Sequence())
+	// Output:
+	// >Generated DNA #1
+	// TTCGGCCGAAGGCGCCCTCAGTGTATCTATTAAGCGATTGGAAGTTGCTTTACTCAGTCGCAGGTTAATTAATCCCTTGTGCTGTGTCCACCAAAGTTAGGAGGTCAATTTCCCTGTTGTTTCCGGAACTCAGGAAACAGTCTACGCTTGGCATCTTACTGTGCGTACAAATCTTTGCTAAAGAACTAAACTTCTGGCGA
+}
+
+func ExampleDna_Header() {
+	x, err := os.Open("./testdata/dna.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadDna(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n", f.Header())
+	// Output:
+	// >Generated DNA #1
+}
+
+func ExampleDna_Sequence() {
+	x, err := os.Open("./testdata/dna.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadDna(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n", f.Sequence())
+	// Output:
+	// TTCGGCCGAAGGCGCCCTCAGTGTATCTATTAAGCGATTGGAAGTTGCTTTACTCAGTCGCAGGTTAATTAATCCCTTGTGCTGTGTCCACCAAAGTTAGGAGGTCAATTTCCCTGTTGTTTCCGGAACTCAGGAAACAGTCTACGCTTGGCATCTTACTGTGCGTACAAATCTTTGCTAAAGAACTAAACTTCTGGCGA
 }

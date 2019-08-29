@@ -11,7 +11,17 @@ var _ Interface = new(ProteinGapped)
 
 // ProteinGapped is a Fasta containing a ProteinGapped sequence
 type ProteinGapped struct {
-	*Struct
+	s *Struct
+}
+
+// Header is the header line
+func (x *ProteinGapped) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *ProteinGapped) Sequence() string {
+	return x.s.Sequence()
 }
 
 // ReadProteinGapped reads in a FASTA file that should contain only valid ProteinGapped letters

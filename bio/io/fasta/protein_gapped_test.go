@@ -2,7 +2,9 @@ package fasta_test
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 	"testing"
 
@@ -71,4 +73,50 @@ func TestMultiProteinGapped(t *testing.T) {
 		),
 	)
 	properties.TestingRun(t)
+}
+
+func ExampleProteinGapped() {
+	x, err := os.Open("./testdata/protein_gapped.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadProteinGapped(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n%s\n", f.Header(), f.Sequence())
+	// Output:
+	// >Generated Protein Gapped #1
+	// HEWKEYFVQKELDPT---LYCWYCLFWAMCVWRHIITWAF-HPMHHFNAHGQAGKMMIYTVAFFVSTTIWMVHTRGH-AMPFKPHWCNQYSGAIYKYPYP-LYNCSCGHDGWLCQGHRATQFTLNHYTFWIEPDLPM-MAGYNGTHTSARNSTKWYQDMA-RPHREIFQQMKQTSIMDTYQKWTYRKNNAIKCSQRM-QI
+}
+
+func ExampleProteinGapped_Header() {
+	x, err := os.Open("./testdata/protein_gapped.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadProteinGapped(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n", f.Header())
+	// Output:
+	// >Generated Protein Gapped #1
+}
+
+func ExampleProteinGapped_Sequence() {
+	x, err := os.Open("./testdata/protein_gapped.fasta")
+	if err != nil {
+		panic(err)
+	}
+	f, err := fasta.ReadProteinGapped(x)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s\n", f.Sequence())
+	// Output:
+	// HEWKEYFVQKELDPT---LYCWYCLFWAMCVWRHIITWAF-HPMHHFNAHGQAGKMMIYTVAFFVSTTIWMVHTRGH-AMPFKPHWCNQYSGAIYKYPYP-LYNCSCGHDGWLCQGHRATQFTLNHYTFWIEPDLPM-MAGYNGTHTSARNSTKWYQDMA-RPHREIFQQMKQTSIMDTYQKWTYRKNNAIKCSQRM-QI
 }
