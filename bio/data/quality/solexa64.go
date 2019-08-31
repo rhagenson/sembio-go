@@ -1,4 +1,4 @@
-package fastq
+package quality
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ const (
 )
 
 // Solexa64 takes the single-byte ASCII character used to represent
-// quality score in Solexa fastq files and returns the associated
+// quality score in Solexa qual files and returns the associated
 // quality score and nil error.
 // Otherwise it returns an zero score and error.
 func Solexa64(char byte) (int8, error) {

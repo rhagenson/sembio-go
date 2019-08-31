@@ -1,4 +1,4 @@
-package fastq
+package quality
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ const (
 )
 
 // SangerPhred33 takes the single-byte ASCII character used to represent
-// quality score in Sanger fastq files and returns the associated
+// quality score in Sanger qual files and returns the associated
 // quality score and nil error.
 // Otherwise it returns an zero score and error.
 func SangerPhred33(char byte) (int8, error) {
@@ -32,7 +32,7 @@ func SangerPhred33(char byte) (int8, error) {
 }
 
 // IlluminaPhred33 takes the single-byte ASCII character used to represent
-// quality score in Sanger fastq files and returns the associated
+// quality score in Sanger qual files and returns the associated
 // quality score and nil error.
 // Otherwise it returns an zero score and error.
 func IlluminaPhred33(char byte) (int8, error) {

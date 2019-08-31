@@ -1,4 +1,4 @@
-package fastq
+package quality
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ const (
 )
 
 // Illumina64V13 takes the single-byte ASCII character used to represent
-// quality score in Illumina fastq files and returns the associated
+// quality score in Illumina qual files and returns the associated
 // quality score and nil error.
 // Otherwise it returns an zero score and error.
 func Illumina64V13(char byte) (int8, error) {
@@ -32,7 +32,7 @@ func Illumina64V13(char byte) (int8, error) {
 }
 
 // Illumina64V15 takes the single-byte ASCII character used to represent
-// quality score in Illumina fastq files and returns the associated
+// quality score in Illumina qual files and returns the associated
 // quality score and nil error.
 // Otherwise it returns an zero score and error.
 // Illumina+64 (v1.5) handles the values [0,2] the following way:

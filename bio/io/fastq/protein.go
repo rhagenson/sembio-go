@@ -11,7 +11,7 @@ var _ Interface = new(Protein)
 
 // Protein is a FASTQ containing a Protein sequence
 type Protein struct {
-	*Struct
+	s *Struct
 }
 
 // ReadProtein reads in a FASTQ file that should contain only valid Protein letters
@@ -32,4 +32,19 @@ func ReadMultiProtein(r io.ReadCloser) ([]Protein, error) {
 		records[i] = Protein{entry.(*Struct)}
 	}
 	return records, err
+}
+
+// Header is the header line
+func (x *Protein) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *Protein) Sequence() string {
+	return x.s.Sequence()
+}
+
+// Quality is the quality line
+func (x *Protein) Quality() string {
+	return x.s.Quality()
 }

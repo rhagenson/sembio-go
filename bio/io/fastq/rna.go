@@ -11,7 +11,7 @@ var _ Interface = new(Rna)
 
 // Rna is a FASTQ containing a Rna sequence
 type Rna struct {
-	*Struct
+	s *Struct
 }
 
 // ReadRna reads in a FASTQ file that should contain only valid Rna letters
@@ -32,4 +32,19 @@ func ReadMultiRna(r io.ReadCloser) ([]Rna, error) {
 		records[i] = Rna{entry.(*Struct)}
 	}
 	return records, err
+}
+
+// Header is the header line
+func (x *Rna) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *Rna) Sequence() string {
+	return x.s.Sequence()
+}
+
+// Quality is the quality line
+func (x *Rna) Quality() string {
+	return x.s.Quality()
 }

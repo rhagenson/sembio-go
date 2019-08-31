@@ -11,7 +11,7 @@ var _ Interface = new(Dna)
 
 // Dna is a FASTQ containing a DNA sequence
 type Dna struct {
-	*Struct
+	s *Struct
 }
 
 // ReadDna reads in a FASTQ file that should contain only valid Dna letters
@@ -32,4 +32,19 @@ func ReadMultiDna(r io.ReadCloser) ([]Dna, error) {
 		records[i] = Dna{entry.(*Struct)}
 	}
 	return records, err
+}
+
+// Header is the header line
+func (x *Dna) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *Dna) Sequence() string {
+	return x.s.Sequence()
+}
+
+// Quality is the quality line
+func (x *Dna) Quality() string {
+	return x.s.Quality()
 }

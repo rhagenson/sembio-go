@@ -11,7 +11,7 @@ var _ Interface = new(ProteinGapped)
 
 // ProteinGapped is a FASTQ containing a ProteinGapped sequence
 type ProteinGapped struct {
-	*Struct
+	s *Struct
 }
 
 // ReadProteinGapped reads in a FASTQ file that should contain only valid ProteinGapped letters
@@ -32,4 +32,19 @@ func ReadMultiProteinGapped(r io.ReadCloser) ([]ProteinGapped, error) {
 		records[i] = ProteinGapped{entry.(*Struct)}
 	}
 	return records, err
+}
+
+// Header is the header line
+func (x *ProteinGapped) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *ProteinGapped) Sequence() string {
+	return x.s.Sequence()
+}
+
+// Quality is the quality line
+func (x *ProteinGapped) Quality() string {
+	return x.s.Quality()
 }

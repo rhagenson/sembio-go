@@ -11,7 +11,7 @@ var _ Interface = new(RnaIupac)
 
 // RnaIupac is a FASTQ containing a RnaIupac sequence
 type RnaIupac struct {
-	*Struct
+	s *Struct
 }
 
 // ReadRnaIupac reads in a FASTQ file that should contain only valid RnaIupac letters
@@ -32,4 +32,19 @@ func ReadMultiRnaIupac(r io.ReadCloser) ([]RnaIupac, error) {
 		records[i] = RnaIupac{entry.(*Struct)}
 	}
 	return records, err
+}
+
+// Header is the header line
+func (x *RnaIupac) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *RnaIupac) Sequence() string {
+	return x.s.Sequence()
+}
+
+// Quality is the quality line
+func (x *RnaIupac) Quality() string {
+	return x.s.Quality()
 }

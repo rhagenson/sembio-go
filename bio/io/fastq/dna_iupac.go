@@ -11,7 +11,7 @@ var _ Interface = new(DnaIupac)
 
 // DnaIupac is a FASTQ containing a DnaIupac sequence
 type DnaIupac struct {
-	*Struct
+	s *Struct
 }
 
 // ReadDnaIupac reads in a FASTQ file that should contain only valid DnaIupac letters
@@ -32,4 +32,19 @@ func ReadMultiDnaIupac(r io.ReadCloser) ([]DnaIupac, error) {
 		records[i] = DnaIupac{entry.(*Struct)}
 	}
 	return records, err
+}
+
+// Header is the header line
+func (x *DnaIupac) Header() string {
+	return x.s.Header()
+}
+
+// Sequence is the body lines with newlines removed
+func (x *DnaIupac) Sequence() string {
+	return x.s.Sequence()
+}
+
+// Quality is the quality line
+func (x *DnaIupac) Quality() string {
+	return x.s.Quality()
 }

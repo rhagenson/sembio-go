@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/bio-ext/bio-go/bio/alphabet"
+	"github.com/bio-ext/bio-go/bio/data/quality"
 )
 
 // TestGenFastq generates a random valid FASTQ
@@ -21,7 +22,7 @@ func TestGenFastq(seed int64, n uint, a alphabet.Interface) []byte {
 	header := string(FastqHeaderPrefix) + "EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG"
 	sequence := ""
 	repeatHeader := string(FastqPreQualityHeaderPrefix) + header[1:]
-	quality := ""
+	qualityLine := ""
 
 	b := make([]byte, linelen)
 	for i := range b {
@@ -29,14 +30,14 @@ func TestGenFastq(seed int64, n uint, a alphabet.Interface) []byte {
 	}
 	sequence = string(b)
 
-	minQual := int(MinPhred33)
-	maxQual := int(MaxIlluminaPhred33)
+	minQual := int(quality.MinPhred33)
+	maxQual := int(quality.MaxIlluminaPhred33)
 	for i := range b {
 		b[i] = byte(rand.Intn(maxQual-minQual) + minQual)
 	}
-	quality = string(b)
+	qualityLine = string(b)
 
-	record := strings.Join([]string{header, sequence, repeatHeader, quality}, "\n")
+	record := strings.Join([]string{header, sequence, repeatHeader, qualityLine}, "\n")
 
 	return []byte(record)
 }
