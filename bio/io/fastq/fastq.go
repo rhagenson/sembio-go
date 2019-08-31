@@ -1,7 +1,7 @@
 package fastq
 
 import (
-	"github.com/bio-ext/bio-go/bio/io/fasta"
+	"github.com/bio-ext/bio-go/bio/io/fasta/base"
 	"github.com/bio-ext/bio-go/bio/sequence"
 )
 
@@ -9,14 +9,14 @@ var _ Interface = new(Struct)
 
 // Struct is the generalization of four-line FASTQ format
 type Struct struct {
-	f       fasta.Struct
+	f       *base.Struct
 	quality string
 }
 
 // New is an Struct generator
 func New(header, quality string, seq sequence.Interface) *Struct {
 	return &Struct{
-		f:       *fasta.New(header, seq),
+		f:       base.New(header, seq),
 		quality: quality,
 	}
 }
