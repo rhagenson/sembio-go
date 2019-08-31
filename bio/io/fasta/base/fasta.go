@@ -1,10 +1,11 @@
-package fasta
+package base
 
 import (
+	"github.com/bio-ext/bio-go/bio/io/fasta"
 	"github.com/bio-ext/bio-go/bio/sequence"
 )
 
-var _ Interface = new(Struct)
+var _ fasta.Interface = new(Struct)
 
 // Struct is the generalization of two-line FASTA format
 type Struct struct {

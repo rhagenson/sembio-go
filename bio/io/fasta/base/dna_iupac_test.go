@@ -1,4 +1,4 @@
-package fasta_test
+package base_test
 
 import (
 	"bytes"
@@ -10,25 +10,26 @@ import (
 
 	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
 	"github.com/bio-ext/bio-go/bio/io/fasta"
+	"github.com/bio-ext/bio-go/bio/io/fasta/base"
 	"github.com/bio-ext/bio-go/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
-func TestProteinGapped(t *testing.T) {
+func TestDnaIupac(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadProteinGapped removes newline characters in body",
+	properties.Property("ReadDnaIupac removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenFasta(
 					test.Seed,
 					n,
-					hashmap.NewProteinGapped(),
+					hashmap.NewDnaIupac(),
 				)
-				f, err := fasta.ReadProteinGapped(ioutil.NopCloser(bytes.NewReader(r)))
+				f, err := base.ReadDnaIupac(ioutil.NopCloser(bytes.NewReader(r)))
 				if strings.Count(f.Sequence(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false
@@ -41,20 +42,20 @@ func TestProteinGapped(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestMultiProteinGapped(t *testing.T) {
+func TestMultiDnaIupac(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadMultiProteinGapped removes newline characters in body",
+	properties.Property("ReadMultiDnaIupac removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenMultiFasta(
 					test.Seed,
 					n,
 					10,
-					hashmap.NewProteinGapped(),
+					hashmap.NewDnaIupac(),
 				)
-				fs, err := fasta.ReadMultiProteinGapped(ioutil.NopCloser(bytes.NewReader(r)))
+				fs, err := base.ReadMultiDnaIupac(ioutil.NopCloser(bytes.NewReader(r)))
 				for _, f := range fs {
 					switch {
 					case strings.Count(f.Sequence(), "\n") > 1:
@@ -75,48 +76,48 @@ func TestMultiProteinGapped(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func ExampleProteinGapped() {
-	x, err := os.Open("./testdata/protein_gapped.fasta")
+func ExampleDnaIupac() {
+	x, err := os.Open("../testdata/dna_iupac.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadProteinGapped(x)
+	f, err := base.ReadDnaIupac(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n%s\n", f.Header(), f.Sequence())
 	// Output:
-	// >Generated Protein Gapped #1
-	// HEWKEYFVQKELDPT---LYCWYCLFWAMCVWRHIITWAF-HPMHHFNAHGQAGKMMIYTVAFFVSTTIWMVHTRGH-AMPFKPHWCNQYSGAIYKYPYP-LYNCSCGHDGWLCQGHRATQFTLNHYTFWIEPDLPM-MAGYNGTHTSARNSTKWYQDMA-RPHREIFQQMKQTSIMDTYQKWTYRKNNAIKCSQRM-QI
+	// >Generated DNA IUPAC #1
+	// YHKWMMTKTASCWGWCGCRNHGNDHM-RTNCYTGWCDMDBWDVVAYTCAHATYSMKAHMCABASMVRMMKSSVM-CYTYVTYBRVCWKBGWAMWVNHATCWMCYMGS--WBAATAHVKWGRKMRTBRVHDDYTBDCRKAHSHRYBTR-SSBAYTKTCMBSSHBYCNGHKNTNWATTSABMTYYDBBMKVBYGHMYSRCVK
 }
 
-func ExampleProteinGapped_Header() {
-	x, err := os.Open("./testdata/protein_gapped.fasta")
+func ExampleDnaIupac_Header() {
+	x, err := os.Open("../testdata/dna_iupac.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadProteinGapped(x)
+	f, err := base.ReadDnaIupac(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n", f.Header())
 	// Output:
-	// >Generated Protein Gapped #1
+	// >Generated DNA IUPAC #1
 }
 
-func ExampleProteinGapped_Sequence() {
-	x, err := os.Open("./testdata/protein_gapped.fasta")
+func ExampleDnaIupac_Sequence() {
+	x, err := os.Open("../testdata/dna_iupac.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadProteinGapped(x)
+	f, err := base.ReadDnaIupac(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n", f.Sequence())
 	// Output:
-	// HEWKEYFVQKELDPT---LYCWYCLFWAMCVWRHIITWAF-HPMHHFNAHGQAGKMMIYTVAFFVSTTIWMVHTRGH-AMPFKPHWCNQYSGAIYKYPYP-LYNCSCGHDGWLCQGHRATQFTLNHYTFWIEPDLPM-MAGYNGTHTSARNSTKWYQDMA-RPHREIFQQMKQTSIMDTYQKWTYRKNNAIKCSQRM-QI
+	// YHKWMMTKTASCWGWCGCRNHGNDHM-RTNCYTGWCDMDBWDVVAYTCAHATYSMKAHMCABASMVRMMKSSVM-CYTYVTYBRVCWKBGWAMWVNHATCWMCYMGS--WBAATAHVKWGRKMRTBRVHDDYTBDCRKAHSHRYBTR-SSBAYTKTCMBSSHBYCNGHKNTNWATTSABMTYYDBBMKVBYGHMYSRCVK
 }

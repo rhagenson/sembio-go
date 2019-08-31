@@ -1,13 +1,13 @@
-package fasta
+package base
 
 import (
 	"io"
 
-	"github.com/bio-ext/bio-go/bio/sequence"
+	"github.com/bio-ext/bio-go/bio/io/fasta"
 	"github.com/bio-ext/bio-go/bio/sequence/immutable"
 )
 
-var _ Interface = new(Protein)
+var _ fasta.Interface = new(Protein)
 
 // Protein is a Fasta containing a Protein sequence
 type Protein struct {
@@ -26,16 +26,18 @@ func (x *Protein) Sequence() string {
 
 // ReadProtein reads in a FASTA file that should contain only valid Protein letters
 func ReadProtein(r io.ReadCloser) (Protein, error) {
-	entry, err := ReadSingle(r, func(s string) (sequence.Interface, error) {
-		return immutable.NewProtein(s)
+	entry, err := fasta.ReadSingle(r, func(head, body string) (fasta.Interface, error) {
+		seq, err := immutable.NewProtein(body)
+		return New(head, seq), err
 	})
 	return Protein{entry.(*Struct)}, err
 }
 
 // ReadMultiProtein reads in a multi-record FASTA file that should contain only valid Protein letters
 func ReadMultiProtein(r io.ReadCloser) ([]Protein, error) {
-	entries, err := ReadMulti(r, func(s string) (sequence.Interface, error) {
-		return immutable.NewProtein(s)
+	entries, err := fasta.ReadMulti(r, func(head, body string) (fasta.Interface, error) {
+		seq, err := immutable.NewProtein(body)
+		return New(head, seq), err
 	})
 	records := make([]Protein, len(entries))
 	for i, entry := range entries {

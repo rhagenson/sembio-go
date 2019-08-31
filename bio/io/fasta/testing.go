@@ -24,7 +24,7 @@ func TestGenFasta(seed int64, n uint, a alphabet.Interface) []byte {
 	for i := uint(0); i < tot; i++ {
 		switch {
 		case i == 0:
-			b[i] = FastaHeaderPrefix
+			b[i] = HeaderPrefix
 		case i%linelen == 0:
 			b[i] = '\n'
 		default:

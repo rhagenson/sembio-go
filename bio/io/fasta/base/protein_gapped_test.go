@@ -1,4 +1,4 @@
-package fasta_test
+package base_test
 
 import (
 	"bytes"
@@ -10,35 +10,32 @@ import (
 
 	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
 	"github.com/bio-ext/bio-go/bio/io/fasta"
+
+	"github.com/bio-ext/bio-go/bio/io/fasta/base"
 	"github.com/bio-ext/bio-go/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
-func TestDna(t *testing.T) {
+func TestProteinGapped(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadDna removes newline characters in body",
+	properties.Property("ReadProteinGapped removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenFasta(
 					test.Seed,
 					n,
-					hashmap.NewDna(),
+					hashmap.NewProteinGapped(),
 				)
-				f, err := fasta.ReadDna(ioutil.NopCloser(bytes.NewReader(r)))
-				switch {
-				case strings.Count(f.Sequence(), "\n") > 1:
+				f, err := base.ReadProteinGapped(ioutil.NopCloser(bytes.NewReader(r)))
+				if strings.Count(f.Sequence(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false
-				case err != nil:
-					t.Errorf("error in parsing input: %v", err)
-					return false
-				default:
-					return true
 				}
+				return true
 			},
 			gen.UIntRange(1, 100),
 		),
@@ -46,20 +43,20 @@ func TestDna(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestMultiDna(t *testing.T) {
+func TestMultiProteinGapped(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadMultiDna removes newline characters in body",
+	properties.Property("ReadMultiProteinGapped removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenMultiFasta(
 					test.Seed,
 					n,
 					10,
-					hashmap.NewDna(),
+					hashmap.NewProteinGapped(),
 				)
-				fs, err := fasta.ReadMultiDna(ioutil.NopCloser(bytes.NewReader(r)))
+				fs, err := base.ReadMultiProteinGapped(ioutil.NopCloser(bytes.NewReader(r)))
 				for _, f := range fs {
 					switch {
 					case strings.Count(f.Sequence(), "\n") > 1:
@@ -80,48 +77,48 @@ func TestMultiDna(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func ExampleDna() {
-	x, err := os.Open("./testdata/dna.fasta")
+func ExampleProteinGapped() {
+	x, err := os.Open("../testdata/protein_gapped.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadDna(x)
+	f, err := base.ReadProteinGapped(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n%s\n", f.Header(), f.Sequence())
 	// Output:
-	// >Generated DNA #1
-	// TTCGGCCGAAGGCGCCCTCAGTGTATCTATTAAGCGATTGGAAGTTGCTTTACTCAGTCGCAGGTTAATTAATCCCTTGTGCTGTGTCCACCAAAGTTAGGAGGTCAATTTCCCTGTTGTTTCCGGAACTCAGGAAACAGTCTACGCTTGGCATCTTACTGTGCGTACAAATCTTTGCTAAAGAACTAAACTTCTGGCGA
+	// >Generated Protein Gapped #1
+	// HEWKEYFVQKELDPT---LYCWYCLFWAMCVWRHIITWAF-HPMHHFNAHGQAGKMMIYTVAFFVSTTIWMVHTRGH-AMPFKPHWCNQYSGAIYKYPYP-LYNCSCGHDGWLCQGHRATQFTLNHYTFWIEPDLPM-MAGYNGTHTSARNSTKWYQDMA-RPHREIFQQMKQTSIMDTYQKWTYRKNNAIKCSQRM-QI
 }
 
-func ExampleDna_Header() {
-	x, err := os.Open("./testdata/dna.fasta")
+func ExampleProteinGapped_Header() {
+	x, err := os.Open("../testdata/protein_gapped.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadDna(x)
+	f, err := base.ReadProteinGapped(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n", f.Header())
 	// Output:
-	// >Generated DNA #1
+	// >Generated Protein Gapped #1
 }
 
-func ExampleDna_Sequence() {
-	x, err := os.Open("./testdata/dna.fasta")
+func ExampleProteinGapped_Sequence() {
+	x, err := os.Open("../testdata/protein_gapped.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadDna(x)
+	f, err := base.ReadProteinGapped(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n", f.Sequence())
 	// Output:
-	// TTCGGCCGAAGGCGCCCTCAGTGTATCTATTAAGCGATTGGAAGTTGCTTTACTCAGTCGCAGGTTAATTAATCCCTTGTGCTGTGTCCACCAAAGTTAGGAGGTCAATTTCCCTGTTGTTTCCGGAACTCAGGAAACAGTCTACGCTTGGCATCTTACTGTGCGTACAAATCTTTGCTAAAGAACTAAACTTCTGGCGA
+	// HEWKEYFVQKELDPT---LYCWYCLFWAMCVWRHIITWAF-HPMHHFNAHGQAGKMMIYTVAFFVSTTIWMVHTRGH-AMPFKPHWCNQYSGAIYKYPYP-LYNCSCGHDGWLCQGHRATQFTLNHYTFWIEPDLPM-MAGYNGTHTSARNSTKWYQDMA-RPHREIFQQMKQTSIMDTYQKWTYRKNNAIKCSQRM-QI
 }

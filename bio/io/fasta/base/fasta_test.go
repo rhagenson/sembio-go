@@ -1,9 +1,10 @@
-package fasta_test
+package base_test
 
 import (
 	"testing"
 
-	"github.com/bio-ext/bio-go/bio/io/fasta"
+	"github.com/bio-ext/bio-go/bio/io/fasta/base"
+
 	"github.com/bio-ext/bio-go/bio/sequence/immutable"
 	"github.com/bio-ext/bio-go/bio/test"
 	"github.com/leanovate/gopter"
@@ -18,7 +19,7 @@ func TestStruct(t *testing.T) {
 	properties.Property("Header is the same as input",
 		prop.ForAll(
 			func(in string) bool {
-				out := fasta.New(in, nil).Header()
+				out := base.New(in, nil).Header()
 				if in != out {
 					t.Errorf("input, %q, did not match output %q", in, out)
 					return false
@@ -32,7 +33,7 @@ func TestStruct(t *testing.T) {
 		prop.ForAll(
 			func(in string) bool {
 				seq := immutable.New(in)
-				out := fasta.New("", seq).Sequence()
+				out := base.New("", seq).Sequence()
 				if in != out {
 					t.Errorf("input, %q, did not match output %q", in, out)
 					return false

@@ -1,4 +1,4 @@
-package fasta_test
+package base_test
 
 import (
 	"bytes"
@@ -10,25 +10,27 @@ import (
 
 	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
 	"github.com/bio-ext/bio-go/bio/io/fasta"
+	"github.com/bio-ext/bio-go/bio/io/fasta/base"
+
 	"github.com/bio-ext/bio-go/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
-func TestRnaIupac(t *testing.T) {
+func TestProtein(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadRnaIupac removes newline characters in body",
+	properties.Property("ReadProtein removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenFasta(
 					test.Seed,
 					n,
-					hashmap.NewRnaIupac(),
+					hashmap.NewProtein(),
 				)
-				f, err := fasta.ReadRnaIupac(ioutil.NopCloser(bytes.NewReader(r)))
+				f, err := base.ReadProtein(ioutil.NopCloser(bytes.NewReader(r)))
 				if strings.Count(f.Sequence(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false
@@ -41,20 +43,20 @@ func TestRnaIupac(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestMultiRnaIupac(t *testing.T) {
+func TestMultiProtein(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadMultiRnaIupac removes newline characters in body",
+	properties.Property("ReadMultiProtein removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenMultiFasta(
 					test.Seed,
 					n,
 					10,
-					hashmap.NewRnaIupac(),
+					hashmap.NewProtein(),
 				)
-				fs, err := fasta.ReadMultiRnaIupac(ioutil.NopCloser(bytes.NewReader(r)))
+				fs, err := base.ReadMultiProtein(ioutil.NopCloser(bytes.NewReader(r)))
 				for _, f := range fs {
 					switch {
 					case strings.Count(f.Sequence(), "\n") > 1:
@@ -75,48 +77,48 @@ func TestMultiRnaIupac(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func ExampleRnaIupac() {
-	x, err := os.Open("./testdata/rna_iupac.fasta")
+func ExampleProtein() {
+	x, err := os.Open("../testdata/protein.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadRnaIupac(x)
+	f, err := base.ReadProtein(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n%s\n", f.Header(), f.Sequence())
 	// Output:
-	// >Generated RNA IUPAC #1
-	// YHKWMMUKUASCWGWCGCRNHGNDHM-RUNCYUGWCDMDBWDVVAYUCAHAUYSMKAHMCABASMVRMMKSSVM-CYUYVUYBRVCWKBGWAMWVNHAUCWMCYMGS--WBAAUAHVKWGRKMRUBRVHDDYUBDCRKAHSHRYBUR-SSBAYUKUCMBSSHBYCNGHKNUNWAUUSABMUYYDBBMKVBYGHMYSRCVK
+	// >Generated Protein #1
+	// HEWKEYFVQKELDPTWVQLYCWYCLFWAMCVWRHIITWAFTHPMHHFNAHGQAGKMMIYTVAFFVSTTIWMVHTRGHPAMPFKPHWCNQYSGAIYKYPYPRLYNCSCGHDGWLCQGHRATQFTLNHYTFWIEPDLPMEMAGYNGTHTSARNSTKWYQDMANRPHREIFQQMKQTSIMDTYQKWTYRKNNAIKCSQRMKQI
 }
 
-func ExampleRnaIupac_Header() {
-	x, err := os.Open("./testdata/rna_iupac.fasta")
+func ExampleProtein_Header() {
+	x, err := os.Open("../testdata/protein.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadRnaIupac(x)
+	f, err := base.ReadProtein(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n", f.Header())
 	// Output:
-	// >Generated RNA IUPAC #1
+	// >Generated Protein #1
 }
 
-func ExampleRnaIupac_Sequence() {
-	x, err := os.Open("./testdata/rna_iupac.fasta")
+func ExampleProtein_Sequence() {
+	x, err := os.Open("../testdata/protein.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadRnaIupac(x)
+	f, err := base.ReadProtein(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n", f.Sequence())
 	// Output:
-	// YHKWMMUKUASCWGWCGCRNHGNDHM-RUNCYUGWCDMDBWDVVAYUCAHAUYSMKAHMCABASMVRMMKSSVM-CYUYVUYBRVCWKBGWAMWVNHAUCWMCYMGS--WBAAUAHVKWGRKMRUBRVHDDYUBDCRKAHSHRYBUR-SSBAYUKUCMBSSHBYCNGHKNUNWAUUSABMUYYDBBMKVBYGHMYSRCVK
+	// HEWKEYFVQKELDPTWVQLYCWYCLFWAMCVWRHIITWAFTHPMHHFNAHGQAGKMMIYTVAFFVSTTIWMVHTRGHPAMPFKPHWCNQYSGAIYKYPYPRLYNCSCGHDGWLCQGHRATQFTLNHYTFWIEPDLPMEMAGYNGTHTSARNSTKWYQDMANRPHREIFQQMKQTSIMDTYQKWTYRKNNAIKCSQRMKQI
 }

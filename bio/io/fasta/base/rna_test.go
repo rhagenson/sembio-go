@@ -1,4 +1,4 @@
-package fasta_test
+package base_test
 
 import (
 	"bytes"
@@ -10,25 +10,27 @@ import (
 
 	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
 	"github.com/bio-ext/bio-go/bio/io/fasta"
+	"github.com/bio-ext/bio-go/bio/io/fasta/base"
+
 	"github.com/bio-ext/bio-go/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
-func TestProtein(t *testing.T) {
+func TestRna(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadProtein removes newline characters in body",
+	properties.Property("ReadRna removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenFasta(
 					test.Seed,
 					n,
-					hashmap.NewProtein(),
+					hashmap.NewRna(),
 				)
-				f, err := fasta.ReadProtein(ioutil.NopCloser(bytes.NewReader(r)))
+				f, err := base.ReadRna(ioutil.NopCloser(bytes.NewReader(r)))
 				if strings.Count(f.Sequence(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false
@@ -41,20 +43,20 @@ func TestProtein(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestMultiProtein(t *testing.T) {
+func TestMultiRna(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadMultiProtein removes newline characters in body",
+	properties.Property("ReadMultiRna removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenMultiFasta(
 					test.Seed,
 					n,
 					10,
-					hashmap.NewProtein(),
+					hashmap.NewRna(),
 				)
-				fs, err := fasta.ReadMultiProtein(ioutil.NopCloser(bytes.NewReader(r)))
+				fs, err := base.ReadMultiRna(ioutil.NopCloser(bytes.NewReader(r)))
 				for _, f := range fs {
 					switch {
 					case strings.Count(f.Sequence(), "\n") > 1:
@@ -75,48 +77,48 @@ func TestMultiProtein(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func ExampleProtein() {
-	x, err := os.Open("./testdata/protein.fasta")
+func ExampleRna() {
+	x, err := os.Open("../testdata/rna.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadProtein(x)
+	f, err := base.ReadRna(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n%s\n", f.Header(), f.Sequence())
 	// Output:
-	// >Generated Protein #1
-	// HEWKEYFVQKELDPTWVQLYCWYCLFWAMCVWRHIITWAFTHPMHHFNAHGQAGKMMIYTVAFFVSTTIWMVHTRGHPAMPFKPHWCNQYSGAIYKYPYPRLYNCSCGHDGWLCQGHRATQFTLNHYTFWIEPDLPMEMAGYNGTHTSARNSTKWYQDMANRPHREIFQQMKQTSIMDTYQKWTYRKNNAIKCSQRMKQI
+	// >Generated RNA #1
+	// UGAUGCAUGAUAACUACAUGCCUAUAGUUAGUGAAGGAAGGCUGUUCCACAUUGACCGUGCUGCGUACAGAUUCACUGGGUUGAGCAACCCAACGAGGUAGUGUAUGUUGGUUAGUCUAGGAACCCGGUCUCGUGUCGAUGUUUGGGGGGUCGCCGUAAGUAGAAAAUUUCGGUCGAGAUAUCCUUCCAGCUUUUAUCCG
 }
 
-func ExampleProtein_Header() {
-	x, err := os.Open("./testdata/protein.fasta")
+func ExampleRna_Header() {
+	x, err := os.Open("../testdata/rna.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadProtein(x)
+	f, err := base.ReadRna(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n", f.Header())
 	// Output:
-	// >Generated Protein #1
+	// >Generated RNA #1
 }
 
-func ExampleProtein_Sequence() {
-	x, err := os.Open("./testdata/protein.fasta")
+func ExampleRna_Sequence() {
+	x, err := os.Open("../testdata/rna.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadProtein(x)
+	f, err := base.ReadRna(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n", f.Sequence())
 	// Output:
-	// HEWKEYFVQKELDPTWVQLYCWYCLFWAMCVWRHIITWAFTHPMHHFNAHGQAGKMMIYTVAFFVSTTIWMVHTRGHPAMPFKPHWCNQYSGAIYKYPYPRLYNCSCGHDGWLCQGHRATQFTLNHYTFWIEPDLPMEMAGYNGTHTSARNSTKWYQDMANRPHREIFQQMKQTSIMDTYQKWTYRKNNAIKCSQRMKQI
+	// UGAUGCAUGAUAACUACAUGCCUAUAGUUAGUGAAGGAAGGCUGUUCCACAUUGACCGUGCUGCGUACAGAUUCACUGGGUUGAGCAACCCAACGAGGUAGUGUAUGUUGGUUAGUCUAGGAACCCGGUCUCGUGUCGAUGUUUGGGGGGUCGCCGUAAGUAGAAAAUUUCGGUCGAGAUAUCCUUCCAGCUUUUAUCCG
 }

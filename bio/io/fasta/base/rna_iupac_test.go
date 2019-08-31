@@ -1,4 +1,4 @@
-package fasta_test
+package base_test
 
 import (
 	"bytes"
@@ -10,25 +10,27 @@ import (
 
 	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
 	"github.com/bio-ext/bio-go/bio/io/fasta"
+	"github.com/bio-ext/bio-go/bio/io/fasta/base"
+
 	"github.com/bio-ext/bio-go/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"
 )
 
-func TestRna(t *testing.T) {
+func TestRnaIupac(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadRna removes newline characters in body",
+	properties.Property("ReadRnaIupac removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenFasta(
 					test.Seed,
 					n,
-					hashmap.NewRna(),
+					hashmap.NewRnaIupac(),
 				)
-				f, err := fasta.ReadRna(ioutil.NopCloser(bytes.NewReader(r)))
+				f, err := base.ReadRnaIupac(ioutil.NopCloser(bytes.NewReader(r)))
 				if strings.Count(f.Sequence(), "\n") > 1 {
 					t.Errorf("body contains internal newline characters: %v", err)
 					return false
@@ -41,20 +43,20 @@ func TestRna(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func TestMultiRna(t *testing.T) {
+func TestMultiRnaIupac(t *testing.T) {
 	parameters := gopter.DefaultTestParametersWithSeed(test.Seed)
 	properties := gopter.NewProperties(parameters)
 
-	properties.Property("ReadMultiRna removes newline characters in body",
+	properties.Property("ReadMultiRnaIupac removes newline characters in body",
 		prop.ForAll(
 			func(n uint) bool {
 				r := fasta.TestGenMultiFasta(
 					test.Seed,
 					n,
 					10,
-					hashmap.NewRna(),
+					hashmap.NewRnaIupac(),
 				)
-				fs, err := fasta.ReadMultiRna(ioutil.NopCloser(bytes.NewReader(r)))
+				fs, err := base.ReadMultiRnaIupac(ioutil.NopCloser(bytes.NewReader(r)))
 				for _, f := range fs {
 					switch {
 					case strings.Count(f.Sequence(), "\n") > 1:
@@ -75,48 +77,48 @@ func TestMultiRna(t *testing.T) {
 	properties.TestingRun(t)
 }
 
-func ExampleRna() {
-	x, err := os.Open("./testdata/rna.fasta")
+func ExampleRnaIupac() {
+	x, err := os.Open("../testdata/rna_iupac.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadRna(x)
+	f, err := base.ReadRnaIupac(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n%s\n", f.Header(), f.Sequence())
 	// Output:
-	// >Generated RNA #1
-	// UGAUGCAUGAUAACUACAUGCCUAUAGUUAGUGAAGGAAGGCUGUUCCACAUUGACCGUGCUGCGUACAGAUUCACUGGGUUGAGCAACCCAACGAGGUAGUGUAUGUUGGUUAGUCUAGGAACCCGGUCUCGUGUCGAUGUUUGGGGGGUCGCCGUAAGUAGAAAAUUUCGGUCGAGAUAUCCUUCCAGCUUUUAUCCG
+	// >Generated RNA IUPAC #1
+	// YHKWMMUKUASCWGWCGCRNHGNDHM-RUNCYUGWCDMDBWDVVAYUCAHAUYSMKAHMCABASMVRMMKSSVM-CYUYVUYBRVCWKBGWAMWVNHAUCWMCYMGS--WBAAUAHVKWGRKMRUBRVHDDYUBDCRKAHSHRYBUR-SSBAYUKUCMBSSHBYCNGHKNUNWAUUSABMUYYDBBMKVBYGHMYSRCVK
 }
 
-func ExampleRna_Header() {
-	x, err := os.Open("./testdata/rna.fasta")
+func ExampleRnaIupac_Header() {
+	x, err := os.Open("../testdata/rna_iupac.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadRna(x)
+	f, err := base.ReadRnaIupac(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n", f.Header())
 	// Output:
-	// >Generated RNA #1
+	// >Generated RNA IUPAC #1
 }
 
-func ExampleRna_Sequence() {
-	x, err := os.Open("./testdata/rna.fasta")
+func ExampleRnaIupac_Sequence() {
+	x, err := os.Open("../testdata/rna_iupac.fasta")
 	if err != nil {
 		panic(err)
 	}
-	f, err := fasta.ReadRna(x)
+	f, err := base.ReadRnaIupac(x)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("%s\n", f.Sequence())
 	// Output:
-	// UGAUGCAUGAUAACUACAUGCCUAUAGUUAGUGAAGGAAGGCUGUUCCACAUUGACCGUGCUGCGUACAGAUUCACUGGGUUGAGCAACCCAACGAGGUAGUGUAUGUUGGUUAGUCUAGGAACCCGGUCUCGUGUCGAUGUUUGGGGGGUCGCCGUAAGUAGAAAAUUUCGGUCGAGAUAUCCUUCCAGCUUUUAUCCG
+	// YHKWMMUKUASCWGWCGCRNHGNDHM-RUNCYUGWCDMDBWDVVAYUCAHAUYSMKAHMCABASMVRMMKSSVM-CYUYVUYBRVCWKBGWAMWVNHAUCWMCYMGS--WBAAUAHVKWGRKMRUBRVHDDYUBDCRKAHSHRYBUR-SSBAYUKUCMBSSHBYCNGHKNUNWAUUSABMUYYDBBMKVBYGHMYSRCVK
 }
