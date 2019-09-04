@@ -15,9 +15,15 @@
 
 `bio` is a semantic Bioinformatics module that emphasizes a definitive design structure.
 
+## Installation
+
+```bash
+go get github.com/bio-ext/bio-go/...
+```
+
 ## Design Structure
 
-This module is structured in an intentional manner to build out a fat tree of ideally max depth of three where each step down the tree asks/answers a new question in the following order:
+This module is structured intentionally to form a fat tree where each step down the tree asks/answers a new question in the following order:
 
 1. _Why_ are you looking into this module? (i.e., the kind of work you are doing)
 2. _How_ are you hoping to get the job done? (i.e., do you need speed, immutability, simplicity, and so on)
@@ -34,6 +40,8 @@ Full path: `bio/sequence/immutable/dna_iupac.go` to use `immutable.NewDnaIupac(.
 This structure should promote quick searches for the _why_, _how_, and _what_ that must be answered for every project many times over.
 
 This design means that everything under a directory _should_ implement the interfaces above and inline with it in the tree; for example: everything under `bio/sequence` implements `sequence.Interface` and everything under `bio/alphabet` implements `alphabet.Interface` and so on.
+
+If more than three levels are deemed necessary the first level will represent some generic functionality, such as in the case of `bio/io/fasta/base/fasta.go` which is housed under the generic `io` then answers our three questions `fasta` (_why_), `base` (_how_), `fasta.go` (_what_).
 
 ## Documentation
 
