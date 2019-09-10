@@ -34,7 +34,7 @@ func Read(r io.Reader, n uint, f func(head, body string) (Interface, error)) ([]
 					return records, nil
 				}
 				header = ""
-				seq = new(strings.Builder)
+				seq.Reset()
 			}
 		default: // Sequence
 			seq.WriteString(line)
