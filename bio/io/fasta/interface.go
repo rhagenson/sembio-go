@@ -7,6 +7,6 @@ type Interface interface {
 	// Header is the header line (may be internally delimited)
 	Header() string
 
-	// Sequence is the sequence line with newlines removed
+	// Sequence is the sequence with newlines removed
 	Sequence() string
 }
