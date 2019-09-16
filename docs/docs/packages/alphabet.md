@@ -8,7 +8,7 @@ parent: Packages
 
 ## Alphabet
 
-All biological sequences have a finite alphabet of valid characters.
+All biological sequences have a finite alphabet of valid, orderable characters.
 In Go this translates into the following interface:
 
 ```go
