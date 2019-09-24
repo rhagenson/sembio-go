@@ -1,6 +1,8 @@
 ---
 layout: page
 title:  "IO"
+nav_order: 2
+heading_anchors: true
 parent: Packages
 has_children: true
 ---
