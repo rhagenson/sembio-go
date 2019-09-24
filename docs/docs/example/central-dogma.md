@@ -13,7 +13,7 @@ On this page we will explore the following series of steps:
 1. TOC
 {:toc}
 
-### Set up Interface
+### Set up Command Line Interface
 
 We will build this out as a command-line interface (CLI) tool. It will take two CLI options:
 
@@ -44,7 +44,7 @@ func main() {
 }
 ```
 
-The above file is just the start. It does nothing more than build the interface between the tool and the outside world by providing an `-input` flag, `-output` flag, and an error if neither is provided.
+The above file is just the start. It does nothing more than build the CLI between the tool and the outside world by providing an `-input` flag, `-output` flag, and an error if neither is provided.
 
 Running this without any input results in:
 
@@ -142,7 +142,7 @@ import (
 )
 
 func main() {
-	// Set up Interface
+	// Set up CLI
 	input := flag.String("input", "", "The input FASTA file (DNA)")
 	output := flag.String("output", "", "The output FASTA file (Protein)")
 	flag.Parse()
