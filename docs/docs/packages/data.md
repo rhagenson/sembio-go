@@ -57,7 +57,3 @@ type StopCodoner interface {
 A complete codon lookup table satisfies `Interface`.
 A codon lookup table that has no alternative name produces an empty string.
 `Translate(string) (byte, bool)` is the corresponding amino acid code and no error, or no character and an error if the codon was not found.
-
-#### Performance Optimization
-
-**Fun Go fact**: the empty struct `struct{}` does not require any memory to store which is precisely why it is used as alias for codon lookup tables under-the-hood.

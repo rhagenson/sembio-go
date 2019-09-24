@@ -37,7 +37,3 @@ Not that there does not exist a `Letters() []Letter`, if you need to get at the 
 This version of alphabet uses Go's internal hashmap to provide constant time lookup (`Contains(...string) string`) of potentially valid characters.
 `Length()` is the same as `len(...)` on the underlying map.
 `String()` is the alphabetized characters (done by sorting after iterating over all map keys)
-
-#### Performance Optimization
-
-**Fun Go fact**: the empty struct `struct{}` does not require any memory to store which is precisely why it is used as the values for our hashmap. We get constant lookup by using the hashmap, but require no additional memory to store values that we will never use.
