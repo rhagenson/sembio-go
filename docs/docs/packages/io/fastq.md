@@ -4,6 +4,7 @@ title:  "FASTQ"
 nav_order: 2
 heading_anchors: true
 parent: IO
+grand_parent: Packages
 ---
 
 ## FASTQ
