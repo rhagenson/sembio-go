@@ -67,7 +67,7 @@ import (
     "fmt"
     "os"
 
-    fa "github.com/bio-ext/bio-go/bio/io/fasta/base"
+    "github.com/bio-ext/bio-go/bio/io/fasta/base"
 )
 
 (...)
@@ -77,26 +77,22 @@ import (
         fmt.Fprintf(os.Stderr, "Could not open the input file: %s\n", err)
         os.Exit(2)
     }
-    f, err := fa.ReadMultiDna(x)
+    f, err := base.ReadMultiDna(x)
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error in reading %s: %s\n", *input, err)
         os.Exit(2)
     }
 ```
 
-The careful eye will note two decisions we have made:
+Do note: we run `base.ReadMultiDna(x)`, not `base.ReadDna(x)`.
 
-1. Using an alias for our import of FASTA readers/writers (`fa "github.com/bio-ext/bio-go/bio/io/fasta/base"`)
-2. We run `fa.ReadMultiDna(x)`, not `fa.ReadDna(x)`
-
-This first decision is so that, if in the future a new FASTA reader/writer approach is added, we can change the import and the rest of the code will already refer to the `fa` identifier rather than `base` as it would be without the alias.
-The second decision is because `fa.ReadDna(x)` would only give us a single FASTA record (the first one to be precise).
-In `bio-go`, a distinction is made between reading a record and reading all records.
-(In your own code you will likely want `fa.ReadMultiDna(x)` as we have used here. The reason for this distinction is that by definition a FASTA file _should_ only have one record, but _most_ FASTA files used today have multiple records. Blame Ryan A. Hagenson for being such a stick in the mud about this point.)
+This is because `base.ReadDna(x)` would only give us a single FASTA record (the first one to be precise).
+In `bio-go`, a distinction is made between reading a single record and reading all records.
+(In your own code you will likely want `base.ReadMultiDna(x)` as we have used here. The reason for this distinction is that by definition a FASTA file _should_ only have one record, but _most_ FASTA files used today have multiple records. Blame Ryan A. Hagenson for being such a stick in the mud about this point.)
 
 ### Translating Sequences
 
-The next step is translating the incoming FASTA records to protein. First we will allocate memory to hold the translated sequences -- we do this by making a long enough `fasta.Interface` array. Then we generate an immutable version of the underlying DNA and run the `Translate(...)` method on it with the corresponding codon table and a character of our choice to denote if a stop codon was found (here we use `~` because it is stands out visually). **Important**: Notice that we then provide a second check during the usual `err != nil` statement -- this second statement ignores errors pertaining to finding our chosen stop codon character (`~`) which is, of course, not in the standard protein alphabet.
+The next step is translating the incoming FASTA records to protein. First we will allocate memory to hold the translated sequences -- we do this by making a long enough `fasta.Interface` array. Then we generate an immutable version of the underlying DNA and run the `Translate(...)` method on it with the corresponding codon table and a character of our choice to denote if a stop codon was found (here we use `~` because it is stands out visually). **Important**: notice that we then provide a second check during the usual `err != nil` statement -- this second statement ignores errors pertaining to finding our chosen stop codon character (`~`) which is, of course, not in the standard protein alphabet.
 
 ```go
     out := make([]fasta.Interface, len(f))
@@ -108,7 +104,7 @@ The next step is translating the incoming FASTA records to protein. First we wil
             fmt.Fprintf(os.Stderr, "Error in translating sequence: %s\n%s\n", err, d.String())
             os.Exit(2)
         }
-        out[i] = fasta.Interface(fa.New(r.Header(), seq))
+        out[i] = fasta.Interface(base.New(r.Header(), seq))
     }
 ```
 
@@ -131,58 +127,58 @@ package main
 
 import (
     "flag"
-	"fmt"
-	"os"
-	"strings"
+    "fmt"
+    "os"
+    "strings"
 
-	"github.com/bio-ext/bio-go/bio/data/codon"
-	"github.com/bio-ext/bio-go/bio/io/fasta"
-	fa "github.com/bio-ext/bio-go/bio/io/fasta/base"
-	"github.com/bio-ext/bio-go/bio/sequence/immutable"
+    "github.com/bio-ext/bio-go/bio/data/codon"
+    "github.com/bio-ext/bio-go/bio/io/fasta"
+    "github.com/bio-ext/bio-go/bio/io/fasta/base"
+    "github.com/bio-ext/bio-go/bio/sequence/immutable"
 )
 
 func main() {
-	// Set up CLI
-	input := flag.String("input", "", "The input FASTA file (DNA)")
-	output := flag.String("output", "", "The output FASTA file (Protein)")
-	flag.Parse()
+    // Set up CLI
+    input := flag.String("input", "", "The input FASTA file (DNA)")
+    output := flag.String("output", "", "The output FASTA file (Protein)")
+    flag.Parse()
 
-	if *input == "" || *output == "" {
-		fmt.Fprintf(os.Stderr, "Both -input and -output are required.\n")
-		flag.Usage()
-		os.Exit(1)
-	}
+    if *input == "" || *output == "" {
+        fmt.Fprintf(os.Stderr, "Both -input and -output are required.\n")
+        flag.Usage()
+        os.Exit(1)
+    }
 
-	// Reading in FASTA with DNA
-	x, err := os.Open(*input)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not open the input file: %s\n", err)
-		os.Exit(2)
-	}
-	f, err := fa.ReadMultiDna(x)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error in reading %s: %s\n", *input, err)
-		os.Exit(2)
-	}
+    // Reading in FASTA with DNA
+    x, err := os.Open(*input)
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Could not open the input file: %s\n", err)
+        os.Exit(2)
+    }
+    f, err := base.ReadMultiDna(x)
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error in reading %s: %s\n", *input, err)
+        os.Exit(2)
+    }
 
-	// Translating Sequences
-	out := make([]fasta.Interface, len(f))
-	table := new(codon.Standard)
-	for i, r := range f {
-		d, _ := immutable.NewDna(r.Sequence())
-		seq, err := d.Translate(table, '~')
-		if err != nil && !strings.Contains(err.Error(), "~") {
-			fmt.Fprintf(os.Stderr, "Error in translating sequence: %s\n%s\n", err, d.String())
-			os.Exit(2)
-		}
-		out[i] = fasta.Interface(fa.New(r.Header(), seq))
-	}
+    // Translating Sequences
+    out := make([]fasta.Interface, len(f))
+    table := new(codon.Standard)
+    for i, r := range f {
+        d, _ := immutable.NewDna(r.Sequence())
+        seq, err := d.Translate(table, '~')
+        if err != nil && !strings.Contains(err.Error(), "~") {
+            fmt.Fprintf(os.Stderr, "Error in translating sequence: %s\n%s\n", err, d.String())
+            os.Exit(2)
+        }
+        out[i] = fasta.Interface(base.New(r.Header(), seq))
+    }
 
-	// Writing out FASTA with Protein
-	o, err := os.Create(*output)
-	defer o.Close()
-	for i := range out {
-		o.WriteString(out[i].Header() + "\n" + out[i].Sequence() + "\n")
-	}
+    // Writing out FASTA with Protein
+    o, err := os.Create(*output)
+    defer o.Close()
+    for i := range out {
+        o.WriteString(out[i].Header() + "\n" + out[i].Sequence() + "\n")
+    }
 }
 ```
