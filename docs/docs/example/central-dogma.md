@@ -32,6 +32,7 @@ import (
 )
 
 func main() {
+    // Set up CLI
     input := flag.String("input", "", "The input FASTA file (DNA)")
     output := flag.String("output", "", "The output FASTA file (Protein)")
     flag.Parse()
@@ -72,12 +73,13 @@ import (
 
 (...)
 
-    x, err := os.Open(*input)
+    // Reading in FASTA with DNA
+    inFile, err := os.Open(*input)
     if err != nil {
         fmt.Fprintf(os.Stderr, "Could not open the input file: %s\n", err)
         os.Exit(2)
     }
-    f, err := base.ReadMultiDna(x)
+    records, err := base.ReadMultiDna(inFile)
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error in reading %s: %s\n", *input, err)
         os.Exit(2)
@@ -95,16 +97,17 @@ In `bio-go`, a distinction is made between reading a single record and reading a
 The next step is translating the incoming FASTA records to protein. First we will allocate memory to hold the translated sequences -- we do this by making a long enough `fasta.Interface` array. Then we generate an immutable version of the underlying DNA and run the `Translate(...)` method on it with the corresponding codon table and a character of our choice to denote if a stop codon was found (here we use `~` because it is stands out visually). **Important**: notice that we then provide a second check during the usual `err != nil` statement -- this second statement ignores errors pertaining to finding our chosen stop codon character (`~`) which is, of course, not in the standard protein alphabet.
 
 ```go
-    out := make([]fasta.Interface, len(f))
+    // Translating Sequences
+    proteins := make([]fasta.Interface, len(records))
     table := new(codon.Standard)
-    for i, r := range f {
-        d, _ := immutable.NewDna(r.Sequence())
-        seq, err := d.Translate(table, '~')
+    for i, r := range records {
+        dna, _ := immutable.NewDna(r.Sequence())
+        seq, err := dna.Translate(table, '~')
         if err != nil && !strings.Contains(err.Error(), "~") {
-            fmt.Fprintf(os.Stderr, "Error in translating sequence: %s\n%s\n", err, d.String())
+            fmt.Fprintf(os.Stderr, "Error in translating sequence: %s\n%s\n", err, dna.String())
             os.Exit(2)
         }
-        out[i] = fasta.Interface(base.New(r.Header(), seq))
+        proteins[i] = fasta.Interface(base.New(r.Header(), seq))
     }
 ```
 
@@ -113,10 +116,11 @@ The next step is translating the incoming FASTA records to protein. First we wil
 Lastly, we write out the protein sequences to a FASTA based on the output name provided.
 
 ```go
-    o, err := os.Create(*output)
-    defer o.Close()
-    for i := range out {
-        o.WriteString(out[i].Header() + "\n" + out[i].Sequence() + "\n")
+    // Writing out FASTA with Protein
+    outFile, err := os.Create(*output)
+    defer outFile.Close()
+    for i := range proteins {
+        outFile.WriteString(proteins[i].Header() + "\n" + proteins[i].Sequence() + "\n")
     }
 ```
 
@@ -150,35 +154,35 @@ func main() {
     }
 
     // Reading in FASTA with DNA
-    x, err := os.Open(*input)
+    inFile, err := os.Open(*input)
     if err != nil {
         fmt.Fprintf(os.Stderr, "Could not open the input file: %s\n", err)
         os.Exit(2)
     }
-    f, err := base.ReadMultiDna(x)
+    records, err := base.ReadMultiDna(inFile)
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error in reading %s: %s\n", *input, err)
         os.Exit(2)
     }
 
     // Translating Sequences
-    out := make([]fasta.Interface, len(f))
+    proteins := make([]fasta.Interface, len(records))
     table := new(codon.Standard)
-    for i, r := range f {
-        d, _ := immutable.NewDna(r.Sequence())
-        seq, err := d.Translate(table, '~')
+    for i, r := range records {
+        dna, _ := immutable.NewDna(r.Sequence())
+        seq, err := dna.Translate(table, '~')
         if err != nil && !strings.Contains(err.Error(), "~") {
-            fmt.Fprintf(os.Stderr, "Error in translating sequence: %s\n%s\n", err, d.String())
+            fmt.Fprintf(os.Stderr, "Error in translating sequence: %s\n%s\n", err, dna.String())
             os.Exit(2)
         }
-        out[i] = fasta.Interface(base.New(r.Header(), seq))
+        proteins[i] = fasta.Interface(base.New(r.Header(), seq))
     }
 
     // Writing out FASTA with Protein
-    o, err := os.Create(*output)
-    defer o.Close()
-    for i := range out {
-        o.WriteString(out[i].Header() + "\n" + out[i].Sequence() + "\n")
+    outFile, err := os.Create(*output)
+    defer outFile.Close()
+    for i := range proteins {
+        outFile.WriteString(proteins[i].Header() + "\n" + proteins[i].Sequence() + "\n")
     }
 }
 ```
