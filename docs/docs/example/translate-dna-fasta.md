@@ -1,17 +1,19 @@
 ---
 layout: page
-title:  "Central Dogma"
+title:  "Translate DNA FASTA"
 nav_order: 2
 heading_anchors: true
 parent: Example
 ---
 
-## Central Dogma
+## Translate DNA FASTA to Protein FASTA
 
 On this page we will explore the following series of steps:
 
 1. TOC
 {:toc}
+
+Herein we will be reading in DNA sequences from a FASTA file, translating them to the equivalent protein, then writing them out to a protein FASTA file.
 
 ### Set up Command Line Interface
 
