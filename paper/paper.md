@@ -25,8 +25,30 @@ Bioinformatics projects often require building custom, small tools for the purpo
 
 `bio-go` was designed to be approachable by the end-user programmers who make up a large portion of practicing Bioinformaticians -- those with immediate research problems to solve, but without the time or resources to build and thoroughly test a multitude of solutions to the same intermediate problems. The programmer should explore solutions laterally across the import tree (e.g., `bio/sequence/immutable` to `bio/sequence/mutable`) until the approach is tuned to the specific needs of the current research problem.
 
+# Design Structure
+
+`bio-go` is structured intentionally to form a fat tree where each step down the tree asks/answers a new question in the following order:
+
+1. _Why_ are you looking into this module? (i.e., the kind of work you are doing)
+2. _How_ are you hoping to get the job done? (i.e., do you need speed, immutability, simplicity, and so on)
+3. _What_ are you going to use? (i.e., the what that allows the why for your work)
+
+These questions are very general so a contrived example might be "I need to represent N sequences of DNA with IUPAC ambiguity":
+
+1. _Why_...? Ex: I need sequences (look in `bio/sequence` package)
+2. _How_...? Ex: I prefer immutable data structures (look in `.../sequence/immutable` package)
+3. _What_...? Ex: I need IUPAC DNA (look in `.../immutable/*iupac*` files)
+
+Full path: `bio/sequence/immutable/dna_iupac.go` to use `immutable.NewDnaIupac(...)` N times.
+
+This structure should promote quick searches for the _why_, _how_, and _what_ that must be answered for every project many times over.
+
+This design means that everything under a directory _should_ implement the interfaces above and inline with it in the tree; for example: everything under `bio/sequence` implements `sequence.Interface` and everything under `bio/alphabet` implements `alphabet.Interface` and so on.
+
+If more than three levels are deemed necessary the first level will represent some generic functionality, such as in the case of `bio/io/fasta/base/fasta.go` which is housed under the generic `io` then answers our three questions `fasta` (_why_), `base` (_how_), `fasta.go` (_what_).
+
 # Acknowledgements
 
-I acknowledge the valuable input on Bioinformatics data types and their semantics afforded to me by Sean C. West and Ryan P. Ehrlich, as well as the friendly ears of Cynthia L. Frasier and Timothy M. Sefczek who have helped me determine how to develop with biologists as end users.
+I acknowledge the valuable input on Bioinformatics data types and their semantics afforded to me by Sean C. West and Ryan P. Ehrlich, the friendly ears of Cynthia L. Frasier and Timothy M. Sefczek who have helped me determine how to develop with biologists as end users, and the two reviewers Will Rowe and Dan Kortschak who identified inadequacies in the initial work.
 
 # References
