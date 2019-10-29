@@ -19,6 +19,8 @@ bibliography: paper.bib
 
 Bioinformatics libraries that informed the development of this one are: BioPython [@BioPython], Rust-Bio [@Rust-Bio], and Bioconductor [@Bioconductor]. Property testing is done via <https://github.com/leanovate/gopter/>.
 
+`bio-go` is intended to clarify the intersection of existing solutions and define the minimal interface of biological data types such that we may abstract out the semantics of our solutions. Meanwhile, projects like `biogo` [@BioGo] are intended to set out a unified toolkit that makes definitive decisions about the semantics that `bio-go` leaves abstract. In short, the unified approach of `biogo` is one solution possibly exported by `bio-go`, meanwhile the reverse would not be expected.
+
 # Statement of Need
 
 Bioinformatics projects often require building custom, small tools for the purpose of complementing larger tools' inflexibility. Developers are forced to balance size with flexibility -- the larger the program and the more people using it, the less flexible its developers can be to changing it for the better. `bio-go` is intended to be used in producing flexible tools that can change according to the specific needs of ongoing Bioinformatics projects.
