@@ -8,8 +8,11 @@
 
 <!-- Static badges -->
 [![GoDoc](https://godoc.org/github.com/sembio/go?status.svg)](https://godoc.org/github.com/sembio/go)
-[![DOI](https://zenodo.org/badge/180650332.svg)](https://zenodo.org/badge/latestdoi/180650332)
 [![LICENSE](https://img.shields.io/github/license/sembio/go)](LICENSE)
+
+<!-- Citations -->
+[![DOI](https://zenodo.org/badge/180650332.svg)](https://zenodo.org/badge/latestdoi/180650332)
+[![status](https://joss.theoj.org/papers/7217d1ef147e05e94f323aa080d10422/status.svg)](https://joss.theoj.org/papers/7217d1ef147e05e94f323aa080d10422)
 
 ## Overview
 
