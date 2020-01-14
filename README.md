@@ -1,7 +1,7 @@
 # Bio -- Bioinformatics Module
 
 <!-- Dynamic badges -->
-[![Build Status](https://travis-ci.org/sembio/go.svg?branch=master)](https://travis-ci.org/sembio/go)
+[![Build Status](https://travis-ci.com/sembio/go.svg?branch=master)](https://travis-ci.com/sembio/go)
 [![codecov](https://codecov.io/gh/sembio/go/branch/master/graph/badge.svg)](https://codecov.io/gh/sembio/go)
 [![GoReport](https://goreportcard.com/badge/github.com/sembio/go)](https://goreportcard.com/report/github.com/sembio/go)
 [![CodeFactor](https://www.codefactor.io/repository/github/sembio/go/badge)](https://www.codefactor.io/repository/github/sembio/go)
