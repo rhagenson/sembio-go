@@ -54,4 +54,4 @@ Documentation can be built through use of `godoc -http=localhost:6060` which the
 
 Tests can be run through use of `go test -v ./...` at the root of this repository. Use of the verbose `-v` flag is recommended as `sembio/go` makes extensive use of property tests, which should provide insight into what can be expected of a given implementation.
 
-All tests, benchmarks, and examples are run continuously and can be viewed on [Travis CI](https://travis-ci.org/sembio/go).
+All tests, benchmarks, and examples are run continuously and can be viewed on [Travis CI](https://travis-ci.com/sembio/go).
