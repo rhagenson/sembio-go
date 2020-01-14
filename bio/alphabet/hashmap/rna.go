@@ -1,7 +1,7 @@
 package hashmap
 
 import (
-	"github.com/bio-ext/bio-go/bio/alphabet"
+	"github.com/sembio/go/bio/alphabet"
 )
 
 // Rna is the four letter standard encoding

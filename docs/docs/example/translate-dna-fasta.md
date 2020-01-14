@@ -70,7 +70,7 @@ import (
     "fmt"
     "os"
 
-    "github.com/bio-ext/bio-go/bio/io/fasta/base"
+    "github.com/sembio/go/bio/io/fasta/base"
 )
 
 (...)
@@ -91,7 +91,7 @@ import (
 Do note: we run `base.ReadMultiDna(x)`, not `base.ReadDna(x)`.
 
 This is because `base.ReadDna(x)` would only give us a single FASTA record (the first one to be precise).
-In `bio-go`, a distinction is made between reading a single record and reading all records.
+In `sembio/go`, a distinction is made between reading a single record and reading all records.
 (In your own code you will likely want `base.ReadMultiDna(x)` as we have used here. The reason for this distinction is that by definition a FASTA file _should_ only have one record, but _most_ FASTA files used today have multiple records. Blame Ryan A. Hagenson for being such a stick in the mud about this point.)
 
 ### Translating Sequences
@@ -137,10 +137,10 @@ import (
     "os"
     "strings"
 
-    "github.com/bio-ext/bio-go/bio/data/codon"
-    "github.com/bio-ext/bio-go/bio/io/fasta"
-    "github.com/bio-ext/bio-go/bio/io/fasta/base"
-    "github.com/bio-ext/bio-go/bio/sequence/immutable"
+    "github.com/sembio/go/bio/data/codon"
+    "github.com/sembio/go/bio/io/fasta"
+    "github.com/sembio/go/bio/io/fasta/base"
+    "github.com/sembio/go/bio/sequence/immutable"
 )
 
 func main() {

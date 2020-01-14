@@ -3,8 +3,8 @@ package base
 import (
 	"io"
 
-	"github.com/bio-ext/bio-go/bio/io/fasta"
-	"github.com/bio-ext/bio-go/bio/sequence/immutable"
+	"github.com/sembio/go/bio/io/fasta"
+	"github.com/sembio/go/bio/sequence/immutable"
 )
 
 var _ fasta.Interface = new(Rna)

@@ -3,9 +3,9 @@ package mutable
 import (
 	"strings"
 
-	"github.com/bio-ext/bio-go/bio/alphabet"
-	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
-	"github.com/bio-ext/bio-go/bio/sequence"
+	"github.com/sembio/go/bio/alphabet"
+	"github.com/sembio/go/bio/alphabet/hashmap"
+	"github.com/sembio/go/bio/sequence"
 )
 
 var _ sequence.Reverser = new(RnaIupac)

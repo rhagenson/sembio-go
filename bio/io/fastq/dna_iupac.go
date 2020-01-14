@@ -3,8 +3,8 @@ package fastq
 import (
 	"io"
 
-	"github.com/bio-ext/bio-go/bio/sequence"
-	"github.com/bio-ext/bio-go/bio/sequence/immutable"
+	"github.com/sembio/go/bio/sequence"
+	"github.com/sembio/go/bio/sequence/immutable"
 )
 
 var _ Interface = new(DnaIupac)

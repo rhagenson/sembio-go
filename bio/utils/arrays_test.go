@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/bio-ext/bio-go/bio/utils"
+	"github.com/sembio/go/bio/utils"
 )
 
 func TestBytesToStrings(t *testing.T) {

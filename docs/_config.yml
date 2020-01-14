@@ -1,6 +1,6 @@
-title: bio-go
+title: sembio/go
 description: >- # this means to ignore newlines until "baseurl:"
-  Documentation for the semantic Bioinformatics of bio-go
+  Documentation for semantic Bioinformatics in Go
 
 # Build settings
 markdown: kramdown

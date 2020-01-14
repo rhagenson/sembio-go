@@ -1,15 +1,15 @@
 # Bio -- Bioinformatics Module
 
 <!-- Dynamic badges -->
-[![Build Status](https://travis-ci.org/bio-ext/bio-go.svg?branch=master)](https://travis-ci.org/bio-ext/bio-go)
-[![codecov](https://codecov.io/gh/bio-ext/bio-go/branch/master/graph/badge.svg)](https://codecov.io/gh/bio-ext/bio-go)
-[![GoReport](https://goreportcard.com/badge/github.com/bio-ext/bio-go)](https://goreportcard.com/report/github.com/bio-ext/bio-go)
-[![CodeFactor](https://www.codefactor.io/repository/github/bio-ext/bio-go/badge)](https://www.codefactor.io/repository/github/bio-ext/bio-go)
+[![Build Status](https://travis-ci.org/sembio/go.svg?branch=master)](https://travis-ci.org/sembio/go)
+[![codecov](https://codecov.io/gh/sembio/go/branch/master/graph/badge.svg)](https://codecov.io/gh/sembio/go)
+[![GoReport](https://goreportcard.com/badge/github.com/sembio/go)](https://goreportcard.com/report/github.com/sembio/go)
+[![CodeFactor](https://www.codefactor.io/repository/github/sembio/go/badge)](https://www.codefactor.io/repository/github/sembio/go)
 
 <!-- Static badges -->
-[![GoDoc](https://godoc.org/github.com/bio-ext/bio-go?status.svg)](https://godoc.org/github.com/bio-ext/bio-go)
+[![GoDoc](https://godoc.org/github.com/sembio/go?status.svg)](https://godoc.org/github.com/sembio/go)
 [![DOI](https://zenodo.org/badge/180650332.svg)](https://zenodo.org/badge/latestdoi/180650332)
-[![LICENSE](https://img.shields.io/github/license/bio-ext/bio-go)](LICENSE)
+[![LICENSE](https://img.shields.io/github/license/sembio/go)](LICENSE)
 
 ## Overview
 
@@ -18,7 +18,7 @@
 ## Installation
 
 ```bash
-go get github.com/bio-ext/bio-go/...
+go get github.com/sembio/go/...
 ```
 
 ## Design Structure
@@ -45,10 +45,10 @@ If more than three levels are deemed necessary the first level will represent so
 
 ## Documentation
 
-Documentation can be built through use of `godoc -http=localhost:6060` which then generates documentation accessible through a web browser at `localhost:6060`. For access to  prior to downloading `bio-go`, visit: <https://godoc.org/github.com/bio-ext/bio-go/bio>
+Documentation can be built through use of `godoc -http=localhost:6060` which then generates documentation accessible through a web browser at `localhost:6060`. For access to  prior to downloading `sembio/go`, visit: <https://godoc.org/github.com/sembio/go/bio>
 
 ## Testing
 
-Tests can be run through use of `go test -v ./...` at the root of this repository. Use of the verbose `-v` flag is recommended as `bio-go` makes extensive use of property tests, which should provide insight into what can be expected of a given implementation.
+Tests can be run through use of `go test -v ./...` at the root of this repository. Use of the verbose `-v` flag is recommended as `sembio/go` makes extensive use of property tests, which should provide insight into what can be expected of a given implementation.
 
-All tests, benchmarks, and examples are run continuously and can be viewed on [Travis CI](https://travis-ci.org/bio-ext/bio-go).
+All tests, benchmarks, and examples are run continuously and can be viewed on [Travis CI](https://travis-ci.org/sembio/go).

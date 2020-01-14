@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
-	"github.com/bio-ext/bio-go/bio/io/fastq"
-	"github.com/bio-ext/bio-go/bio/test"
+	"github.com/sembio/go/bio/alphabet/hashmap"
+	"github.com/sembio/go/bio/io/fastq"
+	"github.com/sembio/go/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"

@@ -1,5 +1,5 @@
 ---
-title: '`bio-go`: A flexible tools Bioinformatics library'
+title: '`sembio/go`: Semantic Bioinformatics for Go'
 tags:
   - 
 authors:
@@ -15,21 +15,21 @@ bibliography: paper.bib
 
 # Summary
 
-`bio-go` starts from the known intersection of Bioinformatics data types as abstract data types (interfaces), providing functions abstracted over these abstract data types, as well as concrete data types implementing these interfaces to bootstrap development. Semantics of abstract data types are validated via extensive property testing. Flexibility is achieved through a separation of "why-how-what" at the import level such that _why_ one is using the library does not force one into _how_ it is done or _what_ the exact details of the implementation become.
+`sembio/go` starts from the known intersection of Bioinformatics data types as abstract data types (interfaces), providing functions abstracted over these abstract data types, as well as concrete data types implementing these interfaces to bootstrap development. Semantics of abstract data types are validated via extensive property testing. Flexibility is achieved through a separation of "why-how-what" at the import level such that _why_ one is using the library does not force one into _how_ it is done or _what_ the exact details of the implementation become.
 
 Bioinformatics libraries that informed the development of this one are: BioPython [@BioPython], Rust-Bio [@Rust-Bio], and Bioconductor [@Bioconductor]. Property testing is done via <https://github.com/leanovate/gopter/>.
 
-`bio-go` is intended to clarify the intersection of existing solutions and define the minimal interface of biological data types such that we may abstract out the semantics of our solutions. Meanwhile, projects like `biogo` [@BioGo] are intended to set out a unified toolkit that makes definitive decisions about the semantics that `bio-go` leaves abstract. In short, the unified approach of `biogo` is one solution possibly exported by `bio-go`, meanwhile the reverse would not be expected.
+`sembio/go` is intended to clarify the intersection of existing solutions and define the minimal interface of biological data types such that we may abstract out the semantics of our solutions. Meanwhile, projects like `biogo` [@BioGo] are intended to set out a unified toolkit that makes definitive decisions about the semantics that `sembio/go` leaves abstract. In short, the unified approach of `biogo` is one solution possibly exported by `sembio/go`, meanwhile the reverse would not be expected.
 
 # Statement of Need
 
-Bioinformatics projects often require building custom, small tools for the purpose of complementing larger tools' inflexibility. Developers are forced to balance size with flexibility -- the larger the program and the more people using it, the less flexible its developers can be to changing it for the better. `bio-go` is intended to be used in producing flexible tools that can change according to the specific needs of ongoing Bioinformatics projects.
+Bioinformatics projects often require building custom, small tools for the purpose of complementing larger tools' inflexibility. Developers are forced to balance size with flexibility -- the larger the program and the more people using it, the less flexible its developers can be to changing it for the better. `sembio/go` is intended to be used in producing flexible tools that can change according to the specific needs of ongoing Bioinformatics projects.
 
-`bio-go` was designed to be approachable by the end-user programmers who make up a large portion of practicing Bioinformaticians -- those with immediate research problems to solve, but without the time or resources to build and thoroughly test a multitude of solutions to the same intermediate problems. The programmer should explore solutions laterally across the import tree (e.g., `bio/sequence/immutable` to `bio/sequence/mutable`) until the approach is tuned to the specific needs of the current research problem.
+`sembio/go` was designed to be approachable by the end-user programmers who make up a large portion of practicing Bioinformaticians -- those with immediate research problems to solve, but without the time or resources to build and thoroughly test a multitude of solutions to the same intermediate problems. The programmer should explore solutions laterally across the import tree (e.g., `bio/sequence/immutable` to `bio/sequence/mutable`) until the approach is tuned to the specific needs of the current research problem.
 
 # Design Structure
 
-`bio-go` is structured intentionally to form a fat tree where each step down the tree asks/answers a new question in the following order:
+`sembio/go` is structured intentionally to form a fat tree where each step down the tree asks/answers a new question in the following order:
 
 1. _Why_ are you looking into this module? (i.e., the kind of work you are doing)
 2. _How_ are you hoping to get the job done? (i.e., do you need speed, immutability, simplicity, and so on)

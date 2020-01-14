@@ -1,8 +1,8 @@
 package sequence
 
 import (
-	"github.com/bio-ext/bio-go/bio/alphabet"
-	"github.com/bio-ext/bio-go/bio/data/codon"
+	"github.com/sembio/go/bio/alphabet"
+	"github.com/sembio/go/bio/data/codon"
 )
 
 // Interface is the basic functionality of any biological sequence

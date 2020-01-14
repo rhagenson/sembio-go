@@ -5,10 +5,10 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/bio-ext/bio-go/bio/alphabet"
-	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
-	"github.com/bio-ext/bio-go/bio/test"
-	"github.com/bio-ext/bio-go/bio/utils"
+	"github.com/sembio/go/bio/alphabet"
+	"github.com/sembio/go/bio/alphabet/hashmap"
+	"github.com/sembio/go/bio/test"
+	"github.com/sembio/go/bio/utils"
 )
 
 func TestDnaIupac(t *testing.T) {

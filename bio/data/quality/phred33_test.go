@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/bio-ext/bio-go/bio/data/quality"
+	"github.com/sembio/go/bio/data/quality"
 )
 
 func TestSangerPhred33(t *testing.T) {

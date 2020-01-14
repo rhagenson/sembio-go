@@ -1,6 +1,6 @@
 package fastq
 
-import "github.com/bio-ext/bio-go/bio/io/fasta"
+import "github.com/sembio/go/bio/io/fasta"
 
 // Interface is the basic functionality of FASTQ format
 // FASTQ is a four-line format that extends FASTA.

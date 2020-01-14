@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/bio-ext/bio-go/bio/alphabet"
-	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
-	"github.com/bio-ext/bio-go/bio/data/codon"
-	"github.com/bio-ext/bio-go/bio/sequence"
-	"github.com/bio-ext/bio-go/bio/utils"
+	"github.com/sembio/go/bio/alphabet"
+	"github.com/sembio/go/bio/alphabet/hashmap"
+	"github.com/sembio/go/bio/data/codon"
+	"github.com/sembio/go/bio/sequence"
+	"github.com/sembio/go/bio/utils"
 )
 
 var _ sequence.Interface = new(Dna)

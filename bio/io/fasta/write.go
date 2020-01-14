@@ -4,7 +4,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/bio-ext/bio-go/bio/sequence"
+	"github.com/sembio/go/bio/sequence"
 )
 
 // Write n records to a FASTA using the generator f to validate the sequences

@@ -3,10 +3,10 @@ package base_test
 import (
 	"testing"
 
-	"github.com/bio-ext/bio-go/bio/io/fasta/base"
+	"github.com/sembio/go/bio/io/fasta/base"
 
-	"github.com/bio-ext/bio-go/bio/sequence/immutable"
-	"github.com/bio-ext/bio-go/bio/test"
+	"github.com/sembio/go/bio/sequence/immutable"
+	"github.com/sembio/go/bio/test"
 	"github.com/leanovate/gopter"
 	"github.com/leanovate/gopter/gen"
 	"github.com/leanovate/gopter/prop"

@@ -3,7 +3,7 @@ package immutable
 import (
 	"fmt"
 
-	"github.com/bio-ext/bio-go/bio/sequence"
+	"github.com/sembio/go/bio/sequence"
 )
 
 var _ sequence.Interface = new(Struct)

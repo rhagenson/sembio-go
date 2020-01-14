@@ -1,4 +1,4 @@
-module github.com/bio-ext/bio-go
+module github.com/sembio/go
 
 go 1.13
 

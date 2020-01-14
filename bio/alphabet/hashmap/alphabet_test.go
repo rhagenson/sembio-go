@@ -6,8 +6,8 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/bio-ext/bio-go/bio/alphabet"
-	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
+	"github.com/sembio/go/bio/alphabet"
+	"github.com/sembio/go/bio/alphabet/hashmap"
 )
 
 func TestStruct(t *testing.T) {

@@ -4,8 +4,8 @@ import (
 	"math/rand"
 	"strings"
 
-	"github.com/bio-ext/bio-go/bio/alphabet"
-	"github.com/bio-ext/bio-go/bio/data/quality"
+	"github.com/sembio/go/bio/alphabet"
+	"github.com/sembio/go/bio/data/quality"
 )
 
 // TestGenFastq generates a random valid FASTQ

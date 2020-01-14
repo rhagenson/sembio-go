@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/bio-ext/bio-go/bio/data/quality"
+	"github.com/sembio/go/bio/data/quality"
 )
 
 func TestIllumina64V13(t *testing.T) {

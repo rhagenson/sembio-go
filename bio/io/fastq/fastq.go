@@ -1,8 +1,8 @@
 package fastq
 
 import (
-	"github.com/bio-ext/bio-go/bio/io/fasta/base"
-	"github.com/bio-ext/bio-go/bio/sequence"
+	"github.com/sembio/go/bio/io/fasta/base"
+	"github.com/sembio/go/bio/sequence"
 )
 
 var _ Interface = new(Struct)

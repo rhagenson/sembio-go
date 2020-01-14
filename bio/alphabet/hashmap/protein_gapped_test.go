@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/bio-ext/bio-go/bio/alphabet"
-	"github.com/bio-ext/bio-go/bio/alphabet/hashmap"
-	"github.com/bio-ext/bio-go/bio/utils"
+	"github.com/sembio/go/bio/alphabet"
+	"github.com/sembio/go/bio/alphabet/hashmap"
+	"github.com/sembio/go/bio/utils"
 )
 
 func TestProteinGapped(t *testing.T) {

@@ -3,7 +3,7 @@ package fasta
 import (
 	"math/rand"
 
-	"github.com/bio-ext/bio-go/bio/alphabet"
+	"github.com/sembio/go/bio/alphabet"
 )
 
 // TestGenFasta generates a random valid FASTA input

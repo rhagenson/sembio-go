@@ -1,9 +1,9 @@
 Contributing
 ============
 
-It's good to hear that you want to contribute to `bio-go`!
+It's good to hear that you want to contribute to `sembio/go`!
 
-There are a number of ways to contribute to `bio-go`, but currently all contributions are triaged through [Issues](https://github.com/bio-ext/bio-go/issues). (This is likely to change as more people require more from `bio-go`)
+There are a number of ways to contribute to `sembio/go`, but currently all contributions are triaged through [Issues](https://github.com/sembio/go/issues). (This is likely to change as more people require more from `sembio/go`)
 
 - [Contributing](#contributing)
   - [Feature request](#feature-request)
@@ -15,13 +15,13 @@ There are a number of ways to contribute to `bio-go`, but currently all contribu
 
 Feature request
 ---------------
-For any feature requests or enhancements to bio-go, please open an issue and label it as an `enhancement`.
+For any feature requests or enhancements to `sembio/go`, please open an issue and label it as an `enhancement`.
 
 If you submit a pull request to implement a new feature before a corresponding issue exists you will be asked to open an issue describing the proposed enchancement first.
 
 Bug report
 ----------
-First of all please [search existing issues](https://github.com/bio-ext/bio-go/issues) to make sure the bug has not been reported before. If you cannot find a suitable issue — [create a new one](https://github.com/bio-ext/bio-go/issues/new).
+First of all please [search existing issues](https://github.com/sembio/go/issues) to make sure the bug has not been reported before. If you cannot find a suitable issue — [create a new one](https://github.com/sembio/go/issues/new).
 
 Provide the following details:
 
@@ -39,8 +39,8 @@ We use a fairly standard GitHub pull request workflow. If you have already contr
 
 Here is the basic GitHub workflow:
 
-1. Fork the `bio-go` repo. you can do this via the GitHub website. This will result in you having your own copy of the `bio-go` repo under your GitHub account.
-2. Clone your `bio-go` repo to your local machine
+1. Fork the `sembio/go` repo. you can do this via the GitHub website. This will result in you having your own copy of the `sembio/go` repo under your GitHub account.
+2. Clone your `sembio/go` repo to your local machine
 3. Make a branch for your change
 4. Make your change on that branch
 5. Push your change to your repo
